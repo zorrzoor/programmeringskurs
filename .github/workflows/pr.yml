@@ -1,0 +1,37 @@
+name: PR
+
+# PR title and description checks, separate from CI so that editing a PR only re-runs this.
+# One job: every job is billed as at least a minute on GitHub's runner.
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr:
+    runs-on: ${{ vars.RUNNER || 'ubuntu-24.04' }}
+    permissions:
+      pull-requests: read
+    steps:
+      - name: PR title follows Conventional Commits
+        uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Bot PRs (release-please, Dependabot) have no issue to close.
+      - name: PR description must close an issue
+        if: ${{ !startsWith(github.head_ref, 'release-please--') && !startsWith(github.head_ref, 'dependabot/') }}
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if printf '%s' "$PR_BODY" | grep -qiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+'; then
+            echo "OK: PR closes an issue"
+          else
+            echo "::error::PR description must contain e.g. 'Closes #123'"
+            exit 1
+          fi
