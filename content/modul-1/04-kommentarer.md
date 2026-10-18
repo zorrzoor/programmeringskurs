@@ -1,6 +1,6 @@
 ---
 titel: Kommentarer
-mal: "Efter den här lektionen kan du skriva anteckningar i koden med # som datorn hoppar över."
+mal: "Efter den här lektionen kan du skriva bra kommentarer i koden och använda # för att stänga av en rad tillfälligt."
 ---
 
 ## Prova först
@@ -13,7 +13,7 @@ print("Den här raden körs.")
 # print("Den här raden körs inte.")
 ```
 
-Raderna som börjar med `#` är **kommentarer**. Python hoppar över dem.
+Raderna som börjar med `#` är **kommentarer**, som du redan har sett i kodrutorna. Python hoppar över dem.
 
 ## Till vad då?
 
@@ -25,6 +25,18 @@ rubrik: Du kanske känner igen det från Excel
 text: |
   I Excel kan en cell få en anteckning via högerklick. Kommentarer i kod fungerar på samma sätt: de påverkar inte uträkningen, de finns bara till för den som läser.
 ```
+
+## Skriv bra kommentarer
+
+En bra kommentar förklarar **varför**, inte vad koden redan säger:
+
+```python-exempel
+# Frakten är gratis över 500 kr.
+frakt = 0
+print(frakt)
+```
+
+Kommentaren `# sätter frakt till 0` hade inte tillfört något. Kommentaren ovan berättar *anledningen*, och den kan du inte läsa ut ur koden.
 
 ## Förutsäg
 
@@ -74,5 +86,5 @@ facit: |
 ## Det här lärde du dig
 
 - En rad som börjar med `#` är en kommentar som Python hoppar över.
-- Kommentarer förklarar koden för människor.
+- En bra kommentar förklarar varför, inte vad koden redan visar.
 - Du kan stänga av en rad tillfälligt genom att sätta `#` framför den.
