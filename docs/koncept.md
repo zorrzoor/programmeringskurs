@@ -445,11 +445,10 @@ efter modul 2, efter modul 5 och efter hela kursen. Observera, hjälp inte, ante
 modell: appen äger sina manifest (`deploy/`) och sin image, plattformen ger en avgränsad namnrymd, ett godkänt värdnamn,
 nätverksregler (inget in utom från Traefik) och backup.
 
-- **Åtkomst: skydda utanför appen.** Appen har inget lösenord, så sidan får inte vara öppen mot internet. Två sätt,
-  beslut i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26):
-  1. **Cloudflare Access** framför sidan (inloggning med e-post, bara utvalda adresser). Fungerar var som helst, även
-     hos släkt och vänner du bjuder in. Kräver en ändring av Cloudflare-inställningarna (Terraform).
-  2. **Bara hemma:** värdnamn som bara går att nå på det lokala nätet. Enklast, men fungerar inte utanför hemmet.
+- **Åtkomst: Cloudflare Access (beslutat, [#26](https://github.com/zorrzoor/programmeringskurs/issues/26)).** Appen har
+  inget lösenord och ligger därför bakom Cloudflare Access, på samma sätt som vattenkoll: man anger sin e-postadress,
+  får en engångskod och kommer in om adressen finns i listan över tillåtna. Fungerar på alla enheter och utanför hemmet.
+  Namnen i appen är alltså ingen säkerhet; den som tagit sig förbi Access kan öppna alla namn.
 - **Drift:** en pod, liten (≈ 50 MB minne), en volym för databasen (`local-path-sata`), hälsokontroll, loggar till
   stdout. Pod Security `restricted`, skrivskyddat rotfilsystem.
 - **Utveckling lokalt:** `make dev` startar servern och sidan i containrar, utan klustret.
@@ -466,8 +465,8 @@ nätverksregler (inget in utom från Traefik) och backup.
 | **Mycket innehåll att skriva** | Moduler skrivs och provkörs en i taget. Valfria moduler (8) kan vänta. |
 | **Svårt att veta om texten är begriplig** | Provkörning med en riktig nybörjare, och pedagogikreglerna som granskningslista. |
 | **Wi-Fi/surfplatta/olika webbläsare** | Webbläsartester i Chromium och Firefox, manuell kontroll på Safari/surfplatta. |
-| **Var ska kursen ligga?** | I k3s-klustret (kapitel 11). Åtkomstsättet beslutas i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26). |
-| **Inget lösenord: alla med åtkomst kan öppna och ta bort alla namn** | Medvetet val för enkelhetens skull. Skydd utanför appen (Access eller bara lokalt nät), bekräftelse genom att skriva namnet vid borttagning, och regelbunden säkerhetskopia. |
+| **Var ska kursen ligga?** | I k3s-klustret (kapitel 11). Åtkomst via Cloudflare Access (beslutat i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26)). |
+| **Inget lösenord: alla med åtkomst kan öppna och ta bort alla namn** | Medvetet val för enkelhetens skull. Skydd utanför appen (Cloudflare Access), bekräftelse genom att skriva namnet vid borttagning, och regelbunden säkerhetskopia. |
 | **Förlorat framsteg** (felaktig borttagning, trasig volym) | Säkerhetskopia av databasen ([#33](https://github.com/zorrzoor/programmeringskurs/issues/33)) och export/import i appen. |
 | **Servern ligger nere** | Sidan fungerar utan nätverk och köar framsteg tills servern svarar. |
 | **Ska kursen ha en AI-handledare?** | Nej i första versionen: det kräver extern tjänst och bryter "inget lämnar sidan". Kan utredas senare. |
@@ -489,4 +488,4 @@ Ordning, med det som inte kräver ägarens medverkan först:
 7. Modul 3–7 (#18–#22), provkörning, ordlista (#25), offline (#13), end-to-end-tester (#14).
 8. Valfri modul 8 (#23), projekt (#24), publicering (#26).
 
-Beslut och manuella steg som väntar på ägaren: åtkomstsätt (#26) och provkörningar (#27). Allt samlas i [manuellt.md](manuellt.md).
+Beslut och manuella steg som väntar på ägaren: provkörningar (#27) och åtgärderna i manuellt.md. Allt samlas i [manuellt.md](manuellt.md).

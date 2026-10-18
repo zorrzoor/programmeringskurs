@@ -5,9 +5,9 @@ och det som stoppar står här. Svara gärna som kommentar i ärendet, så tar j
 
 | # | Vad | Varför | Ärende | Brådskande |
 |---|---|---|---|---|
-| 1 | **Besluta åtkomstsätt:** Cloudflare Access (e-postinloggning, fungerar överallt) eller bara lokalt nät | Appen har inget lösenord och får inte ligga öppet mot internet | #26 | Innan första driftsättningen |
-| 2 | Slå samman och tillämpa plattformssidan i `k3s_hosting` (PR kommer): merge, och `make tf-apply` om Access eller DNS ändras | Namnrymd, värdnamn och nätverksregler ändras bara där. `tf-apply` kör jag aldrig själv | #34 | Efter 1 |
-| 3 | Ge klustret läsrätt till kursens paket: kör `make tenant-ghcr-pull NS=programmeringskurs` i `k3s_hosting` (frågar efter en *classic* PAT med endast `read:packages`) | CI publicerar imagen och manifesten som privata paket; klustret behöver en pull-secret. Paketets synlighet går inte att ändra via API:t | #34 | Före första driftsättningen |
+| 1 | **Lägg till din frus (och dina) e-postadresser** i `TF_VAR_access_emails` i `secrets.sops.env` i `k3s_hosting` (samma lista som vattenkoll använder) | Cloudflare Access släpper bara in adresser i listan; man får en engångskod via e-post | #34 | Före första inloggningen |
+| 2 | Slå samman utkast-PR:en i `k3s_hosting` (#322: namnrymd, nätverksregler, `kurs`-raden i Cloudflare-konfigurationen) och kör sedan `make tf-apply`. `tf-apply` kör jag aldrig själv | Värdnamnet `kurs` skapas i DNS, tunneln och Access bara av Terraform | #34 | Efter 3 |
+| 3 | Ge klustret läsrätt till kursens paket: kör `make tenant-ghcr-pull NS=programmeringskurs` i `k3s_hosting` (frågar efter en *classic* PAT med endast `read:packages`) | CI publicerar imagen och manifesten som privata paket; klustret behöver en pull-secret. Paketets synlighet går inte att ändra via API:t | #34 | **Först** (före merge av #322) |
 | 4 | Provkör med en riktig nybörjare efter modul 2, 5 och hela kursen | Det enda sättet att veta om texten är begriplig | #27 | Efter modul 2 |
 | 5 | Läs `docs/koncept.md` (särskilt kapitel 4.5, 9.6 och 11) och säg till om något ska ändras | Dyrt att ändra efter att innehållet är skrivet | #29 | Gärna tidigt |
 
