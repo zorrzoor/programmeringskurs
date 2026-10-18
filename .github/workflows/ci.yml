@@ -46,6 +46,9 @@ jobs:
         run: |
           make image
           scripts/smoke-image.sh
+      # The real site in Chromium (Pyodide in the worker, input(), stop, progress on the server, accessibility).
+      - name: Browser tests
+        run: scripts/browser-test.sh
 
   # After a merge: publish the image, then deploy/ as an OCI artifact pinned to that image. The cluster follows
   # the tag main; rollback = point the platform at an older sha-<7>.
