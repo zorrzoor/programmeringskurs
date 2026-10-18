@@ -5,7 +5,9 @@ import { tolka } from "../router.ts";
 import type { ProgressSync, SaveStatus } from "../sync.ts";
 import type { Kontext } from "./block.ts";
 import { h } from "./dom.ts";
+import { visaFastnat } from "./fastnat.ts";
 import { visaLektion } from "./lektion.ts";
+import { ordAnkare, visaOrdlista } from "./ordlista.ts";
 import { visaOversikt } from "./oversikt.ts";
 
 const STATUS_TEXT: Record<SaveStatus, string> = {
@@ -26,7 +28,7 @@ export function startApp(rot: HTMLElement, namn: string, sync: ProgressSync, bas
   const sida = h("main", { class: "sida", id: "innehall" });
   rot.replaceChildren(
     h("a", { class: "hoppa", href: "#innehall" }, "Hoppa till innehållet"),
-    h("header", { class: "topp" }, h("a", { class: "logga", href: "#/" }, "Programmeringskurs"), h("span", { class: "vem" }, `Du är ${namn} `, h("button", { type: "button", class: "link", onclick: onByt }, "Byt namn")), status),
+    h("header", { class: "topp" }, h("a", { class: "logga", href: "#/" }, "Programmeringskurs"), h("nav", { class: "meny", "aria-label": "Hjälp" }, h("a", { href: "#/ordlista" }, "Ordlista"), h("a", { href: "#/fastnat" }, "Jag har fastnat")), h("span", { class: "vem" }, `Du är ${namn} `, h("button", { type: "button", class: "link", onclick: onByt }, "Byt namn")), status),
     sida,
   );
   const ctx: Kontext = {
@@ -45,11 +47,18 @@ export function startApp(rot: HTMLElement, namn: string, sync: ProgressSync, bas
       sync.setLastLesson(l.id);
       visaLektion(sida, l, ctx, klar);
       document.title = `${l.titel} – Programmeringskurs`;
+    } else if (vy.vy === "ordlista") {
+      visaOrdlista(sida, vy.id);
+      document.title = "Ordlista – Programmeringskurs";
+    } else if (vy.vy === "fastnat") {
+      visaFastnat(sida);
+      document.title = "Jag har fastnat – Programmeringskurs";
     } else {
       visaOversikt(sida, namn, sync.current.senast, klar);
       document.title = "Programmeringskurs";
     }
     window.scrollTo(0, 0);
+    if (vy.vy === "ordlista" && vy.id) document.getElementById(ordAnkare(vy.id))?.scrollIntoView({ block: "center" });
     document.getElementById("sidtitel")?.focus({ preventScroll: true });
   };
   window.addEventListener("hashchange", visa);

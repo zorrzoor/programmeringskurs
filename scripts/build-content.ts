@@ -3,7 +3,7 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Kurs, Modul } from "../web/src/kurs-typer.ts";
-import { ContentError, kontrolleraKurs, parseLektion, parseModul } from "./lib/innehall.ts";
+import { ContentError, kontrolleraKurs, lankaOrd, parseLektion, parseModul, parseOrdlista } from "./lib/innehall.ts";
 
 const ROOT = join(import.meta.dirname, "..");
 const CONTENT = join(ROOT, "content");
@@ -22,8 +22,13 @@ export function byggKurs(contentDir = CONTENT): Kurs {
     });
     moduler.push({ ...base, lektioner });
   }
-  kontrolleraKurs(moduler);
-  return { moduler };
+  const ordlista = parseOrdlista(readFileSync(join(contentDir, "ordlista.yml"), "utf8"), "content/ordlista.yml");
+  for (const m of moduler) {
+    const lankade = new Set<string>();
+    for (const l of m.lektioner) lankaOrd(l, ordlista, lankade);
+  }
+  kontrolleraKurs(moduler, ordlista);
+  return { moduler, ordlista, fastnat: readFileSync(join(contentDir, "fastnat.md"), "utf8").trim() };
 }
 
 if (process.argv[1] === import.meta.filename) {

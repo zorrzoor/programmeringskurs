@@ -1,7 +1,7 @@
 // Parses the course content (Markdown with a few special blocks, docs/skriva-lektioner.md) into the types in
 // web/src/kurs-typer.ts. Every problem is reported with file and line, so that an invalid block stops the build.
 import { parse as parseYaml } from "yaml";
-import type { Block, Lektion, Modul, Ratta } from "../../web/src/kurs-typer.ts";
+import type { Block, Lektion, Modul, Ord, Ratta } from "../../web/src/kurs-typer.ts";
 
 export class ContentError extends Error {
   constructor(file: string, line: number, message: string) {
@@ -198,8 +198,103 @@ export function parseModul(text: string, file: string, id: number): Omit<Modul, 
   return { id, titel: str(o, "titel", file, 1, "modul.yml"), beskrivning: str(o, "beskrivning", file, 1, "modul.yml"), kopplas: str(o, "kopplas", file, 1, "modul.yml", true) };
 }
 
-/** Course-wide rules: every exercise and prediction id is unique. */
-export function kontrolleraKurs(moduler: Modul[]): void {
+/** The anchor of a glossary entry: lower case, without å ä ö, other characters as hyphens. */
+export const ordId = (ord: string): string =>
+  ord
+    .toLowerCase()
+    .replace(/[åä]/g, "a")
+    .replace(/ö/g, "o")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+/** ordlista.yml: a list of entries with `ord`, `forklaring` and optionally `former`. */
+export function parseOrdlista(text: string, file: string): Ord[] {
+  let value: unknown;
+  try {
+    value = parseYaml(text);
+  } catch (err) {
+    throw new ContentError(file, 1, `ordlistan: ogiltig YAML (${String(err).split("\n")[0]})`);
+  }
+  if (!Array.isArray(value) || value.length === 0) throw new ContentError(file, 1, "ordlistan ska vara en lista med ord");
+  const seen = new Set<string>();
+  return value.map((raw, i) => {
+    if (raw === null || typeof raw !== "object" || Array.isArray(raw)) throw new ContentError(file, 1, `ord ${i + 1} ska vara en post`);
+    const o = raw as Record<string, unknown>;
+    const ord = str(o, "ord", file, 1, `ord ${i + 1}`);
+    const id = ordId(ord);
+    if (id === "" || seen.has(id)) throw new ContentError(file, 1, `ordet "${ord}" finns redan i ordlistan (eller har inget giltigt id)`);
+    seen.add(id);
+    const former = o.former ?? [];
+    if (!Array.isArray(former) || !former.every((f) => typeof f === "string" && f.trim() !== "")) throw new ContentError(file, 1, `${ord}: "former" ska vara en lista med text`);
+    return { id, ord, former: former as string[], forklaring: str(o, "forklaring", file, 1, ord) };
+  });
+}
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// Text that must not get glossary links: code, and links that already exist.
+const SKYDDAT = /(`[^`]*`|\[[^\]]*\]\([^)]*\))/;
+
+/**
+ * Links the first mention of every glossary word in a lesson's running text (not in headings, code or existing
+ * links). `lankade` holds the words already linked and is shared by the lessons of a module, so that a word is linked
+ * once per module and the text does not fill up with links.
+ */
+export function lankaOrd(lektion: Lektion, ordlista: Ord[], lankade: Set<string> = new Set()): void {
+  const monster = ordlista.map((o) => {
+    const former = [o.ord, ...o.former].sort((a, b) => b.length - a.length).map(escapeRe);
+    return { o, re: new RegExp(`(?<![\\p{L}\\p{N}_-])(?:${former.join("|")})(?![\\p{L}\\p{N}_-])`, "iu") };
+  });
+  const segment = (text: string): string => {
+    let rest = text;
+    let ut = "";
+    for (;;) {
+      let bast: { idx: number; len: number; id: string } | undefined;
+      for (const { o, re } of monster) {
+        if (lankade.has(o.id)) continue;
+        const m = re.exec(rest);
+        if (m && (!bast || m.index < bast.idx || (m.index === bast.idx && m[0].length > bast.len))) bast = { idx: m.index, len: m[0].length, id: o.id };
+      }
+      if (!bast) return ut + rest;
+      lankade.add(bast.id);
+      ut += `${rest.slice(0, bast.idx)}[${rest.slice(bast.idx, bast.idx + bast.len)}](#/ordlista/${bast.id})`;
+      rest = rest.slice(bast.idx + bast.len);
+    }
+  };
+  const rad = (line: string) =>
+    line
+      .split(SKYDDAT)
+      .map((del, i) => (i % 2 === 1 ? del : segment(del)))
+      .join("");
+  for (const b of lektion.block) {
+    if (b.typ !== "text" && b.typ !== "ruta") continue;
+    let kod = false;
+    b.markdown = b.markdown
+      .split("\n")
+      .map((line) => {
+        if (/^\s*(`{3,}|~{3,})/.test(line)) {
+          kod = !kod;
+          return line;
+        }
+        return kod || /^#{1,6} /.test(line) ? line : rad(line);
+      })
+      .join("\n");
+  }
+}
+
+/** Course-wide rules: every exercise and prediction id is unique, and every link inside the course leads somewhere. */
+export function kontrolleraKurs(moduler: Modul[], ordlista: Ord[] = []): void {
+  const lektionIds = new Set(moduler.flatMap((m) => m.lektioner.map((l) => l.id)));
+  const ordIds = new Set(ordlista.map((o) => o.id));
+  for (const m of moduler) {
+    for (const l of m.lektioner) {
+      for (const b of l.block) {
+        if (b.typ !== "text" && b.typ !== "ruta") continue;
+        for (const [, vart, id] of b.markdown.matchAll(/\]\(#\/(lektion|ordlista)\/([^)\s]+)\)/g)) {
+          if (!(vart === "lektion" ? lektionIds : ordIds).has(id as string)) throw new Error(`${l.id}: länken #/${vart}/${id} leder ingenstans`);
+        }
+      }
+    }
+  }
   const seen = new Map<string, string>();
   for (const m of moduler) {
     for (const l of m.lektioner) {

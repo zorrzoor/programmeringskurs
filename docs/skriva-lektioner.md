@@ -141,6 +141,23 @@ text: |
 ```
 ````
 
+## Ordlistan och "Jag har fastnat"
+
+`content/ordlista.yml` är ordlistan: en lista med `ord`, `forklaring` och eventuellt `former` (andra böjningar som också ska
+länka hit, som `variabeln` och `variabler`). Det ska finnas minst 40 ord, och varje ord får finnas en gång.
+
+````yaml
+- ord: variabel
+  former: [variabeln, variabler, variablerna]
+  forklaring: Ett namn på ett värde som programmet kommer ihåg.
+````
+
+Bygget länkar **första förekomsten av varje ord i en modul** i löpande text (inte i rubriker, kod, kodblock eller
+befintliga länkar) till `#/ordlista/<id>`. Du skriver alltså inga länkar för hand. Länkar du själv skriver till
+`#/lektion/<id>` eller `#/ordlista/<id>` kontrolleras av bygget, och en trasig länk stoppar det.
+
+`content/fastnat.md` är texten på sidan "Jag har fastnat" (vanlig Markdown, utan rubrik: sidans rubrik sätts av appen).
+
 ## En lektions form
 
 Följ ordningen i [kapitel 5](koncept.md#5-så-fungerar-en-lektion): mål, prova, förklaring, förutsäg, gör själv, sammanfattning.

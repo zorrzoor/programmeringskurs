@@ -35,6 +35,14 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   const oversikt = await new AxeBuilder({ page }).analyze();
   expect(oversikt.violations.filter((v) => v.impact === "serious" || v.impact === "critical"), JSON.stringify(oversikt.violations.map((v) => v.id))).toEqual([]);
 
+  // The glossary and the "I'm stuck" page are one click away
+  await page.getByRole("link", { name: "Ordlista" }).click();
+  await expect(page.getByRole("heading", { name: "Ordlista", level: 1 })).toBeVisible();
+  await expect(page.locator("dt", { hasText: "variabel" }).first()).toBeVisible();
+  await page.getByRole("link", { name: "Jag har fastnat" }).click();
+  await expect(page.getByRole("heading", { name: "Jag har fastnat", level: 1 })).toBeVisible();
+  await page.getByRole("link", { name: "Programmeringskurs", exact: true }).click();
+
   // Lesson 1: two predictions
   await page.getByRole("link", { name: "Vad gör en dator?", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Vad gör en dator?", level: 1 })).toBeFocused();

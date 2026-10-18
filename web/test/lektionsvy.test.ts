@@ -284,3 +284,26 @@ describe("fil", () => {
     expect(r.querySelector("pre")?.textContent).toBe("a,b\n1,2\n");
   });
 });
+
+describe("ordlistan och fastnat", () => {
+  test("the glossary lists the words alphabetically and marks the one linked to", async () => {
+    const { visaOrdlista } = await import("../src/ui/ordlista.ts");
+    const rot = document.createElement("main");
+    visaOrdlista(rot, "variabel");
+    expect(rot.querySelector("h1")?.textContent).toBe("Ordlista");
+    const ord = [...rot.querySelectorAll("dt")].map((d) => d.textContent ?? "");
+    expect(ord.length).toBeGreaterThanOrEqual(40);
+    expect(ord).toEqual([...ord].sort((a, b) => a.localeCompare(b, "sv", { sensitivity: "base" })));
+    expect(rot.querySelector("#ord-variabel")?.classList.contains("markerad")).toBe(true);
+    expect(rot.querySelectorAll(".markerad").length).toBe(2);
+  });
+
+  test("the stuck page shows the checklist", async () => {
+    const { visaFastnat } = await import("../src/ui/fastnat.ts");
+    const rot = document.createElement("main");
+    visaFastnat(rot);
+    expect(rot.querySelector("h1")?.textContent).toBe("Jag har fastnat");
+    expect(rot.querySelectorAll("ol li").length).toBeGreaterThanOrEqual(6);
+    expect(rot.querySelector('a[href="#/ordlista"]')).not.toBeNull();
+  });
+});
