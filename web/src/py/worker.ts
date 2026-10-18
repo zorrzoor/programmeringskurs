@@ -2,7 +2,7 @@
 // terminating the worker. Messages in: start, kor, kontrollera. Out: klar, utdata, input, resultat.
 // input(): the worker blocks on a SharedArrayBuffer until the page has the learner's answer (needs cross-origin
 // isolation, which the server sets with COOP and COEP headers).
-import type { Ratta } from "../kurs-typer.ts";
+import type { Filer, Ratta } from "../kurs-typer.ts";
 import { PyEngine, type PyodideLite } from "./engine.ts";
 
 interface Start {
@@ -15,6 +15,7 @@ interface Jobb {
   id: number;
   kod: string;
   stdin: string[];
+  filer?: Filer;
   ratta?: Ratta;
 }
 
@@ -50,7 +51,7 @@ scope.onmessage = async (ev) => {
   }
   if (!engine) return;
   aktuell = m.id;
-  const alt = { stdin: m.stdin, fragaEfter: fraga, onUtdata: (s: string) => scope.postMessage({ typ: "utdata", id: m.id, text: s }) };
+  const alt = { stdin: m.stdin, filer: m.filer, fragaEfter: fraga, onUtdata: (s: string) => scope.postMessage({ typ: "utdata", id: m.id, text: s }) };
   if (m.typ === "kor") scope.postMessage({ typ: "resultat", id: m.id, resultat: engine.run(m.kod, alt) });
   else if (m.typ === "stega") scope.postMessage({ typ: "resultat", id: m.id, resultat: engine.stega(m.kod, alt) });
   else scope.postMessage({ typ: "resultat", id: m.id, resultat: engine.kontrollera(m.kod, m.ratta as Ratta, alt) });

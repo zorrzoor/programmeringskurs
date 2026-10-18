@@ -109,6 +109,26 @@ facit: |
 **Varje facit måste klara sin egen rättning**, och `start` får inte klara den. Det kontrolleras i CI (se #9); ett facit som
 inte stämmer stoppar bygget.
 
+### `fil`: en fil som lektionen visar
+
+Visas för läsaren (filnamn och innehåll) och läggs i programmets arbetskatalog vid **varje** körning av lektionens exempel,
+förutsägelser och övningar, så att koden kan öppna den med `open("forsaljning.csv")`. Katalogen töms före varje körning, så
+inget ligger kvar från förra gången. Filnamnet får inte ha katalog eller mellanslag, och samma namn får inte användas två
+gånger i en lektion.
+
+````markdown
+```fil
+namn: forsaljning.csv
+innehall: |
+  vara,antal,pris
+  kaffe,3,30
+  te,2,25
+```
+````
+
+En övning kan kräva att programmet **skriver** en fil, med `ratta: {fil: resultat.txt, innehall: "kaffe: 90\nte: 50"}`. Innehållet
+jämförs rad för rad som utskrift (avslutande blanksteg och tomma rader sist räknas inte).
+
 ### `ruta`: en inramad ruta
 
 För "Det här kan du från förut" (jämförelsen med Office/databaser) och "Fastnat?".

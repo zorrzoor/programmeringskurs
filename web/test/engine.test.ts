@@ -154,3 +154,27 @@ describe("kontrollera", () => {
     expect(e.kontrollera("def dubbla(x):\n    return x / 0", ratta).meddelanden[0]).toContain("ZeroDivisionError");
   });
 });
+
+describe("files", () => {
+  const CSV = "namn,belopp\nAnna,100\nBo,250\n";
+  test("the program can read a file of the lesson, and every run starts clean", () => {
+    const kod = 'import csv\nrader = list(csv.DictReader(open("f.csv", encoding="utf-8")))\nprint(sum(int(r["belopp"]) for r in rader))';
+    expect(e.run(kod, { filer: { "f.csv": CSV } })).toEqual({ utdata: "350\n", fel: null });
+    // Nothing is left from the earlier run: without the file it is missing again.
+    expect(e.run('open("f.csv")').fel?.typ).toBe("FileNotFoundError");
+    expect(e.run('open("ny.txt", "w").write("x")').fel).toBeNull();
+    expect(e.run('open("ny.txt")').fel?.typ).toBe("FileNotFoundError");
+  });
+
+  test("the step-by-step view has the files too", () => {
+    expect(e.stega('print(open("f.csv").read().strip())', { filer: { "f.csv": "a,b" } }).steg.at(-1)?.utdata).toBe("a,b\n");
+  });
+
+  test("a file the program wrote is rated against the expected content", () => {
+    const ratta: Ratta = { typ: "fil", namn: "ut.txt", forvantat: "Anna: 100\nBo: 250" };
+    const bra = 'with open("ut.txt", "w") as f:\n    f.write("Anna: 100\\nBo: 250\\n")';
+    expect(e.kontrollera(bra, ratta).ok).toBe(true);
+    expect(e.kontrollera("print(1)", ratta).meddelanden[0]).toContain("finns inte");
+    expect(e.kontrollera('open("ut.txt", "w").write("Anna: 100\\n")', ratta).meddelanden[0]).toContain("1 rad");
+  });
+});

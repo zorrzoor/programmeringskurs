@@ -37,3 +37,19 @@ export const jamforVariabel = (namn: string, svar: { finns: boolean; lika: boole
   if (svar.lika) return [];
   return [`\`${namn}\` har värdet \`${svar.faktisk}\`, men det ska vara \`${JSON.stringify(forvantat)}\`.`];
 };
+
+/** Messages for a file that the program should have written; an empty list when its content matches. */
+export function jamforFil(namn: string, svar: { finns: boolean; text: string }, forvantat: string): string[] {
+  if (!svar.finns) return [`Filen \`${namn}\` finns inte. Har du skrivit den med \`open("${namn}", "w")\`?`];
+  const a = normalisera(svar.text, false);
+  const f = normalisera(forvantat, false);
+  if (a.length === f.length && a.every((r, i) => r === f[i])) return [];
+  if (a.length === 0) return [`Filen \`${namn}\` är tom. Skrev du något till den?`];
+  const messages: string[] = [];
+  if (a.length !== f.length) messages.push(`Filen \`${namn}\` har ${a.length} ${a.length === 1 ? "rad" : "rader"}, men vi väntade oss ${f.length}.`);
+  const i = a.findIndex((r, k) => r !== f[k]);
+  if (i >= 0 && i < f.length) messages.push(`På rad ${i + 1} i filen står ${visa(a[i] as string)}, men vi ville ha ${visa(f[i] as string)}.`);
+  else if (a.length > f.length) messages.push(`Filen har en extra rad i slutet: ${visa(a[f.length] as string)}.`);
+  else messages.push(`Filen saknar en rad i slutet: vi ville ha ${visa(f[a.length] as string)}.`);
+  return messages;
+}

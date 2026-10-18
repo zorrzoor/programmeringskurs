@@ -276,3 +276,11 @@ describe("text and ruta", () => {
 });
 
 vi.useRealTimers();
+
+describe("fil", () => {
+  test("a file block shows its name and its content", () => {
+    const r = renderBlock({ typ: "fil", namn: "f.csv", innehall: "a,b\n1,2\n" }, ctx());
+    expect(r.querySelector("figcaption")?.textContent).toBe("Filen f.csv");
+    expect(r.querySelector("pre")?.textContent).toBe("a,b\n1,2\n");
+  });
+});

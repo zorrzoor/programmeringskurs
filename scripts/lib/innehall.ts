@@ -9,7 +9,8 @@ export class ContentError extends Error {
   }
 }
 
-const SPECIAL = new Set(["python-exempel", "forutsag", "ovning", "ruta"]);
+const SPECIAL = new Set(["python-exempel", "forutsag", "ovning", "ruta", "fil"]);
+const FILNAMN_RE = /^[A-Za-z0-9_][A-Za-z0-9_.-]{0,63}$/;
 const ID_RE = /^[a-z0-9][a-z0-9._-]{0,63}$/;
 const FENCE_RE = /^(`{3,}|~{3,})\s*([^\s`]*)\s*$/;
 
@@ -40,11 +41,16 @@ function stdinOf(o: Record<string, unknown>, file: string, line: number, what: s
 function rattaOf(raw: unknown, file: string, line: number): Ratta {
   if (raw === null || typeof raw !== "object" || Array.isArray(raw)) throw new ContentError(file, line, 'ovning: "ratta" ska vara en post');
   const r = raw as Record<string, unknown>;
-  const kinds = ["utdata", "variabler", "funktion"].filter((k) => r[k] !== undefined);
-  if (kinds.length !== 1) throw new ContentError(file, line, 'ovning: "ratta" ska ha exakt en av utdata, variabler, funktion');
+  const kinds = ["utdata", "variabler", "funktion", "fil"].filter((k) => r[k] !== undefined);
+  if (kinds.length !== 1) throw new ContentError(file, line, 'ovning: "ratta" ska ha exakt en av utdata, variabler, funktion, fil');
   if (kinds[0] === "utdata") {
     if (typeof r.utdata !== "string") throw new ContentError(file, line, 'ovning: ratta.utdata ska vara text (skriv t.ex. "26000")');
     return { typ: "utdata", forvantat: r.utdata, ignoreraVersaler: r.ignorera_versaler === true };
+  }
+  if (kinds[0] === "fil") {
+    if (typeof r.fil !== "string" || !FILNAMN_RE.test(r.fil)) throw new ContentError(file, line, "ovning: ratta.fil ska vara ett filnamn utan katalog, t.ex. resultat.csv");
+    if (typeof r.innehall !== "string") throw new ContentError(file, line, 'ovning: ratta.fil kräver "innehall" (text, skriv med | för flera rader)');
+    return { typ: "fil", namn: r.fil, forvantat: r.innehall };
   }
   if (kinds[0] === "variabler") {
     const v = r.variabler;
@@ -73,6 +79,11 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
     return { typ: "exempel", kod: (m ? body.slice(m[0].length) : body).replace(/\n+$/, ""), stdin: m ? (m[1] ?? "").split(" | ") : [] };
   }
   const o = yamlOf(body, file, line, kind);
+  if (kind === "fil") {
+    const namn = str(o, "namn", file, line, "fil");
+    if (!FILNAMN_RE.test(namn)) throw new ContentError(file, line, `fil: ogiltigt filnamn "${namn}" (inga kataloger, inga mellanslag)`);
+    return { typ: "fil", namn, innehall: str(o, "innehall", file, line, `fil ${namn}`) };
+  }
   if (kind === "ruta") return { typ: "ruta", rubrik: str(o, "rubrik", file, line, "ruta"), markdown: str(o, "text", file, line, "ruta") };
   if (kind === "forutsag") {
     counter.forutsag += 1;
@@ -116,6 +127,7 @@ export function uppskattaMinuter(block: Block[]): number {
   let min = 0;
   for (const b of block) {
     if (b.typ === "text" || b.typ === "ruta") min += ord(b.markdown) / 100;
+    else if (b.typ === "fil") min += 0.5;
     else if (b.typ === "exempel") min += 2;
     else if (b.typ === "forutsag") min += 1.5;
     else min += 6 + ord(b.uppgift) / 100;
@@ -165,6 +177,16 @@ export function parseLektion(text: string, file: string, modul: number, nr: numb
     i = j + 1;
   }
   flush();
+  // The lesson's files go with every example, prediction and exercise in it, so that the code can open them.
+  const filer: Record<string, string> = {};
+  for (const b of lektion.block) {
+    if (b.typ !== "fil") continue;
+    if (b.namn in filer) throw new ContentError(file, end + 2, `filen "${b.namn}" finns två gånger i lektionen`);
+    filer[b.namn] = b.innehall;
+  }
+  if (Object.keys(filer).length > 0) {
+    for (const b of lektion.block) if (b.typ === "exempel" || b.typ === "forutsag" || b.typ === "ovning") b.filer = filer;
+  }
   lektion.minuter = typeof meta.tid === "number" ? meta.tid : uppskattaMinuter(lektion.block);
   if (!lektion.block.some((b) => b.typ !== "text")) throw new ContentError(file, end + 2, "lektionen har inget exempel, ingen förutsägelse och ingen övning");
   return lektion;

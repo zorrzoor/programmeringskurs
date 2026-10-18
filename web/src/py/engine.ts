@@ -1,9 +1,9 @@
 // Runs learner code in Pyodide and checks exercises. Pyodide itself is passed in (a worker in the browser, the npm
 // package in Node tests), so everything here is the same in both places.
-import type { Ratta } from "../kurs-typer.ts";
+import type { Filer, Ratta } from "../kurs-typer.ts";
 import { type PyFel } from "./felmeddelanden.ts";
 import { PYTHON_KOD } from "./python-kod.ts";
-import { jamforUtdata, jamforVariabel } from "./rattning.ts";
+import { jamforFil, jamforUtdata, jamforVariabel } from "./rattning.ts";
 
 /** The part of Pyodide that the engine uses (so a test can pass a fake). */
 export interface PyodideLite {
@@ -18,6 +18,8 @@ export interface KorAlternativ {
   /** Asked when stdin has run out: the browser asks the learner, a test gives nothing (an EOFError). */
   fragaEfter?: (prompt?: string) => string | undefined;
   onUtdata?: (text: string) => void;
+  /** The lesson's files, placed in the working directory before the run. */
+  filer?: Filer;
   /** Most characters a program may print. */
   grans?: number;
 }
@@ -67,6 +69,7 @@ export class PyEngine {
   run(kod: string, alt: KorAlternativ = {}): KorResultat {
     const rader = [...(alt.stdin ?? [])];
     this.py.setStdin({ stdin: () => (rader.length > 0 ? rader.shift() : alt.fragaEfter?.()) });
+    this.fn("_satt_filer")(JSON.stringify(alt.filer ?? {}));
     let utdata = "";
     const cb = (s: string) => {
       utdata += s;
@@ -80,6 +83,7 @@ export class PyEngine {
   stega(kod: string, alt: KorAlternativ & { maxSteg?: number } = {}): StegResultat {
     const rader = [...(alt.stdin ?? [])];
     this.py.setStdin({ stdin: () => (rader.length > 0 ? rader.shift() : alt.fragaEfter?.()) });
+    this.fn("_satt_filer")(JSON.stringify(alt.filer ?? {}));
     const cb = (s: string) => alt.onUtdata?.(s);
     return JSON.parse(this.fn("_stega")(kod, cb, alt.grans ?? 20000, alt.maxSteg ?? 500)) as StegResultat;
   }
@@ -91,6 +95,9 @@ export class PyEngine {
     let meddelanden: string[] = [];
     if (ratta.typ === "utdata") {
       meddelanden = jamforUtdata(k.utdata, ratta.forvantat, ratta.ignoreraVersaler);
+    } else if (ratta.typ === "fil") {
+      const svar = JSON.parse(this.fn("_las_fil")(ratta.namn)) as { finns: boolean; text: string };
+      meddelanden = jamforFil(ratta.namn, svar, ratta.forvantat);
     } else if (ratta.typ === "variabler") {
       for (const [namn, forvantat] of Object.entries(ratta.forvantat)) {
         const svar = JSON.parse(this.fn("_variabel")(namn, JSON.stringify(forvantat))) as { finns: boolean; lika: boolean; faktisk: string };

@@ -5,11 +5,17 @@
 export type Ratta =
   | { typ: "utdata"; forvantat: string; ignoreraVersaler: boolean }
   | { typ: "variabler"; forvantat: Record<string, unknown> }
-  | { typ: "funktion"; namn: string; tester: { indata: unknown[]; svar: unknown }[] };
+  | { typ: "funktion"; namn: string; tester: { indata: unknown[]; svar: unknown }[] }
+  /** A file the program must have written: its content is compared line by line like output. */
+  | { typ: "fil"; namn: string; forvantat: string };
+
+/** Files a lesson shows (block `fil`), by name: placed in the program's working directory before every run. */
+export type Filer = Record<string, string>;
 
 export type Block =
   | { typ: "text"; markdown: string }
-  | { typ: "exempel"; kod: string; stdin: string[] }
+  | { typ: "fil"; namn: string; innehall: string }
+  | { typ: "exempel"; kod: string; stdin: string[]; filer?: Filer }
   | {
       typ: "forutsag";
       id: string;
@@ -17,6 +23,7 @@ export type Block =
       /** False when the code is pseudo-code that Python cannot run: then there is no "run it" button. */
       kor: boolean;
       stdin: string[];
+      filer?: Filer;
       /** Multiple choice: the alternatives and the index of the right one. Otherwise a free-text answer in `svar`. */
       alternativ: string[];
       ratt: number;
@@ -29,6 +36,7 @@ export type Block =
       uppgift: string;
       start: string;
       stdin: string[];
+      filer?: Filer;
       ratta: Ratta;
       ledtradar: [string, string, string];
       facit: string;
