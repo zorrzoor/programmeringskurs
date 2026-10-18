@@ -94,7 +94,7 @@ h1:focus { outline: none; }
 .fil figcaption { font-size: .9rem; font-weight: 600; margin-bottom: .25rem; }
 .fil pre { margin: 0; padding: .6rem 1rem; background: var(--ruta-bg); border-radius: .25rem; overflow-x: auto; }
 .ruta h3 { margin-top: 0; font-size: 1rem; }
-pre.kod { background: var(--editor-bg); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .9rem; overflow-x: auto; font-size: 1rem; }
+pre.kod { background: var(--editor-bg); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .9rem; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1rem; }
 code { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; font-size: .95em; }
 .editor-yta { border: 2px solid var(--border); border-radius: .5rem; overflow: hidden; margin: .5rem 0; }
 .editor-yta .cm-editor { min-height: 5rem; }
