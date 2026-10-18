@@ -27,10 +27,9 @@ Raden `pris = 20` **skapar en variabel**. En variabel är ett **namn på ett vä
 - Namnet får innehålla bokstäver (även å, ä, ö), siffror och understreck, men inte börja med en siffra och inte ha mellanslag. `pris`, `antal_varor` och `lön` går bra.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel kan du döpa en cell till *pris* och sedan skriva `=pris*2` i en annan. En variabel i Python är samma sak: en
-  cell med ett namn. Skillnaden är att du själv skapar den med en rad kod.
+  I Excel kan en cell få ett namn, till exempel *pris*, och användas som `=pris*2` i en annan cell. En variabel i Python är samma idé: ett värde med ett namn. Skillnaden är att den skapas med en rad kod.
 ```
 
 ## Förutsäg

@@ -22,9 +22,9 @@ else:
 Exakt **en** av vägarna körs: antingen raderna under `if`, eller raderna under `else`. Aldrig båda, aldrig ingen.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Det är hela `=OM(test; om sant; om falskt)` i Excel. Första delen efter OM är `if`, och den tredje delen är `else`.
+  Funktionen `=OM(test; om sant; om falskt)` i Excel är hela if/else. Första delen efter OM motsvarar `if`, och den tredje delen motsvarar `else`.
 ```
 
 ## Förutsäg

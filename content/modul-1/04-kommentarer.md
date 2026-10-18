@@ -21,10 +21,9 @@ Raderna som börjar med `#` är **kommentarer**. Python hoppar över dem.
 - **Stänga av en rad tillfälligt:** sätt `#` först på en rad så körs den inte, utan att du behöver radera den.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel kan du lägga en anteckning på en cell med högerklick. Kommentarer i kod är samma sak: de påverkar inte
-  uträkningen, de finns bara till för den som läser.
+  I Excel kan en cell få en anteckning via högerklick. Kommentarer i kod fungerar på samma sätt: de påverkar inte uträkningen, de finns bara till för den som läser.
 ```
 
 ## Förutsäg

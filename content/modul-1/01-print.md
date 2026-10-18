@@ -23,10 +23,9 @@ Du kan också skriva ut en tom rad. Prova att lägga till `print()` mellan de tv
 - Varje `print` börjar på en ny rad.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Tänk på när du skriver `="Hej"` i en cell i Excel: texten visas i cellen. `print` gör samma sak, men på skärmen i
-  stället för i en cell.
+  I Excel visar `="Hej"` texten Hej i en cell. `print` visar på samma sätt en text, men på skärmen i stället för i en cell.
 ```
 
 ## Förutsäg

@@ -37,10 +37,9 @@ Ett datorprogram ser inte ut som ett recept, men det fungerar likadant:
 - **Ordningen spelar roll.**
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Har du spelat in ett **makro** i Excel? Då har du redan sett ett program: en lista med steg som Excel upprepar i
-  samma ordning varje gång du trycker på knappen. Ett recept, ett makro och ett Python-program är samma idé.
+  Ett **makro** i Excel är ett program: en lista med steg som Excel upprepar i samma ordning varje gång. Ett recept, ett makro och ett Python-program är samma idé.
 ```
 
 ## Ett test

@@ -39,20 +39,20 @@ print(b + b)
 
 ```forutsag
 kod: |
-  a = "5"
-  b = 5
-  print(a + a)
-  print(b + b)
-alternativ: ["10 och 10", "55 och 10", "55 och 55", "Ett felmeddelande"]
-ratt: 1
-forklaring: "Plus mellan två texter sätter ihop dem (\"5\" och \"5\" blir \"55\"). Plus mellan två tal räknar ihop dem (5 och 5 blir 10)."
+  a = "Hej"
+  b = "!"
+  c = 3
+  print(a + b)
+  print(c + c)
+alternativ: ["Hej! och 6", "Hej! och 33", "Hej och ! och 6", "Ett felmeddelande"]
+ratt: 0
+forklaring: "Plus mellan två texter sätter ihop dem (\"Hej\" och \"!\" blir \"Hej!\"). Plus mellan två tal räknar ihop dem (3 och 3 blir 6)."
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Samma skillnad finns i Excel: ett tal i en cell går att summera, men ett tal som är formaterat som text gör det inte.
-  I Python avgör citattecknen vilket det är.
+  I Excel går ett tal i en cell att summera, medan ett tal som är formaterat som text inte gör det. I Python avgör citattecknen vilket det är.
 ```
 
 ## Din tur

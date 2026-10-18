@@ -25,9 +25,9 @@ else:
 Du kan kombinera dem, och använda parenteser för att göra det tydligt.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel heter de `OCH()`, `ELLER()` och `INTE()`. De fungerar likadant: du ger dem några villkor och får tillbaka SANT eller FALSKT.
+  I Excel finns funktionerna `OCH()`, `ELLER()` och `INTE()`. De fungerar likadant: de får några villkor och ger tillbaka SANT eller FALSKT.
 ```
 
 ## Förutsäg

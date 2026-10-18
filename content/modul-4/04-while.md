@@ -25,22 +25,22 @@ print("Klart!")
 Viktigt: något i loopen måste **ändra** det villkoret handlar om. Här minskar `n` för varje varv, så villkoret `n > 0` blir falskt till slut. Glömmer du `n = n - 1` blir loopen aldrig klar. Då trycker du på **Stoppa**, och det är helt okej: det händer alla.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Tänk på ett recept
 text: |
-  Tänk på en receptrad som "rör tills smeten är slät". Du vet inte hur många gånger du ska röra, bara när du ska sluta. `while` är samma sak: upprepa tills villkoret inte längre stämmer.
+  En receptrad som "rör tills smeten är slät" säger inte hur många gånger du ska röra, bara när du ska sluta. `while` är samma sak: upprepa tills villkoret inte längre stämmer.
 ```
 
 ## Förutsäg
 
 ```forutsag
 kod: |
-  n = 3
+  n = 10
   while n > 0:
       print(n)
-      n = n - 1
-alternativ: ["3, 2, 1", "3, 2, 1, 0", "2, 1, 0", "Ingenting"]
+      n = n - 4
+alternativ: ["10, 6, 2", "10, 6, 2, -2", "6, 2", "10, 6"]
 ratt: 0
-forklaring: "Så länge n är större än 0 skrivs n ut och minskas med 1. När n blir 0 är villkoret falskt och loopen slutar, utan att 0 skrivits ut."
+forklaring: "Så länge n är större än 0 skrivs n ut och minskas med 4: 10, 6 och 2. Sedan blir n -2, villkoret är falskt och loopen slutar utan att -2 skrivs ut."
 ```
 
 ## Din tur

@@ -28,9 +28,9 @@ print(total)
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Det är som att göra samma sak med varje cell i en kolumn, till exempel att summera dem med `=SUMMA(A1:A3)`. I Python bygger du summan själv i en loop, och kan göra vad du vill med varje värde.
+  I Excel kan samma sak göras med varje cell i en kolumn, till exempel summeras med `=SUMMA(A1:A3)`. I Python byggs summan upp i en loop, och vad som helst kan göras med varje värde.
 ```
 
 ## Förutsäg

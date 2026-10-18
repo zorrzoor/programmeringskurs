@@ -24,19 +24,19 @@ En **lista** samlar flera värden under ett namn. Den skrivs med hakparenteser, 
 - En lista kan innehålla tal, text eller en blandning.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  En lista är som en **kolumn** i Excel: flera värden under varandra. Skillnaden är att platserna numreras från 0, inte från 1, och att hela kolumnen har ett namn.
+  En lista liknar en **kolumn** i Excel: flera värden under varandra. Skillnaden är att platserna numreras från 0, inte från 1, och att hela kolumnen har ett namn.
 ```
 
 ## Förutsäg
 
 ```forutsag
 kod: |
-  frukt = ["äpple", "banan", "citron"]
-  print(frukt[1])
-svar: "banan"
-forklaring: "Platserna räknas från noll: 0 är äpple, 1 är banan och 2 är citron."
+  farger = ["röd", "grön", "blå"]
+  print(farger[2])
+svar: "blå"
+forklaring: "Platserna räknas från noll: 0 är röd, 1 är grön och 2 är blå."
 ```
 
 ```forutsag

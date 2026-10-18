@@ -34,19 +34,18 @@ print((2 + 3) * 4)
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Du skriver formler i Excel på samma sätt: `=2+3*4` ger 14, och `=(2+3)*4` ger 20. Python följer samma räkneregler som
-  Excel och en miniräknare.
+  I Excel ger `=2+3*4` talet 14 och `=(2+3)*4` talet 20. Python följer samma räkneregler som Excel och en miniräknare.
 ```
 
 ## Förutsäg
 
 ```forutsag
 kod: |
-  print(2 + 3 * 4)
-svar: "14"
-forklaring: "Gånger räknas först: 3 * 4 är 12, sedan 2 + 12 är 14."
+  print(10 - 2 * 3)
+svar: "4"
+forklaring: "Gånger räknas först: 2 * 3 är 6, sedan 10 - 6 är 4."
 ```
 
 ```forutsag
