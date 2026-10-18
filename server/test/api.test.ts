@@ -189,6 +189,26 @@ describe("persistence", () => {
   });
 });
 
+describe("backup", () => {
+  test("a consistent copy opens as a database with the same content; only the newest are kept", async () => {
+    const { DatabaseSync } = await import("node:sqlite");
+    const store = new Store(join(dir, "live", "kurs.db"));
+    store.addName("Bak");
+    store.saveExercise("Bak", "o1", { kod: "k", klar: true, tid: 9 });
+    const backups = join(dir, "backups");
+    for (const day of ["2026-10-01", "2026-10-02", "2026-10-03", "2026-10-04"]) store.backup(backups, day, 3);
+    const { readdirSync } = await import("node:fs");
+    assert.deepEqual(readdirSync(backups).sort(), ["kurs-2026-10-02.db", "kurs-2026-10-03.db", "kurs-2026-10-04.db"]);
+    store.removeName("Bak"); // the live database changes, the copy does not
+    const copy = new DatabaseSync(join(backups, "kurs-2026-10-04.db"), { readOnly: true });
+    assert.equal(copy.prepare("SELECT code FROM exercises").get()?.code, "k");
+    copy.close();
+    store.backup(backups, "2026-10-04", 3); // same day again: replaced, not an error
+    assert.equal(readdirSync(backups).length, 3);
+    store.close();
+  });
+});
+
 describe("static files and headers", () => {
   test("the start page, with security headers", async () => {
     const r = await call("GET", "/");
