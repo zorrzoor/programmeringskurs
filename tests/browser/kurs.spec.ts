@@ -36,7 +36,7 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   expect(oversikt.violations.filter((v) => v.impact === "serious" || v.impact === "critical"), JSON.stringify(oversikt.violations.map((v) => v.id))).toEqual([]);
 
   // Lesson 1: two predictions
-  await page.getByRole("link", { name: "Vad gör en dator?" }).click();
+  await page.getByRole("link", { name: "Vad gör en dator?", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Vad gör en dator?", level: 1 })).toBeFocused();
   await page.getByLabel("12", { exact: true }).check();
   await page.getByRole("button", { name: "Svara" }).first().click();
