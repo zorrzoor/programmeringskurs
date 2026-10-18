@@ -56,6 +56,19 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await page.getByRole("button", { name: "✓ Kontrollera" }).click();
   await expect(page.getByText("Rätt! Bra jobbat.")).toBeVisible();
 
+  // The step-by-step view: step through and watch the variable change
+  await page.goto("/#/lektion/m2-andra-en-variabel");
+  await page.getByRole("button", { name: "⏭ Stegvis" }).first().click();
+  await expect(page.locator(".stegstatus")).toContainText("Steg 1 av 4");
+  await page.getByRole("button", { name: "Nästa ▶" }).click();
+  await page.getByRole("button", { name: "Nästa ▶" }).click();
+  await expect(page.locator("table.variabler")).toContainText("pris");
+  await expect(page.locator("table.variabler")).toContainText("25");
+  await page.getByRole("button", { name: "Nästa ▶" }).click();
+  await expect(page.locator(".stegvisare pre.utdata")).toHaveText("25\n");
+  await page.getByRole("button", { name: "✕ Stäng" }).click();
+  await expect(page.locator(".stegvisare")).toHaveCount(0);
+
   // An error is explained in Swedish, with the row and Python's own text
   await page.goto("/#/lektion/m0-sa-fungerar-kursen");
   await page.getByRole("button", { name: "▶ Kör" }).first().click();

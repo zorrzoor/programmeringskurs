@@ -79,6 +79,45 @@ describe("real Python errors get a specific Swedish explanation (not the general
   });
 });
 
+describe("stega", () => {
+  const vars = (r: ReturnType<PyEngine["stega"]>) => r.steg.map((s) => [s.rad, s.variabler.map(([n, v]) => `${n}=${v}`).join(",")]);
+  test("one step per executed row, with the variables as they are before the row, and a last step", () => {
+    const r = e.stega("pris = 20\npris = pris + 5\nprint(pris)");
+    expect(vars(r)).toEqual([[1, ""], [2, "pris=20"], [3, "pris=25"], [null, "pris=25"]]);
+    expect(r.steg[3]?.utdata).toBe("25\n");
+    expect(r.steg[2]?.utdata).toBe(""); // output so far, before row 3 ran
+    expect(r.fel).toBeNull();
+    expect(r.avbruten).toBe(false);
+  });
+  test("a loop gives a step for every pass over its rows", () => {
+    const r = e.stega("total = 0\nfor i in range(3):\n    total = total + i");
+    expect(r.steg.filter((s) => s.rad === 3)).toHaveLength(3);
+    expect(r.steg.at(-1)?.variabler).toEqual([["total", "3"], ["i", "2"]]);
+  });
+  test("rows inside a function say which function, with the function's own variables", () => {
+    const r = e.stega("def dubbla(a):\n    b = a * 2\n    return b\nprint(dubbla(3))");
+    const inne = r.steg.filter((s) => s.funktion === "dubbla");
+    expect(inne.map((s) => s.rad)).toEqual([2, 3]);
+    expect(inne[1]?.variabler).toEqual([["a", "3"], ["b", "6"]]);
+    expect(r.steg.at(-1)?.variabler).toEqual([["dubbla", "<funktion dubbla>"]]);
+  });
+  test("an error ends the steps and is returned; what ran before is kept", () => {
+    const r = e.stega("x = 1\nprint(y)");
+    expect(r.fel?.typ).toBe("NameError");
+    expect(r.steg.map((s) => s.rad)).toEqual([1, 2, null]);
+  });
+  test("a program with too many steps is cut off", () => {
+    const r = e.stega("while True:\n    pass", { maxSteg: 50 });
+    expect(r.avbruten).toBe(true);
+    expect(r.steg).toHaveLength(51);
+  });
+  test("long values are shortened; input() works; tracing is switched off afterwards", () => {
+    expect(e.stega("lista = list(range(100))\nx = 1").steg.at(-1)?.variabler[0]?.[1]).toMatch(/\.\.\.$/);
+    expect(e.stega("n = input()\nprint(n)", { stdin: ["Anna"] }).steg.at(-1)?.utdata).toBe("Anna\n");
+    expect(e.run("print(1)").utdata).toBe("1\n");
+  });
+});
+
 describe("kontrollera", () => {
   test("output: right and wrong, with the learner told where", () => {
     const ratta: Ratta = { typ: "utdata", forvantat: "26000", ignoreraVersaler: false };

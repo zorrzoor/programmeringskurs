@@ -20,11 +20,12 @@ def _lika(a, b):
 
 class _Ut:
     def __init__(self, cb, limit):
-        self.cb, self.limit, self.n = cb, limit, 0
+        self.cb, self.limit, self.n, self.text = cb, limit, 0, ""
     def write(self, s):
         self.n += len(s)
         if self.n > self.limit:
             raise _ForMycket()
+        self.text += s
         self.cb(s)
         return len(s)
     def flush(self):
@@ -74,4 +75,54 @@ def _funktion(namn, indata_json, svar_json):
     except BaseException as e:
         return json.dumps({"finns": True, "lika": False, "faktisk": "", "fel": _fel(e)})
     return json.dumps({"finns": True, "lika": bool(_lika(r, json.loads(svar_json))), "faktisk": repr(r), "fel": None})
+
+class _ForMangaSteg(Exception):
+    pass
+
+def _visa(v):
+    if callable(v) and hasattr(v, "__name__") and not isinstance(v, type):
+        return "<funktion " + v.__name__ + ">"
+    r = repr(v)
+    return r if len(r) <= 60 else r[:57] + "..."
+
+def _snap(frame):
+    ut = []
+    for namn, v in frame.f_locals.items():
+        if namn.startswith("__"):
+            continue
+        ut.append([namn, _visa(v)])
+    return ut
+
+def _stega(kod, cb, limit, maxsteg):
+    global _ns
+    _ns = {"__name__": "__main__"}
+    gammal = (sys.stdout, sys.stderr)
+    ut = _Ut(cb, limit)
+    sys.stdout = sys.stderr = ut
+    steg = []
+    avbruten = False
+    fel = None
+
+    def spar(frame, event, arg):
+        if frame.f_code.co_filename != "<kod>":
+            return None
+        if event == "line":
+            if len(steg) >= maxsteg:
+                raise _ForMangaSteg()
+            namn = frame.f_code.co_name
+            steg.append({"rad": frame.f_lineno, "variabler": _snap(frame), "utdata": ut.text, "funktion": None if namn == "<module>" else namn})
+        return spar
+
+    try:
+        sys.settrace(spar)
+        exec(compile(kod, "<kod>", "exec"), _ns)
+    except _ForMangaSteg:
+        avbruten = True
+    except BaseException as e:
+        fel = _fel(e)
+    finally:
+        sys.settrace(None)
+        sys.stdout, sys.stderr = gammal
+    steg.append({"rad": None, "variabler": [[n, _visa(v)] for n, v in _ns.items() if not n.startswith("__")], "utdata": ut.text, "funktion": None})
+    return json.dumps({"steg": steg, "fel": fel, "avbruten": avbruten})
 `;

@@ -1,17 +1,19 @@
 // The blocks of a lesson as interactive DOM: examples to run, predictions, and exercises with hints and a facit.
 import type { Block } from "../kurs-typer.ts";
 import { renderaMarkdown, inline } from "../markdown.ts";
-import type { Kontroll, KorResultat } from "../py/engine.ts";
+import type { Kontroll, KorResultat, StegResultat } from "../py/engine.ts";
 import type { KorValj } from "../py/koerare.ts";
 import { normalisera } from "../py/rattning.ts";
 import { h } from "./dom.ts";
 import type { EditorFabrik } from "./editor.ts";
+import { skapaStegvisare } from "./stegvisare.ts";
 import { skapaUtdata, type Utdata } from "./utdata.ts";
 
 export interface KoerareLike {
   start(): Promise<void>;
   kor(kod: string, v?: KorValj): Promise<KorResultat>;
   kontrollera(kod: string, ratta: Extract<Block, { typ: "ovning" }>["ratta"], v?: KorValj): Promise<Kontroll>;
+  stega(kod: string, v?: KorValj): Promise<StegResultat>;
   stoppaWorker(): void;
 }
 
@@ -25,7 +27,7 @@ export interface Kontext {
 }
 
 /** Run / Stop buttons and the running of code into an output panel, shared by examples and exercises. */
-function skapaKorning(ctx: Kontext, stdin: string[], ut: Utdata) {
+function skapaKorning(ctx: Kontext, stdin: string[], ut: Utdata, hamtaKod: () => string) {
   let kor = false;
   const korKnapp = h("button", { type: "button" }, "▶ Kör");
   const stoppKnapp = h("button", { type: "button", class: "sekundar", hidden: true }, "■ Stoppa");
@@ -45,9 +47,39 @@ function skapaKorning(ctx: Kontext, stdin: string[], ut: Utdata) {
     tillstand(false);
     ut.meddela("Du stoppade programmet.");
   });
+  // The step-by-step view: runs the code with tracing and shows it below the buttons.
+  const stegKnapp = h("button", { type: "button", class: "sekundar" }, "⏭ Stegvis");
+  const stegYta = h("div", { class: "steg-yta" });
+  stegKnapp.addEventListener("click", () => {
+    const yta = stegYta;
+    yta.replaceChildren();
+    ut.rensa();
+    (stegKnapp as HTMLButtonElement).disabled = true;
+    const kod = hamtaKod();
+    void (async () => {
+      try {
+        ut.meddela("Python laddas (första gången tar det några sekunder) …");
+        await ctx.koerare.start();
+        ut.meddela("");
+        const r = await ctx.koerare.stega(kod, valj());
+        if (r.steg.length === 0 && r.fel) return ut.visaFel(r.fel, kod);
+        const sv = skapaStegvisare(kod, r, () => {
+          sv.stoppa();
+          yta.replaceChildren();
+        });
+        yta.append(sv.rot);
+      } catch {
+        ut.meddela("Python kunde inte laddas. Ladda om sidan och försök igen.", "fel");
+      } finally {
+        (stegKnapp as HTMLButtonElement).disabled = false;
+      }
+    })();
+  });
   return {
     korKnapp,
     stoppKnapp,
+    stegKnapp,
+    stegYta,
     pagar: () => kor,
     /** Runs `jobb` with the buttons in the running state; the output is cleared first. */
     async kor<T>(jobb: (v: KorValj) => Promise<T>): Promise<T | undefined> {
@@ -72,7 +104,7 @@ function skapaKorning(ctx: Kontext, stdin: string[], ut: Utdata) {
 
 function exempel(b: Extract<Block, { typ: "exempel" }>, ctx: Kontext): HTMLElement {
   const ut = skapaUtdata();
-  const k = skapaKorning(ctx, b.stdin, ut);
+  const k = skapaKorning(ctx, b.stdin, ut, () => editor.get());
   const rot = h("section", { class: "block exempel" });
   const yta = h("div", { class: "editor-yta" });
   const editor = ctx.editor(yta, { kod: b.kod, etikett: "Exempelkod, du får ändra den" });
@@ -86,7 +118,7 @@ function exempel(b: Extract<Block, { typ: "exempel" }>, ctx: Kontext): HTMLEleme
     editor.set(b.kod);
     ut.rensa();
   });
-  rot.append(h("h3", {}, "Prova"), yta, h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, borja), editorHjalp(), ut.rot);
+  rot.append(h("h3", {}, "Prova"), yta, h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, k.stegKnapp, borja), editorHjalp(), k.stegYta, ut.rot);
   return rot;
 }
 
@@ -138,7 +170,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
       feedback.textContent = b.kor ? "Inte riktigt. Kör koden nedan och se vad som händer, och gissa sedan igen." : "Inte riktigt. Läs igen och försök en gång till.";
     }
   });
-  const k = skapaKorning(ctx, b.stdin, ut);
+  const k = skapaKorning(ctx, b.stdin, ut, () => b.kod);
   k.korKnapp.textContent = "▶ Kör koden och se";
   k.korKnapp.addEventListener("click", () => {
     void k.kor((v) => ctx.koerare.kor(b.kod, v)).then((r) => {
@@ -154,7 +186,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
     h("div", { class: "knappar" }, svara),
     feedback,
     forklaring,
-    ...(b.kor ? [h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp), ut.rot] : []),
+    ...(b.kor ? [h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, k.stegKnapp), k.stegYta, ut.rot] : []),
   );
   if (ctx.sparad(b.id)?.klar) markeraKlar(false);
   return rot;
@@ -167,7 +199,7 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
   const yta = h("div", { class: "editor-yta" });
   const sparad = ctx.sparad(b.id);
   const editor = ctx.editor(yta, { kod: sparad?.kod || b.start, etikett: `Din kod för övningen: ${b.uppgift}`, onChange: (kod) => ctx.spara(b.id, { kod }) });
-  const k = skapaKorning(ctx, b.stdin, ut);
+  const k = skapaKorning(ctx, b.stdin, ut, () => editor.get());
   const markeraKlar = (spara: boolean) => {
     (klarMarke as HTMLElement).hidden = false;
     if (spara) {
@@ -235,8 +267,9 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
     h("h3", {}, "Gör själv ", klarMarke),
     h("p", { class: "uppgift" }, ...inline(b.uppgift)),
     yta,
-    h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, kontrollera, hintKnapp, borja, facitKnapp),
+    h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, k.stegKnapp, kontrollera, hintKnapp, borja, facitKnapp),
     editorHjalp(),
+    k.stegYta,
     ledtradar,
     ut.rot,
     facitYta,
