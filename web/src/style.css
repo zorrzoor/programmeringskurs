@@ -6,6 +6,17 @@
   --accent-fg: #ffffff;
   --danger: #a3262a;
   --border: #c9cdd8;
+  --editor-bg: #ffffff;
+  --ok: #1d6b3a;
+  --ok-bg: #e5f4ea;
+  --info-bg: #eaf0fb;
+  --fel-bg: #fdecea;
+  --ruta-bg: #f1efe8;
+  --syn-nyckelord: #7a2e9a;
+  --syn-text: #1d6b3a;
+  --syn-tal: #1f5fbf;
+  --syn-kommentar: #6b7385;
+  --syn-funktion: #8a4b00;
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
@@ -17,6 +28,17 @@
     --accent-fg: #0b1020;
     --danger: #ff8d90;
     --border: #3a4052;
+    --editor-bg: #1b1f2a;
+    --ok: #8fd9a8;
+    --ok-bg: #16301f;
+    --info-bg: #1a2640;
+    --fel-bg: #3a1c1c;
+    --ruta-bg: #232736;
+    --syn-nyckelord: #d6a3f5;
+    --syn-text: #9bdcae;
+    --syn-tal: #8fb8ff;
+    --syn-kommentar: #8d95aa;
+    --syn-funktion: #f0c27a;
   }
 }
 * { box-sizing: border-box; }
@@ -26,7 +48,7 @@ body {
   color: var(--fg);
   font: 1.125rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
-#app { max-width: 42rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+#app { max-width: 54rem; margin: 0 auto; padding: 1rem 1rem 3rem; }
 h1 { font-size: 1.75rem; margin: 0 0 .5rem; }
 h2 { font-size: 1.35rem; margin: 1.5rem 0 .5rem; }
 label { display: block; margin: 1rem 0 .25rem; font-weight: 600; }
@@ -45,3 +67,74 @@ ul.names { list-style: none; padding: 0; margin: 1rem 0; display: flex; flex-wra
 .message { color: var(--danger); min-height: 1.6em; font-weight: 600; }
 .status { color: var(--muted); font-size: 1rem; position: fixed; bottom: .75rem; right: 1rem; margin: 0; }
 form button[type="submit"] { margin-top: .75rem; }
+
+/* Top bar and page */
+.hoppa { position: absolute; left: -999px; }
+.hoppa:focus { left: 1rem; top: .5rem; background: var(--bg); padding: .5rem; z-index: 10; }
+.topp { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1.25rem; padding: .5rem 0 1rem; border-bottom: 1px solid var(--border); margin-bottom: 1.25rem; }
+.topp .logga { font-weight: 700; color: var(--fg); text-decoration: none; margin-right: auto; }
+.topp .vem { color: var(--muted); font-size: 1rem; }
+.topp .status { position: static; font-size: .9rem; color: var(--muted); }
+a { color: var(--accent); }
+h1:focus { outline: none; }
+.knapp-lank { display: inline-block; padding: .5rem 1rem; border: 2px solid var(--accent); border-radius: .5rem; background: var(--accent); color: var(--accent-fg); text-decoration: none; }
+.knapp-lank.stor { font-size: 1.15rem; padding: .7rem 1.25rem; }
+.lektion-nav { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; color: var(--muted); font-size: 1rem; margin-bottom: .5rem; }
+.lektion-nav span { margin-right: auto; }
+.lektion-nav .knapp-lank { padding: .25rem .75rem; background: transparent; color: var(--accent); }
+.mal { background: var(--info-bg); padding: .6rem .9rem; border-radius: .5rem; }
+.valkomst { font-size: 1.2rem; }
+
+/* Lesson blocks */
+.block { margin: 1.75rem 0; padding: 1rem 0 0; border-top: 1px solid var(--border); }
+.block h3 { margin: 0 0 .5rem; font-size: 1.15rem; }
+.text h2, .text h3 { margin: 1.5rem 0 .5rem; }
+.ruta { background: var(--ruta-bg); border-left: 4px solid var(--accent); padding: .6rem 1rem; margin: 1.5rem 0; border-radius: .25rem; }
+.ruta h3 { margin-top: 0; font-size: 1rem; }
+pre.kod { background: var(--editor-bg); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .9rem; overflow-x: auto; font-size: 1rem; }
+code { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; font-size: .95em; }
+.editor-yta { border: 2px solid var(--border); border-radius: .5rem; overflow: hidden; margin: .5rem 0; }
+.editor-yta .cm-editor { min-height: 5rem; }
+.knappar { display: flex; flex-wrap: wrap; gap: .5rem; margin: .5rem 0; }
+button.sekundar { background: transparent; color: var(--accent); }
+button[disabled] { opacity: .55; cursor: default; }
+.hjalp { color: var(--muted); font-size: .95rem; margin: .25rem 0 .75rem; }
+pre.utdata { background: var(--editor-bg); border: 1px solid var(--border); border-radius: .5rem; padding: .6rem .9rem; min-height: 2.5rem; margin: .5rem 0 0; white-space: pre-wrap; font-size: 1rem; }
+pre.utdata:empty::before { content: "Resultatet visas här när du kör."; color: var(--muted); font-style: italic; }
+.meddelande { margin: .4rem 0; padding: 0 .1rem; min-height: 0; font-weight: 600; color: var(--fg); }
+.meddelande:empty { display: none; }
+.meddelande.ok { color: var(--ok); background: var(--ok-bg); padding: .4rem .7rem; border-radius: .4rem; }
+.meddelande.info { background: var(--info-bg); padding: .4rem .7rem; border-radius: .4rem; }
+.meddelande.fel { color: var(--danger); }
+.fel-ruta { background: var(--fel-bg); border-left: 4px solid var(--danger); padding: .6rem 1rem; border-radius: .25rem; margin: .5rem 0; }
+.fel-ruta h4 { margin: .25rem 0; }
+.fel-ruta .fel-rubrik { color: var(--muted); font-size: .95rem; margin: 0; }
+.fel-ruta .tips { color: var(--fg); }
+.fel-ruta .pythons-text { color: var(--muted); font-size: .95rem; }
+.svarsrad { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: .5rem 0; }
+.svarsrad label { margin: 0; }
+.svarsrad input { width: auto; flex: 1; min-width: 10rem; }
+.klar-marke { color: var(--ok); font-weight: 600; font-size: .95rem; }
+fieldset.alternativ { border: none; padding: 0; margin: .75rem 0; }
+fieldset.alternativ legend { font-weight: 600; margin-bottom: .25rem; }
+.alt { display: flex; gap: .6rem; align-items: baseline; padding: .2rem 0; }
+.alt input { width: 1.2rem; height: 1.2rem; }
+.alt label { margin: 0; font-weight: 400; }
+.fritt input { max-width: 24rem; }
+.forklaring { background: var(--ok-bg); padding: .5rem .8rem; border-radius: .4rem; }
+ol.ledtradar { margin: .5rem 0; padding-left: 1.4rem; }
+ol.ledtradar:empty { display: none; }
+ul.kontroll { margin: .25rem 0; }
+.facit { margin-top: .75rem; }
+.lektion-klar { margin: 2rem 0 .5rem; }
+.lektion-klar p:first-child { font-weight: 600; }
+
+/* Overview */
+.modul { margin: 2rem 0; }
+.modul h2 { margin-bottom: .25rem; }
+.modul .beskrivning { margin: .25rem 0; }
+.modul .kopplas { color: var(--muted); font-size: .95rem; margin: .25rem 0 .5rem; }
+ol.lektionslista { padding-left: 1.5rem; }
+ol.lektionslista li { padding: .15rem 0; }
+@media (max-width: 40rem) { #app { padding: .75rem .75rem 3rem; } body { font-size: 1.05rem; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }

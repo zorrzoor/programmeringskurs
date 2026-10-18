@@ -1,6 +1,8 @@
 import { Api } from "./api.ts";
+import { skapaKoerare } from "./py/koerare.ts";
 import { ProgressSync } from "./sync.ts";
-import { showHome, type Home } from "./ui/home.ts";
+import { startApp, type App } from "./ui/app.ts";
+import { skapaCodeMirror } from "./ui/editor.ts";
 import { showPicker } from "./ui/picker.ts";
 import "./style.css";
 
@@ -9,7 +11,9 @@ const root = document.getElementById("app");
 if (!root) throw new Error("#app saknas");
 
 const api = new Api();
+const koerare = skapaKoerare();
 let sync: ProgressSync | undefined;
+let app: App | undefined;
 
 const remember = (name: string | null) => {
   try {
@@ -29,20 +33,23 @@ const remembered = () => {
 
 function choose(): void {
   sync?.stop();
+  app?.stang();
   sync = undefined;
+  app = undefined;
   remember(null);
+  history.replaceState(null, "", location.pathname);
   showPicker(root as HTMLElement, { api, onPick: (name) => void start(name) });
 }
 
 async function start(name: string): Promise<void> {
   remember(name);
-  let home: Home | undefined;
-  const s = new ProgressSync(api, name, { onStatus: (st) => home?.setStatus(st) });
+  const s = new ProgressSync(api, name, { onStatus: (st) => app?.setStatus(st) });
   try {
-    const progress = await s.load();
+    await s.load();
     sync = s;
-    home = showHome(root as HTMLElement, name, progress, choose);
-    home.setStatus(s.status);
+    void koerare.start().catch(() => {}); // load Python in the background while the learner reads
+    app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, choose);
+    app.setStatus(s.status);
   } catch {
     // The name was removed on another device, or the server answered with an error: start over.
     choose();
