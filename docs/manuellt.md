@@ -8,16 +8,23 @@ och det som stoppar står här. Svara gärna som kommentar i ärendet, så tar j
 när du är klar (`git switch main`). Står det inget om gren gäller `main`. Stämmer något inte med vad du ser: stanna och
 skriv i ärendet i stället för att gissa.
 
-## Driftsättning av kursen: stegen i ordning
+## Läget: kursen är driftsatt
+
+Alla steg för att öppna kursen är gjorda (2026-10-18): pull-secret (A), plattformssidan mergad (C) och värdnamnet skapat
+med `make tf-apply` (D). Steg B (fler e-postadresser) återstår bara när fler ska in.
+
+- **Adress:** https://kurs.feuerliden.se. Du loggar in med din e-postadress (engångskod), välj eller skriv ett namn, och
+  börja med **Modul 0**. Din adress finns redan i Access-listan.
+- **Lägga till din fru:** lägg hennes e-postadress i `TF_VAR_access_emails`, steg B nedan (k3s_hosting#323). Tills dess kan hon
+  använda kursen genom dig (samma inloggning på samma dator).
+- **Köra lokalt utan inloggning** (om något är fel med adressen): i din egen kopia av `programmeringskurs`, på `main`, kör
+  `make dev` och öppna http://localhost:8080.
+
+### Steg B: e-postadresser
 
 | Steg | Repo och gren | Kommando eller åtgärd | Efteråt |
 |---|---|---|---|
-| **A. Pull-secret** (klustret behöver läsa kursens privata paket) | `k3s_hosting`, gren **`feat/321-tenant-programmeringskurs`** (katalogen `tenants/nuc/programmeringskurs` finns bara på den grenen) | `git fetch && git switch feat/321-tenant-programmeringskurs`, sedan `make tenant-ghcr-pull NS=programmeringskurs` (frågar efter en *classic* PAT med enbart `read:packages`), sedan `git add tenants/nuc/programmeringskurs/ghcr-pull.sops.yaml && git commit -m "chore: ghcr-pull för programmeringskurs" && git push` | `git switch main` |
-| **B. Läsare** (vilka e-postadresser som släpps in) | `k3s_hosting`: ny gren **`chore/323-access-emails`** från `main` (filen är versionshanterad, krypterad, så ändringen går via PR) | `git switch main && git pull && git switch -c chore/323-access-emails`, sedan `make tf-secrets TF_STACK=cloudflare` (öppnar den krypterade filen `terraform/cloudflare/secrets.sops.env`): lägg adresserna i JSON-listan på raden `TF_VAR_access_emails=["a@x.se","b@y.se"]`, spara. Sedan `git add terraform/cloudflare/secrets.sops.env && git commit -m "chore: kursens läsare i Access-listan (#323)" && git push -u origin HEAD` och öppna en PR (`Closes #323` i beskrivningen) | Merga PR:en när CI är grön, sedan `git switch main && git pull`. Se k3s_hosting#323 |
-| **C. Slå samman plattformssidan** | GitHub: `zorrzoor/k3s_hosting`, PR **#322** (utkast) | Markera *Ready for review*, vänta på grön CI och merga. Flux tillämpar namnrymden och nätverksreglerna när PR:en är mergad | |
-| **D. Skapa värdnamnet `kurs`** (DNS, tunnel, Access) | `k3s_hosting`, gren **`main`** (efter C) | `git switch main && git pull`, sedan `make tf-plan TF_STACK=cloudflare` (kontrollera att bara `kurs` läggs till) och `make tf-apply TF_STACK=cloudflare`. `tf-apply` kör jag aldrig själv | Öppna `https://kurs.feuerliden.se`, ange e-post, skriv engångskoden |
-
-Ordning: **A, B, C, D.** Steg B (adresserna) är inte aktuellt än (k3s_hosting#323); gör A–D när du vill öppna kursen.
+| **B. Läsare** (vilka e-postadresser som släpps in) | `k3s_hosting`: ny gren **`chore/323-access-emails`** från `main` (filen är versionshanterad, krypterad, så ändringen går via PR) | `git switch main && git pull && git switch -c chore/323-access-emails`, sedan `make tf-secrets TF_STACK=cloudflare` (öppnar den krypterade filen `terraform/cloudflare/secrets.sops.env`): lägg adresserna i JSON-listan på raden `TF_VAR_access_emails=["a@x.se","b@y.se"]`, spara. Sedan `git add terraform/cloudflare/secrets.sops.env && git commit -m "chore: kursens läsare i Access-listan (#323)" && git push -u origin HEAD` och öppna en PR (`Closes #323` i beskrivningen) | Merga PR:en när CI är grön, sedan `git switch main && git pull`, och kör `make tf-apply TF_STACK=cloudflare` (eller säg till så gör jag det). Se k3s_hosting#323 |
 
 ## Övrigt
 
