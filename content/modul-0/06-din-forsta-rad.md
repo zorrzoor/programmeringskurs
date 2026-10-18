@@ -28,6 +28,10 @@ ratt: 1
 forklaring: "Varje print skriver ut sin text och byter rad. Därför hamnar A och B på varsin rad, i den ordning raderna står."
 ```
 
+## Raden som börjar med #
+
+I kodrutorna står det `# skriv din kod här`. Rader som börjar med `#` är **kommentarer**: Python hoppar över dem. De är anteckningar till den som läser koden, och du kan lämna dem kvar eller radera dem. Skriv ditt program under raden. Mer om kommentarer kommer i modul 1.
+
 ## Din tur
 
 ```ovning
