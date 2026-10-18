@@ -2,7 +2,7 @@
 // runs code with a time limit, passes the learner's answers to input(), and replaces the worker when a program is
 // stopped or runs too long.
 import type { Ratta } from "../kurs-typer.ts";
-import type { Kontroll, KorResultat } from "./engine.ts";
+import type { Kontroll, KorResultat, StegResultat } from "./engine.ts";
 
 export interface KorValj {
   stdin?: string[];
@@ -19,7 +19,7 @@ export interface WorkerLike {
   onmessage: ((e: MessageEvent) => void) | null;
 }
 
-type Svar = KorResultat | Kontroll;
+type Svar = KorResultat | Kontroll | StegResultat;
 const TIMEOUT = { typ: "_Timeout", meddelande: "", rad: null };
 
 export class Koerare {
@@ -72,7 +72,7 @@ export class Koerare {
     p.starta();
   }
 
-  private async jobb<T extends Svar>(typ: "kor" | "kontrollera", kod: string, ratta: Ratta | undefined, v: KorValj): Promise<T> {
+  private async jobb<T extends Svar>(typ: "kor" | "kontrollera" | "stega", kod: string, ratta: Ratta | undefined, v: KorValj): Promise<T> {
     await this.start();
     const w = this.worker as WorkerLike;
     const id = this.nastaId++;
@@ -82,7 +82,7 @@ export class Koerare {
       const starta = () => {
         timer = setTimeout(() => {
           this.stoppaWorker(); // the program never ended: replace the worker, keep what it printed so far
-          resolve({ utdata, fel: TIMEOUT, ok: false, meddelanden: [] } as unknown as T);
+          resolve((typ === "stega" ? { steg: [], fel: TIMEOUT, avbruten: false } : { utdata, fel: TIMEOUT, ok: false, meddelanden: [] }) as unknown as T);
         }, v.tidsgransMs ?? 10_000);
       };
       const stoppa = () => clearTimeout(timer);
@@ -107,6 +107,10 @@ export class Koerare {
 
   kor(kod: string, v: KorValj = {}): Promise<KorResultat> {
     return this.jobb<KorResultat>("kor", kod, undefined, v);
+  }
+
+  stega(kod: string, v: KorValj = {}): Promise<StegResultat> {
+    return this.jobb<StegResultat>("stega", kod, undefined, v);
   }
 
   kontrollera(kod: string, ratta: Ratta, v: KorValj = {}): Promise<Kontroll> {

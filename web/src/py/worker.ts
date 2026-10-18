@@ -11,7 +11,7 @@ interface Start {
   sab: SharedArrayBuffer | null;
 }
 interface Jobb {
-  typ: "kor" | "kontrollera";
+  typ: "kor" | "kontrollera" | "stega";
   id: number;
   kod: string;
   stdin: string[];
@@ -52,5 +52,6 @@ scope.onmessage = async (ev) => {
   aktuell = m.id;
   const alt = { stdin: m.stdin, fragaEfter: fraga, onUtdata: (s: string) => scope.postMessage({ typ: "utdata", id: m.id, text: s }) };
   if (m.typ === "kor") scope.postMessage({ typ: "resultat", id: m.id, resultat: engine.run(m.kod, alt) });
+  else if (m.typ === "stega") scope.postMessage({ typ: "resultat", id: m.id, resultat: engine.stega(m.kod, alt) });
   else scope.postMessage({ typ: "resultat", id: m.id, resultat: engine.kontrollera(m.kod, m.ratta as Ratta, alt) });
 };

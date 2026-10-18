@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import type { Block } from "../src/kurs-typer.ts";
-import type { Kontroll, KorResultat } from "../src/py/engine.ts";
+import type { Kontroll, KorResultat, StegResultat } from "../src/py/engine.ts";
 import { renderBlock, type KoerareLike, type Kontext } from "../src/ui/block.ts";
 import type { Editor, EditorFabrik } from "../src/ui/editor.ts";
 
@@ -18,6 +18,7 @@ const textEditor: EditorFabrik = (foralder, valj) => {
 class FakeKoerare implements KoerareLike {
   korSvar: KorResultat = { utdata: "5\n", fel: null };
   kontrollSvar: Kontroll = { ok: true, meddelanden: [], utdata: "", fel: null };
+  stegSvar: StegResultat = { steg: [{ rad: 1, variabler: [], utdata: "", funktion: null }, { rad: null, variabler: [["x", "1"]], utdata: "", funktion: null }], fel: null, avbruten: false };
   stoppad = 0;
   koerda: string[] = [];
   start = () => Promise.resolve();
@@ -30,6 +31,10 @@ class FakeKoerare implements KoerareLike {
     this.koerda.push(kod);
     v?.onUtdata?.(this.kontrollSvar.utdata);
     return this.kontrollSvar;
+  }
+  async stega(kod: string) {
+    this.koerda.push(`stega:${kod}`);
+    return this.stegSvar;
   }
   stoppaWorker() {
     this.stoppad += 1;
@@ -123,6 +128,31 @@ describe("exempel", () => {
     await tick();
     expect(r.textContent).toContain("Python kunde inte laddas");
     expect((r.querySelector("button") as HTMLButtonElement).disabled).toBe(false);
+  });
+});
+
+describe("stegvis", () => {
+  test("the button runs the code with tracing and shows the step view; Stäng removes it", async () => {
+    const r = renderBlock({ typ: "exempel", kod: "x = 1", stdin: [] }, ctx());
+    klicka(r, "Stegvis");
+    await tick();
+    expect(k.koerda).toEqual(["stega:x = 1"]);
+    expect(r.querySelector(".stegvisare")).not.toBeNull();
+    expect(r.querySelector(".stegstatus")?.textContent).toContain("Steg 1 av 2");
+    klicka(r, "Stäng");
+    expect(r.querySelector(".stegvisare")).toBeNull();
+    expect((r.querySelector("button.sekundar") as HTMLButtonElement | null)?.disabled).not.toBe(true);
+  });
+  test("a program that fails before any step shows the explained error instead", async () => {
+    k.stegSvar = { steg: [], fel: { typ: "SyntaxError", meddelande: "'(' was never closed", rad: 1 }, avbruten: false };
+    const r = renderBlock({ typ: "exempel", kod: "print(", stdin: [] }, ctx());
+    klicka(r, "Stegvis");
+    await tick();
+    expect(r.querySelector(".stegvisare")).toBeNull();
+    expect(r.querySelector(".fel-ruta")?.textContent).toContain("stängs aldrig");
+  });
+  test("exercises have it too", () => {
+    expect([...renderBlock(OVNING, ctx()).querySelectorAll("button")].some((b) => b.textContent?.includes("Stegvis"))).toBe(true);
   });
 });
 

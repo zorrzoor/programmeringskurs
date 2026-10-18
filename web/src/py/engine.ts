@@ -27,6 +27,23 @@ export interface KorResultat {
   fel: PyFel | null;
 }
 
+/** One step of the step-by-step view: the row about to run, the variables as they are now, and the output so far. */
+export interface Steg {
+  /** null for the last step: the program has ended and this is how it ended up. */
+  rad: number | null;
+  variabler: [string, string][];
+  utdata: string;
+  /** The function the row is in, or null at the top level. */
+  funktion: string | null;
+}
+
+export interface StegResultat {
+  steg: Steg[];
+  fel: PyFel | null;
+  /** The program took more steps than the limit: the first ones are shown. */
+  avbruten: boolean;
+}
+
 export interface Kontroll {
   ok: boolean;
   /** What to tell the learner. Empty when everything was right. */
@@ -57,6 +74,14 @@ export class PyEngine {
     };
     const svar = JSON.parse(this.fn("_kor")(kod, cb, alt.grans ?? 20000)) as { fel: PyFel | null };
     return { utdata, fel: svar.fel };
+  }
+
+  /** Runs the code while recording every row that is executed (at most `maxSteg`). */
+  stega(kod: string, alt: KorAlternativ & { maxSteg?: number } = {}): StegResultat {
+    const rader = [...(alt.stdin ?? [])];
+    this.py.setStdin({ stdin: () => (rader.length > 0 ? rader.shift() : alt.fragaEfter?.()) });
+    const cb = (s: string) => alt.onUtdata?.(s);
+    return JSON.parse(this.fn("_stega")(kod, cb, alt.grans ?? 20000, alt.maxSteg ?? 500)) as StegResultat;
   }
 
   /** Runs the code and rates it against the exercise's rule. */

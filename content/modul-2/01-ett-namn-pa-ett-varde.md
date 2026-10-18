@@ -14,6 +14,10 @@ print(pris)
 
 Det som skrivs ut är `20`, inte ordet `pris`. Datorn tittade efter vad `pris` står för, och skrev ut det.
 
+## Se vad som händer
+
+Tryck på **Stegvis** under exemplet. Då körs koden en rad i taget. Pilen visar vilken rad som körs härnäst, och tabellen visar vilka variabler som finns och vad de har för värde. Tryck på **Nästa** och titta på när `pris` dyker upp.
+
 ## Vad är en variabel?
 
 Raden `pris = 20` **skapar en variabel**. En variabel är ett **namn på ett värde**. Efter raden kan du skriva `pris` där du vill ha värdet 20.
