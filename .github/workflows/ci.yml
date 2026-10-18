@@ -1,14 +1,14 @@
 name: CI
 
-# Actions minutes are scarce: documentation-only PRs skip CI (the PR checks live in pr.yml). Everything runs
+# Actions minutes are scarce: documentation-only PRs skip CI (lessons under content/ are Markdown but are tested and published) (the PR checks live in pr.yml). Everything runs
 # in containers via make, the same way as locally. On main the image and the manifests are published, the
 # way the platform expects a tenant (k3s_hosting docs/tenants.md): image sha-<7>, manifests as an OCI artifact.
 on:
   pull_request:
-    paths-ignore: ["**.md", "docs/**"]
+    paths-ignore: ["docs/**", "*.md"]
   push:
     branches: [main]
-    paths-ignore: ["**.md", "docs/**"]
+    paths-ignore: ["docs/**", "*.md"]
 
 permissions:
   contents: read
