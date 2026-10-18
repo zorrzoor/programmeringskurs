@@ -41,6 +41,8 @@ export interface Lektion {
   mal: string;
   modul: number;
   nr: number;
+  /** Realistic time for a beginner, in minutes (a multiple of 5): calculated by the build, or `tid` in the front matter. */
+  minuter: number;
   block: Block[];
 }
 

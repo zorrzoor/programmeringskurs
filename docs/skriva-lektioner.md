@@ -125,3 +125,13 @@ text: |
 
 Följ ordningen i [kapitel 5](koncept.md#5-så-fungerar-en-lektion): mål, prova, förklaring, förutsäg, gör själv, sammanfattning.
 `mal` i front matter är målet i en mening ("Efter den här lektionen kan du …").
+
+## Tid
+
+Varje lektion får en tidsuppskattning ("ca 20 min") som visas i översikten och på lektionssidan; modulerna visar summan.
+Bygget räknar ut den för en nybörjare: text läses i 100 ord per minut (när allt är nytt), ett exempel tar 2 minuter att
+köra och ändra, en förutsägelse 1,5 minuter och en uppgift 6 minuter (med ledtrådar och ett andra försök). Summan avrundas
+uppåt till närmaste 5 minuter, och aldrig under 10.
+
+Vet du att en lektion tar längre eller kortare tid (efter en provkörning, #27), skriv `tid: 25` i front matter (minuter, 5–90).
+Ändra hellre uppskattningen i `uppskattaMinuter` om den är fel för alla lektioner.
