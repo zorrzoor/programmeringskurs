@@ -1,6 +1,6 @@
 ---
 titel: Kommentarer
-mal: Efter den här lektionen kan du skriva anteckningar i koden med # som datorn hoppar över.
+mal: "Efter den här lektionen kan du skriva anteckningar i koden med # som datorn hoppar över."
 ---
 
 ## Prova först

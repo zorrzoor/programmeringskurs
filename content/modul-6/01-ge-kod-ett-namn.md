@@ -1,0 +1,72 @@
+---
+titel: Ge kod ett namn
+mal: Efter den här lektionen kan du skapa en egen funktion och köra den när du vill.
+---
+
+## Prova först
+
+Kör koden. Notera att ingenting skrivs ut förrän funktionen anropas på de sista raderna.
+
+```python-exempel
+def halsa():
+    print("Hej!")
+    print("Välkommen.")
+
+halsa()
+halsa()
+```
+
+## Vad är en funktion?
+
+En **funktion** är en bit kod som du har gett ett **namn**. Du skriver den en gång med `def`, och kör den sedan så många gånger du vill genom att skriva namnet med parenteser: `halsa()`. Det kallas att **anropa** funktionen.
+
+- `def halsa():` är **definitionen**. Den slutar med kolon, och raderna som hör till är indragna.
+- Definitionen **gör ingenting** i sig. Den bara berättar för Python vad namnet betyder. Koden körs först när du anropar funktionen.
+- Funktionen du har använt hela tiden, `print(...)`, är också en funktion, som någon annan har skrivit åt dig.
+
+```ruta
+rubrik: Det här kan du från förut
+text: |
+  Det är som ett **makro** i Excel som du har döpt: du spelar in stegen en gång och kör dem sedan med ett namn. Eller som ett **namngivet område**: du skriver namnet i stället för att upprepa innehållet.
+```
+
+## Förutsäg
+
+```forutsag
+kod: |
+  def hej():
+      print("A")
+
+  print("B")
+  hej()
+  hej()
+alternativ: ["A, B", "B, A, A", "A, A, B", "B"]
+ratt: 1
+forklaring: "Definitionen skriver ingenting ut. Först körs print(B), sedan anropas hej() två gånger, och varje anrop skriver ut A."
+```
+
+## Din tur
+
+```ovning
+id: m6-funktion-skapa
+uppgift: "Skapa en funktion `tack` som skriver ut `Tack!`, och anropa den två gånger."
+start: |
+  # skriv din kod här
+ratta: {utdata: "Tack!\nTack!"}
+ledtradar:
+  - Du behöver en definition med def, och två anrop efteråt.
+  - Definitionen slutar med kolon, och print har indrag. Anropen har inget indrag.
+  - "def tack(): med print(\"Tack!\") indragen under, och sedan tack() två gånger på egna rader."
+facit: |
+  def tack():
+      print("Tack!")
+
+  tack()
+  tack()
+```
+
+## Det här lärde du dig
+
+- `def namn():` skapar en funktion, och `namn()` anropar den.
+- Raderna som hör till funktionen har indrag.
+- Funktionen körs först när den anropas, inte när den definieras.
