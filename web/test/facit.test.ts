@@ -67,7 +67,7 @@ describe("examples", () => {
       for (const b of l.block) {
         if (b.typ !== "exempel") continue;
         const kod = b.kod.trim();
-        const r = e.run(b.kod, { stdin: b.stdin, fragaEfter: () => (b.kod.includes("int(input") ? "30" : "Anna") });
+        const r = e.run(b.kod, { stdin: b.stdin, filer: b.filer, fragaEfter: () => (b.kod.includes("int(input") ? "30" : "Anna") });
         if (medFel.has(kod)) expect(r.fel, `${l.id}: ${kod} should give an error`).not.toBeNull();
         else expect(r.fel, `${l.id}: ${kod}`).toBeNull();
       }
