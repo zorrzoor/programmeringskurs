@@ -17,8 +17,9 @@ kod: |
   Rad 1: ta fram 7
   Rad 2: lägg till 5
 alternativ: ["5", "7", "12", "75"]
+kor: false
 ratt: 2
-forklaring: Först 7, sedan 7 + 5 = 12. Rad för rad, i den ordning de står.
+forklaring: "Först 7, sedan 7 + 5 = 12. Rad för rad, i den ordning de står."
 ```
 
 Det var ingen svår fråga, och det är poängen. En dator gör precis samma sak som kollegan: den läser en rad,
@@ -46,6 +47,7 @@ kod: |
   Du ber datorn: "Skriv ut mitt namn."
   Du har inte sagt vad ditt namn är.
 alternativ: ["Datorn kan ta reda på det", "Datorn skriver ut något ändå", "Datorn kan inte göra det, för den vet inte vad du heter"]
+kor: false
 ratt: 2
-forklaring: Datorn gissar aldrig. Allt den ska veta måste stå i instruktionerna.
+forklaring: "Datorn gissar aldrig. Allt den ska veta måste stå i instruktionerna."
 ```

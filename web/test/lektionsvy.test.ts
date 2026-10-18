@@ -127,7 +127,7 @@ describe("exempel", () => {
 });
 
 describe("forutsag", () => {
-  const FLER: Block = { typ: "forutsag", id: "f1", kod: "print(1+1)", stdin: [], alternativ: ["1", "2", "11"], ratt: 1, svar: "", forklaring: "Ett plus ett är två." };
+  const FLER: Block = { typ: "forutsag", id: "f1", kod: "print(1+1)", kor: true, stdin: [], alternativ: ["1", "2", "11"], ratt: 1, svar: "", forklaring: "Ett plus ett är två." };
   test("multiple choice: wrong first, then right marks it done", () => {
     const r = renderBlock(FLER, ctx());
     klicka(r, "Svara");
@@ -148,6 +148,10 @@ describe("forutsag", () => {
     (r.querySelector("#f1-svar") as HTMLInputElement).value = "  hej ";
     klicka(r, "Svara");
     expect(r.textContent).toContain("Rätt!");
+  });
+  test("pseudo-code has no run button", () => {
+    const r = renderBlock({ ...FLER, kor: false } as Block, ctx());
+    expect(r.textContent).not.toContain("Kör koden");
   });
   test("already done shows as done without saving again", () => {
     sparat.f1 = { klar: true };

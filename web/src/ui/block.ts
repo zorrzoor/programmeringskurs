@@ -131,11 +131,11 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
     if (b.alternativ.length > 0 && valt() < 0) return void (feedback.textContent = "Välj ett av alternativen först.");
     if (ratt()) {
       feedback.className = "meddelande ok";
-      feedback.textContent = "Rätt! Du kan köra koden nedan och se att det stämmer.";
+      feedback.textContent = b.kor ? "Rätt! Du kan köra koden nedan och se att det stämmer." : "Rätt!";
       markeraKlar(true);
     } else {
       feedback.className = "meddelande info";
-      feedback.textContent = "Inte riktigt. Kör koden nedan och se vad som händer, och gissa sedan igen.";
+      feedback.textContent = b.kor ? "Inte riktigt. Kör koden nedan och se vad som händer, och gissa sedan igen." : "Inte riktigt. Läs igen och försök en gång till.";
     }
   });
   const k = skapaKorning(ctx, b.stdin, ut);
@@ -146,7 +146,16 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
     });
   });
   const kod = h("pre", { class: "kod" }, h("code", {}, b.kod));
-  rot.append(h("h3", {}, "Förutsäg ", klarMarke), h("p", {}, "Läs koden och gissa innan du kör den."), kod, fraga, h("div", { class: "knappar" }, svara), feedback, forklaring, h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp), ut.rot);
+  rot.append(
+    h("h3", {}, "Förutsäg ", klarMarke),
+    h("p", {}, b.kor ? "Läs koden och gissa innan du kör den." : "Läs och gissa."),
+    kod,
+    fraga,
+    h("div", { class: "knappar" }, svara),
+    feedback,
+    forklaring,
+    ...(b.kor ? [h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp), ut.rot] : []),
+  );
   if (ctx.sparad(b.id)?.klar) markeraKlar(false);
   return rot;
 }
