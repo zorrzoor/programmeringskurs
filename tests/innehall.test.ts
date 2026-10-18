@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { ContentError, kontrolleraKurs, parseLektion, parseModul, uppskattaMinuter } from "../scripts/lib/innehall.ts";
+import { byggKurs } from "../scripts/build-content.ts";
+import { ContentError, kontrolleraKurs, lankaOrd, ordId, parseLektion, parseModul, parseOrdlista, uppskattaMinuter } from "../scripts/lib/innehall.ts";
 
 const FM = "---\ntitel: Testlektion\nmal: Du kan något.\n---\n";
 const parse = (body: string) => parseLektion(FM + body, "f.md", 2, 3, "test");
@@ -163,4 +164,49 @@ test("file names are checked", () => {
   fails("```fil\nnamn: ../x.csv\ninnehall: a\n```\n```python-exempel\nx\n```\n", /ogiltigt filnamn/, 6);
   fails("```fil\nnamn: a.csv\ninnehall: a\n```\n```fil\nnamn: a.csv\ninnehall: b\n```\n```python-exempel\nx\n```\n", /två gånger/);
   fails("```ovning\nid: t-a\nuppgift: u\nratta: {fil: a/b.txt, innehall: x}\nledtradar: [a, b, c]\nfacit: x\n```\n", /filnamn utan katalog/);
+});
+
+const ORD = parseOrdlista('- ord: variabel\n  former: [variabeln, variabler]\n  forklaring: Ett namn.\n- ord: f-sträng\n  forklaring: Text med klamrar.\n- ord: sträng\n  forklaring: Text.\n- ord: kod\n  forklaring: Instruktioner.\n', "ordlista.yml");
+
+test("the glossary is parsed, with ids without å ä ö", () => {
+  assert.deepEqual(ORD.map((o) => o.id), ["variabel", "f-strang", "strang", "kod"]);
+  assert.equal(ordId("Jämförelse"), "jamforelse");
+  assert.throws(() => parseOrdlista("- ord: kod\n  forklaring: a\n- ord: Kod\n  forklaring: b\n", "o.yml"), /finns redan/);
+  assert.throws(() => parseOrdlista("- ord: kod\n", "o.yml"), /forklaring/);
+});
+
+test("the first mention of a word is linked, but not in headings, code or existing links", () => {
+  const l = parse("## Variabler\n\nEn **variabel** är bra. Variabeln ändras. Se `kod` och [kod](#/lektion/x).\n\n```text\nkod\n```\n\nMer kod här, och en f-sträng och en sträng.\n\n```python-exempel\nx\n```\n");
+  lankaOrd(l, ORD);
+  const md = (l.block[0] as { markdown: string }).markdown;
+  assert.match(md, /^## Variabler/);
+  assert.match(md, /\*\*\[variabel\]\(#\/ordlista\/variabel\)\*\* är bra\. Variabeln ändras\./);
+  assert.match(md, /`kod` och \[kod\]\(#\/lektion\/x\)/);
+  assert.match(md, /```text\nkod\n```/);
+  assert.match(md, /Mer \[kod\]\(#\/ordlista\/kod\) här, och en \[f-sträng\]\(#\/ordlista\/f-strang\) och en \[sträng\]\(#\/ordlista\/strang\)\./);
+});
+
+test("a word is linked once for all the lessons that share the set", () => {
+  const delad = new Set<string>();
+  const a = parse("Variabel.\n```python-exempel\nx\n```\n");
+  const b = parse("Variabel igen.\n```python-exempel\nx\n```\n");
+  lankaOrd(a, ORD, delad);
+  lankaOrd(b, ORD, delad);
+  assert.match((a.block[0] as { markdown: string }).markdown, /ordlista\/variabel/);
+  assert.equal((b.block[0] as { markdown: string }).markdown, "Variabel igen.");
+});
+
+test("a link to a lesson or word that does not exist stops the build", () => {
+  const l = parse("Se [här](#/lektion/finns-inte).\n```python-exempel\nx\n```\n");
+  const m = { id: 2, titel: "t", beskrivning: "b", kopplas: "", lektioner: [l] };
+  assert.throws(() => kontrolleraKurs([m], ORD), /#\/lektion\/finns-inte leder ingenstans/);
+  const o = parse("Se [här](#/ordlista/saknas).\n```python-exempel\nx\n```\n");
+  assert.throws(() => kontrolleraKurs([{ ...m, lektioner: [o] }], ORD), /#\/ordlista\/saknas leder ingenstans/);
+});
+
+test("the real glossary has at least 40 words and every link in the course leads somewhere", () => {
+  const kurs = byggKurs();
+  assert.ok(kurs.ordlista.length >= 40, `${kurs.ordlista.length} ord`);
+  assert.ok(kurs.fastnat.length > 100);
+  kontrolleraKurs(kurs.moduler, kurs.ordlista);
 });

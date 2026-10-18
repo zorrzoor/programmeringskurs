@@ -93,6 +93,10 @@ h1:focus { outline: none; }
 .fil { margin: 1.5rem 0; }
 .fil figcaption { font-size: .9rem; font-weight: 600; margin-bottom: .25rem; }
 .fil pre { margin: 0; padding: .6rem 1rem; background: var(--ruta-bg); border-radius: .25rem; overflow-x: auto; }
+.meny { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .95rem; }
+dl.ordlista dt { font-weight: 700; margin-top: 1rem; }
+dl.ordlista dd { margin: .1rem 0 0; }
+dl.ordlista .markerad { background: var(--ruta-bg); border-left: 4px solid var(--accent); padding-left: .6rem; }
 .ruta h3 { margin-top: 0; font-size: 1rem; }
 pre.kod { background: var(--editor-bg); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .9rem; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 1rem; }
 code { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; font-size: .95em; }

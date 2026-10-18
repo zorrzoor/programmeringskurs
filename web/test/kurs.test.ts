@@ -6,6 +6,8 @@ import { lank, tolka } from "../src/router.ts";
 const ov = (id: string) => ({ typ: "ovning" as const, id, uppgift: "u", start: "", stdin: [], ratta: { typ: "utdata" as const, forvantat: "1", ignoreraVersaler: false }, ledtradar: ["a", "b", "c"] as [string, string, string], facit: "x" });
 const lek = (id: string, modul: number, nr: number, block: Lektion["block"]): Lektion => ({ id, titel: id, mal: "m", modul, nr, minuter: 15, block });
 const K: Kurs = {
+  ordlista: [],
+  fastnat: "",
   moduler: [
     { id: 0, titel: "A", beskrivning: "", kopplas: "", lektioner: [lek("m0-a", 0, 1, [{ typ: "text", markdown: "x" }, ov("o1")]), lek("m0-b", 0, 2, [ov("o2"), ov("o3")])] },
     { id: 1, titel: "B", beskrivning: "", kopplas: "", lektioner: [lek("m1-c", 1, 1, [ov("o4")])] },
@@ -50,6 +52,12 @@ describe("router", () => {
     expect(tolka("#/")).toEqual({ vy: "oversikt" });
     expect(tolka("#/lektion/m0-vad-gor-en-dator")).toEqual({ vy: "lektion", id: "m0-vad-gor-en-dator" });
     expect(tolka("#/lektion/../x")).toEqual({ vy: "oversikt" });
+    expect(tolka("#/ordlista")).toEqual({ vy: "ordlista" });
+    expect(tolka("#/ordlista/f-strang")).toEqual({ vy: "ordlista", id: "f-strang" });
+    expect(tolka("#/ordlista/../x")).toEqual({ vy: "oversikt" });
+    expect(tolka("#/fastnat")).toEqual({ vy: "fastnat" });
+    expect(lank({ vy: "ordlista", id: "kod" })).toBe("#/ordlista/kod");
+    expect(lank({ vy: "fastnat" })).toBe("#/fastnat");
     expect(tolka("#/lektion/<script>")).toEqual({ vy: "oversikt" });
     expect(lank({ vy: "lektion", id: "m0-a" })).toBe("#/lektion/m0-a");
     expect(lank({ vy: "oversikt" })).toBe("#/");

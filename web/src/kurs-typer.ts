@@ -63,6 +63,18 @@ export interface Modul {
   lektioner: Lektion[];
 }
 
+/** A glossary entry. The build links the first mention of `ord` (or one of `former`) in each lesson to it. */
+export interface Ord {
+  id: string;
+  ord: string;
+  /** Other spellings that link here (the definite form, the plural …). */
+  former: string[];
+  forklaring: string;
+}
+
 export interface Kurs {
   moduler: Modul[];
+  ordlista: Ord[];
+  /** Markdown of the "I'm stuck" page. */
+  fastnat: string;
 }
