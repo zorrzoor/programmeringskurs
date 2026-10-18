@@ -12,6 +12,21 @@ const port = Number(process.env.PORT ?? 8080);
 const store = new Store(process.env.DATABASE_PATH ?? "./data/kurs.db");
 const handler = createHandler({ store, webDir: process.env.WEB_DIR ?? "./web/dist" });
 
+// A consistent copy of the database every day (and at start), the newest 7 kept, next to the database on
+// the volume: protects against mistakes such as a removed name, not against loss of the disk itself.
+const backupDir = process.env.BACKUP_DIR ?? "";
+if (backupDir) {
+  const backup = () => {
+    try {
+      store.backup(backupDir, new Date().toISOString().slice(0, 10), Number(process.env.BACKUP_KEEP ?? 7));
+    } catch (err) {
+      log(`säkerhetskopian misslyckades: ${String(err)}`, "error");
+    }
+  };
+  backup();
+  setInterval(backup, 24 * 3600 * 1000).unref();
+}
+
 const certFile = process.env.TLS_CERT_FILE;
 const keyFile = process.env.TLS_KEY_FILE;
 const readTls = () => ({ cert: readFileSync(certFile ?? ""), key: readFileSync(keyFile ?? "") });

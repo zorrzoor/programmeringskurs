@@ -1,6 +1,6 @@
 // SQLite storage for names and progress. One file, opened once; every statement is prepared.
-import { mkdirSync } from "node:fs";
-import { dirname } from "node:path";
+import { mkdirSync, readdirSync, rmSync } from "node:fs";
+import { dirname, join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { MAX_NAMES, nameKey } from "./validate.ts";
 
@@ -44,6 +44,20 @@ export class Store {
 
   close(): void {
     this.db.close();
+  }
+
+  /**
+   * Writes a consistent copy of the whole database to dir/kurs-<stamp>.db (SQLite VACUUM INTO: safe while
+   * the server is running) and keeps only the newest `keep` copies. Returns the file written.
+   */
+  backup(dir: string, stamp: string, keep: number): string {
+    mkdirSync(dir, { recursive: true });
+    const file = join(dir, `kurs-${stamp}.db`);
+    rmSync(file, { force: true });
+    this.db.prepare("VACUUM INTO ?").run(file);
+    const old = readdirSync(dir).filter((f) => /^kurs-[\w-]+\.db$/.test(f)).sort().reverse().slice(keep);
+    for (const f of old) rmSync(join(dir, f), { force: true });
+    return file;
   }
 
   names(): string[] {
