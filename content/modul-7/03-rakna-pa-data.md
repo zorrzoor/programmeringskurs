@@ -3,6 +3,12 @@ titel: Räkna och filtrera
 mal: Efter den här lektionen kan du räkna ut summor och medelvärden från en fil, och välja ut de rader du vill ha.
 ---
 
+```ruta
+rubrik: Kort om CSV
+text: |
+  **CSV** (comma-separated values) är en tabell som textfil: en rad per rad i tabellen, med kolumnerna åtskilda av ett tecken (oftast komma) och rubrikerna på första raden. **Med Excel:** en CSV-fil öppnas i Excel som ett vanligt kalkylblad, och ett kalkylblad sparas som CSV med Arkiv, Spara som och filtypen CSV, så att data kan flyttas mellan program. **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader` och skriver dem med `csv.DictWriter`.
+```
+
 Samma fil som i förra lektionen följer med här.
 
 ```fil

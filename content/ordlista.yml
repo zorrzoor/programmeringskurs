@@ -149,3 +149,6 @@
 - ord: "None"
   former: []
   forklaring: "Värdet \"inget\". En funktion utan return ger None."
+- ord: "mängd"
+  former: ["mängden","mängder","set"]
+  forklaring: "Som en lista där varje värde bara kan finnas en gång. Skapas med set(lista) och tar bort dubbletter. Har ingen bestämd ordning."
