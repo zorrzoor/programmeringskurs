@@ -32,10 +32,9 @@ Därför står det 25 på slutet, inte 20. Det gamla värdet 20 försvann när d
 Det finns ett kortare sätt att skriva samma sak: `pris += 5`. Det betyder "lägg på 5 till pris". Det går lika bra med `-=`, `*=` och `/=`.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel kan du ha en cell som heter *pris* och skriva `=pris+5` i en annan cell. I Python skriver du det som ett
-  **kommando** och resultatet *läggs tillbaka* i pris. Det är därför det bara står 25 på slutet, och inte både 20 och 25.
+  I Excel kan en cell som heter *pris* användas i `=pris+5` i en annan cell. I Python skrivs det som ett **kommando** och resultatet *läggs tillbaka* i pris. Det är därför det bara står 25 på slutet, och inte både 20 och 25.
 ```
 
 ## Förutsäg

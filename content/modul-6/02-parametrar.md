@@ -26,9 +26,9 @@ När du anropar funktionen skickar du in ett värde: `halsa("Anna")`. Värdet du
 - Parametrarna finns bara **inne i** funktionen.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Det är som en formel i Excel där du anger vilka celler den ska räkna på: `=SUMMA(A1:A5)`. Områdena är argument, och formeln gör samma sak med dem varje gång.
+  I Excel anger en formel som `=SUMMA(A1:A5)` vilka celler den ska räkna på. Områdena är argument, och formeln gör samma sak med dem varje gång.
 ```
 
 ## Förutsäg

@@ -31,22 +31,22 @@ for i in range(5):
 Här hoppas varvet där `i` är 2 över, så talet 2 skrivs aldrig ut.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Det är som att filtrera: med `continue` hoppar du över rader som inte uppfyller ett villkor, och med `break` slutar du leta när du har hittat det du söker.
+  Det liknar ett filter i Excel: med `continue` hoppas rader över som inte uppfyller ett villkor, och med `break` slutar loopen leta när det som söks är hittat.
 ```
 
 ## Förutsäg
 
 ```forutsag
 kod: |
-  for i in range(5):
-      if i == 2:
-          continue
-      print(i)
-alternativ: ["0, 1, 2, 3, 4", "0, 1, 3, 4", "0, 1", "3, 4"]
-ratt: 1
-forklaring: "När i är 2 hoppar continue över print, så 2 saknas. Alla andra varv skrivs ut."
+  for t in [5, 8, 12, 3]:
+      if t > 10:
+          break
+      print(t)
+alternativ: ["5, 8", "5, 8, 3", "5, 8, 12", "12"]
+ratt: 0
+forklaring: "Loopen går igenom 5 och 8 och skriver ut dem. Vid 12 körs break, så loopen slutar helt och 3 aldrig kommer med."
 ```
 
 ## Din tur

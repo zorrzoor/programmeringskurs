@@ -33,9 +33,9 @@ Fördelarna är tydliga:
 Hur delar du upp ett problem? Fråga dig: *vilka små steg skulle jag göra för hand?* Varje steg som går att namnge blir en funktion.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Du gör det när du bygger en stor beräkning i Excel av flera celler som refererar till varandra, i stället för en enda lång formel. Varje cell är en liten, namngiven del. I Python är varje funktion en sådan del.
+  I Excel byggs en stor beräkning ofta av flera celler som refererar till varandra, i stället för en enda lång formel. Varje cell är en liten, namngiven del. I Python är varje funktion en sådan del.
 ```
 
 ## Förutsäg

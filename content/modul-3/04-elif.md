@@ -26,9 +26,9 @@ else:
 Därför spelar **ordningen** roll: lägg det mest specifika (högsta betyget) först.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel gör du samma sak med flera `OM` inuti varandra, vilket blir rörigt. `elif` är ett renare sätt att skriva en kedja av val. Prova **Stegvis** och se att Python slutar leta när ett villkor har stämt.
+  I Excel går flera `OM` att lägga inuti varandra, vilket blir rörigt. `elif` är ett renare sätt att skriva en kedja av val. Prova **Stegvis** och se att Python slutar leta när ett villkor har stämt.
 ```
 
 ## Förutsäg

@@ -25,9 +25,9 @@ En **funktion** är en bit kod som du har gett ett **namn**. Du skriver den en g
 - Funktionen du har använt hela tiden, `print(...)`, är också en funktion, som någon annan har skrivit åt dig.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Det är som ett **makro** i Excel som du har döpt: du spelar in stegen en gång och kör dem sedan med ett namn. Eller som ett **namngivet område**: du skriver namnet i stället för att upprepa innehållet.
+  Ett **makro** i Excel som har fått ett namn är samma idé: stegen spelas in en gång och körs sedan med namnet. Ett **namngivet område** fungerar också så: namnet skrivs i stället för att innehållet upprepas.
 ```
 
 ## Förutsäg

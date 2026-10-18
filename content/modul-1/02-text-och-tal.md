@@ -24,10 +24,9 @@ Första och andra raden ser likadana ut, men tredje och fjärde är olika. Varf�
 Texten `"7"` och talet `7` ser likadana ut på skärmen, men Python behandlar dem olika. Det märks när man försöker räkna med dem.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel finns samma skillnad: ett tal i en cell kan du räkna med, medan ett tal som står som text (ofta vänsterjusterat
-  med en liten grön triangel) inte går att summera. I Python är det citattecknen som avgör.
+  I Excel är skillnaden mellan tal och text synlig: ett tal kan summeras med `SUMMA`, medan ett tal som står som text (ofta vänsterjusterat med en liten grön triangel) inte räknas med. I Python är det citattecknen som avgör.
 ```
 
 ## Förutsäg

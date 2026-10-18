@@ -47,11 +47,9 @@ forklaring: "Först 3 × 20 = 60, sedan 60 + 10 = 70. Två små, exakta steg i r
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel delar du också upp stora uträkningar i små: en cell för summan av varorna och en annan som lägger på
-  frakten. Du refererar till den första cellen i den andra. Ett program gör samma sak, fast med namn i stället för
-  cellnummer. Det får du se i modul 2.
+  I Excel kan en uträkning delas upp i små: en cell för summan av varorna och en annan som lägger på frakten och refererar till den första med cellnummer. Ett program gör samma sak, fast med namn i stället för cellnummer. Det får du se i modul 2.
 ```
 
 ## Det här lärde du dig

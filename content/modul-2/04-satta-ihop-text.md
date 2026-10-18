@@ -24,10 +24,9 @@ En **f-sträng** är en text med ett `f` framför första citattecknet. Inuti te
 Det går också att sätta ihop med `+`, men då måste talen göras om till text först. F-strängar är enklare.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel sätter du ihop text och celler med `&`: `=A1&" är "&B1&" år."`. En f-sträng gör samma sak, men du skriver
-  variabelnamnen mitt i texten i stället.
+  I Excel sätts text och celler ihop med `&`: `=A1&" är "&B1&" år."`. En f-sträng gör samma sak, men variabelnamnen skrivs mitt i texten.
 ```
 
 ## Förutsäg

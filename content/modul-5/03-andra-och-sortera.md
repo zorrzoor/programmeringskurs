@@ -24,9 +24,9 @@ print("Anna" in namn)
 - `x in lista` svarar `True` eller `False` på om `x` finns i listan.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel sorterar du en kolumn med ett klick, och söker efter ett värde med `=LETARAD()` eller bara genom att titta. `sorted` och `in` är samma sak: du sorterar och söker i en lista med kod.
+  I Excel sorteras en kolumn med ett klick, och ett värde kan letas upp med `=LETARAD()`. `sorted` och `in` gör samma sak i kod: sorterar och söker i en lista.
 ```
 
 ## Förutsäg

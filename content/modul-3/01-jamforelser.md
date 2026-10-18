@@ -25,10 +25,9 @@ Svaren är `True` (sant) eller `False` (falskt). Python har ställt en ja/nej-fr
 Notera **två** likhetstecken när du jämför. Ett enda `=` betyder "spara i" (du känner igen det från variabler). Blandar du ihop dem får du ett fel eller ett oväntat resultat.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel skriver du `=A1>B1` och får SANT eller FALSKT. I Python skriver du samma jämförelse och får `True` eller `False`.
-  Det är samma sorts svar, och det är det som `if` använder för att välja väg i nästa lektion.
+  I Excel ger `=A1>B1` svaret SANT eller FALSKT. I Python ger samma jämförelse `True` eller `False`. Det är samma sorts svar, och det är det som `if` använder för att välja väg i nästa lektion.
 ```
 
 ## Förutsäg

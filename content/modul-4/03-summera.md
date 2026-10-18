@@ -9,7 +9,7 @@ Kör koden, och tryck sedan på **Stegvis** och gå fram med **Nästa**. Titta p
 
 ```python-exempel
 total = 0
-for i in range(1, 6):
+for i in range(1, 5):
     total = total + i
 print(total)
 ```
@@ -27,9 +27,9 @@ Det här är ett av de vanligaste mönstren i programmering. Det har tre delar:
 Du känner igen raden `total = total + i` från modul 2: ta det gamla värdet, lägg till något, lägg tillbaka.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel skriver du `=SUMMA(A1:A5)` för att lägga ihop en kolumn. I Python bygger du summan själv, ett tal i taget. Det låter omständligt, men fungerar på allt du kan upprepa, inte bara tal i celler.
+  I Excel läggs en kolumn ihop med `=SUMMA(A1:A5)`. I Python byggs summan upp ett tal i taget. Det låter omständligt, men fungerar på allt som går att upprepa, inte bara tal i celler.
 ```
 
 ## Förutsäg

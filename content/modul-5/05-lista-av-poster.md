@@ -32,9 +32,9 @@ print(total / len(personer))
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Det här är ett kalkylblad: en rad för varje post och en kolumn för varje nyckel. Skillnaden är att du får gå igenom raderna själv, men då kan du också göra saker som är svåra i Excel, till exempel att blanda olika regler.
+  Det här liknar ett kalkylblad: en rad för varje post och en kolumn för varje nyckel. Skillnaden är att raderna går igenom i en loop, vilket också gör sådant möjligt som är svårt i Excel, till exempel att blanda olika regler.
 ```
 
 ## Förutsäg

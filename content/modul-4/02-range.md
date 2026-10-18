@@ -8,7 +8,7 @@ mal: Efter den här lektionen kan du bestämma var range börjar, var den slutar
 Kör koden. Ändra talen och kör igen.
 
 ```python-exempel
-for i in range(1, 6):
+for i in range(3, 8):
     print(i)
 ```
 
@@ -26,9 +26,9 @@ for i in range(0, 10, 2):
 Slutvärdet ingår aldrig. Det är det vanligaste misstaget: vill du ha talen 1 till 5 skriver du `range(1, 6)`.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Tänk på en serie i Excel: du anger starten, steget och var det slutar. `range` gör samma sak, med skillnaden att slutet inte ingår.
+  I Excel kan en serie fyllas med start, steg och slutvärde. `range` gör samma sak, med skillnaden att slutet inte ingår.
 ```
 
 ## Förutsäg

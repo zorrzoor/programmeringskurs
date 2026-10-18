@@ -25,9 +25,9 @@ Ett **uppslag** (på engelska *dict*, från dictionary) sparar värden under **n
 - Slår du upp en nyckel som inte finns får du ett `KeyError`.
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Ett uppslag är som **en rad** i en tabell, där kolumnrubrikerna är nycklarna: namn, ålder, stad. Eller som `=LETARAD()` i Excel: du letar upp ett värde utifrån en nyckel.
+  Ett uppslag liknar **en rad** i en tabell, där kolumnrubrikerna är nycklarna: namn, ålder, stad. Det liknar också `=LETARAD()` i Excel: ett värde slås upp utifrån en nyckel.
 ```
 
 ## Förutsäg

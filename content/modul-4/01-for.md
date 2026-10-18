@@ -26,20 +26,20 @@ for i in range(3):
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel skriver du en formel i en cell och drar i hörnet för att **fylla nedåt**. En loop är samma idé: du skriver instruktionen en gång och datorn upprepar den. Prova **Stegvis** och se `i` ändras för varje varv.
+  I Excel kan en formel kopieras nedåt genom att dra i hörnet på cellen (fyll nedåt). En loop är samma idé: instruktionen skrivs en gång och datorn upprepar den. Prova **Stegvis** och se `i` ändras för varje varv.
 ```
 
 ## Förutsäg
 
 ```forutsag
 kod: |
-  for i in range(3):
-      print(i)
-alternativ: ["1, 2, 3", "0, 1, 2", "0, 1, 2, 3", "3, 3, 3"]
+  for i in range(4):
+      print(i * 2)
+alternativ: ["2, 4, 6, 8", "0, 2, 4, 6", "0, 2, 4", "0, 1, 2, 3"]
 ratt: 1
-forklaring: "range(3) ger talen 0, 1 och 2: tre varv, och räkningen börjar på noll."
+forklaring: "range(4) ger i värdena 0, 1, 2 och 3: fyra varv, och räkningen börjar på noll. Varje varv skrivs i * 2 ut: 0, 2, 4 och 6."
 ```
 
 ## Din tur

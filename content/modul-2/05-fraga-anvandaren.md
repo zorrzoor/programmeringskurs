@@ -26,10 +26,9 @@ print(f"Nästa år fyller du {alder + 1}.")
 ```
 
 ```ruta
-rubrik: Det här kan du från förut
+rubrik: Du kanske känner igen det från Excel
 text: |
-  Tänk på en ruta i ett formulär eller en dialogruta i Excel där någon fyller i ett värde. `input` är samma sak: programmet
-  stannar, väntar på svar, och går sedan vidare med det som skrevs.
+  I Excel finns dialogrutor och formulär där någon fyller i ett värde. `input` fungerar på samma sätt: programmet stannar, väntar på svar och går sedan vidare med det som skrevs.
 ```
 
 ## Förutsäg
