@@ -34,4 +34,25 @@ $RUNTIME rm -f $NAME >/dev/null
 start
 curl -fs "$url/api/namn/R%C3%B6k/framsteg" | grep -q '"klar":true'
 [[ $($RUNTIME exec $NAME id -u) == 1000 ]]
+
+# TLS, as the cluster runs it (certificate and key mounted from a secret). Needs the openssl command.
+if command -v openssl >/dev/null; then
+    $RUNTIME rm -f $NAME >/dev/null
+    TLS=$(mktemp -d)
+    trap '$RUNTIME rm -f $NAME >/dev/null 2>&1 || true; rm -rf "$DATA" "$TLS"' EXIT
+    openssl req -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -nodes -days 1 -subj /CN=localhost \
+        -keyout "$TLS/tls.key" -out "$TLS/tls.crt" 2>/dev/null
+    chmod 0755 "$TLS"
+    chmod 0644 "$TLS"/*
+    $RUNTIME run -d --name $NAME --read-only --tmpfs /tmp --cap-drop ALL --user 1000:1000 -v "$DATA:/data" \
+        -v "$TLS:/tls:ro" -e TLS_CERT_FILE=/tls/tls.crt -e TLS_KEY_FILE=/tls/tls.key -p "127.0.0.1:$port:8080" "$IMAGE" >/dev/null
+    for _ in $(seq 1 50); do
+        curl -fsk "https://127.0.0.1:$port/api/halsa" >/dev/null 2>&1 && break
+        sleep 0.2
+    done
+    curl -fsk "https://127.0.0.1:$port/api/namn/R%C3%B6k/framsteg" | grep -q '"klar":true'
+    echo "smoke: TLS ok"
+else
+    echo "smoke: openssl not found, TLS not tested"
+fi
 echo "smoke: ok"

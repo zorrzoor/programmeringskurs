@@ -39,6 +39,15 @@ typecheck: deps ## TypeScript type check
 lint: typecheck test ## Type check, tests and the repo checks
 	scripts/check-repo.sh
 
+# The shared EE (zorrzoor/ee) has kubectl and kubeconform. Until its package is readable from here, build it
+# locally from the ee repo (make ee) and use EE_IMAGE=localhost/ee:latest.
+EE_IMAGE ?= localhost/ee:latest
+
+.PHONY: validate
+validate: ## Validate deploy/ (kustomize + kubeconform) in the shared EE
+	$(RUNTIME) run --rm --userns=keep-id --user "$$(id -u):$$(id -g)" -e HOME=/tmp -v "$(CURDIR):/work:Z" -w /work \
+		$(EE_IMAGE) scripts/validate-deploy.sh
+
 .PHONY: dev
 dev: ## Run the server on http://localhost:$(PORT) with a throwaway database (Ctrl-C to stop)
 	$(RUNTIME) run --rm -it --userns=keep-id --user "$$(id -u):$$(id -g)" -e HOME=/tmp -e PORT=8080 \

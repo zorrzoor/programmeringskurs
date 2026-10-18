@@ -1,0 +1,11 @@
+# The SQLite database with names and progress. Small: a few hundred kB per person.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: kurs-data
+spec:
+  accessModes: [ReadWriteOnce]
+  storageClassName: local-path-sata
+  resources:
+    requests:
+      storage: 1Gi
