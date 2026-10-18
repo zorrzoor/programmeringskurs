@@ -152,3 +152,12 @@
 - ord: "mängd"
   former: ["mängden","mängder","set"]
   forklaring: "Som en lista där varje värde bara kan finnas en gång. Skapas med set(lista) och tar bort dubbletter. Har ingen bestämd ordning."
+- ord: "reguljärt uttryck"
+  former: ["reguljära uttryck","regex"]
+  forklaring: "Ett mönster som beskriver hur text ska se ut, till exempel en följd av siffror. Används för att söka och byta ut text."
+- ord: "slumptal"
+  former: ["slumptalet","slumptalen"]
+  forklaring: "Ett tal som väljs på måfå. Datorn räknar ut tal som ser slumpmässiga ut, och med ett startvärde (seed) blir de samma varje gång."
+- ord: "Counter"
+  former: []
+  forklaring: "Ett färdigt verktyg som räknar hur många gånger varje värde förekommer i en lista."

@@ -219,6 +219,7 @@ Ungefär 38 lektioner. Varje modul slutar med en liten sammanfattning och en bla
 | 7 | Data och filer | Läsa en CSV-fil; summera per grupp; filtrera; skriva resultat; ett enkelt diagram; topplistor; CSV från svensk Excel; skriva CSV | Kalkylblad, pivottabell | 4 h 5 min (beräknad) |
 | 8 | Databaser med SQL (valfri) | Tabeller; `SELECT` och `WHERE`; `ORDER BY`; `GROUP BY`; `JOIN` | Databasprogram, frågor | 2 h 20 min (beräknad, valfri) |
 | 9 | Egna projekt | Välj ett av tre: hushållsbudget, frågesport, rapport från en CSV-fil; steg-för-steg-guide och förslag på förbättringar | Allt | 2 h 35 min för alla tre (ca 1 h 5 min för ett), beräknad |
+| 10 | Fler verktyg (valfri) | Räkna förekomster (`Counter`); arbeta med text; datum och tid; slumptal; enkla textmönster (`re`) | Textfunktioner, datumfunktioner | 3 h (beräknad, valfri) |
 
 Under hela kursen finns **felsökning** som ett återkommande tema ("läs felet, titta i stegvisaren, förenkla"), och en
 **ordlista** som växer.
