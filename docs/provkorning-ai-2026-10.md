@@ -19,26 +19,26 @@ riktig nybörjare (#27), inte en ersättning: en modell kan missa det som bara e
 
 | Fel | Var | Status |
 |---|---|---|
-| Texten säger 15, men `range(1, 5)` ger 10 | m4-summera | rättas |
-| "tre rader" ska vara två rader i ett svarsalternativ | m1-print, fråga 1 | rättas |
-| Oavgjort mellan Lund och Umeå, bara Lund godkänns | m5-gruppera-poster, övning 2 | rättas |
-| Funktion och `return` krävs i modul 5, före modul 6 | m5-gruppera-poster, m5-unika-varden, m5-delar-av-en-lista | rättas |
-| Villkorsuttryck (`x if c else y`) som inte lärts ut | m5-gruppera-poster, fråga 1 | rättas |
-| Stavfel "ganger", "små:" (saknar ord) | m2-andra-en-variabel, m0-recept-och-instruktioner | rättas |
-| Knapplistan saknar Stegvis | m0-sa-fungerar-kursen | rättas |
-| Variabel (`frakt = 0`) används före modul 2 | m1-kommentarer | rättas |
-| Tidsangivelser för långa/korta lektioner | m0–1 (för höga), m5-gruppera-poster och projekten (för låga) | justeras |
+| Texten säger 15, men `range(1, 5)` ger 10 | m4-summera | åtgärdat |
+| "tre rader" ska vara två rader i ett svarsalternativ | m1-print, fråga 1 | åtgärdat |
+| Oavgjort mellan Lund och Umeå, bara Lund godkänns | m5-gruppera-poster, övning 2 | åtgärdat |
+| Funktion och `return` krävs i modul 5, före modul 6 | m5-gruppera-poster, m5-unika-varden, m5-delar-av-en-lista | åtgärdat |
+| Villkorsuttryck (`x if c else y`) som inte lärts ut | m5-gruppera-poster, fråga 1 | åtgärdat |
+| Stavfel "ganger", "små:" (saknar ord) | m2-andra-en-variabel, m0-recept-och-instruktioner | åtgärdat |
+| Knapplistan saknar Stegvis | m0-sa-fungerar-kursen | åtgärdat |
+| Variabel (`frakt = 0`) används före modul 2 | m1-kommentarer | åtgärdat |
+| Tidsangivelser för långa/korta lektioner | m0–1 (för höga), m5-gruppera-poster och projekten (för låga) | åtgärdat |
 
 ## Förslag som kräver ett beslut eller mer arbete (egna ärenden)
 
 1. **Rättningen är för petig för små saker** (en saknad avslutande punkt, komma mot punkt, skiftläge) och säger inte alltid
    exakt vad som skiljer. Samtidigt godkänns hårdkodad utskrift där uppgiften säger "med en uträkning".
-2. **Två felmeddelanden ger fel råd:** `print(namn = "Anna")` ("menade du `==`?") och text plus tal från `input()` (föreslå `int()`, inte `str()`).
+2. ~~**Två felmeddelanden ger fel råd:**~~ åtgärdat: `print(namn = "Anna")` föreslår nu `==`, och text plus tal nämner `int()` för svar från `input()`.
 3. **Förväntad utskrift ska visas i kodstil** i uppgiftstexten, så att en punkt i slutet av meningen inte förväxlas med utskriften.
 4. **Excelfällor där Excelvana leder fel:** `=` och `<>` mot `==` och `!=`, `^` mot `**`, var `{ }` finns på tangentbordet, hur man gör indrag.
 5. **`int(input(...))`** (ett anrop inuti ett annat) förklaras inte i m2-fraga-anvandaren.
 6. **Projektet (m9):** steg 3 säger inte att `budget` är ett uppslag, och fel från testanrop visas som rå engelsk TypeError. Stegen bör sättas ihop till ett helt program.
-7. **Variabelnamn med å, ä, ö:** lektionen säger att de går bra men övningarna kräver `alder`, `poang`, `storst`. Välj en linje.
+7. ~~**Variabelnamn med å, ä, ö**~~ åtgärdat: lektionen säger nu att övningarna skriver namnen utan å, ä, ö så att rättningen hittar dem.
 8. **CSV från svensk Excel** sparas ibland i Windows-1252 (`encoding="cp1252"`), vilket lektionen inte nämner.
 9. Kontrollera i en riktig webbläsare att felrutan syns under *exempel* som ger fel (verktyget visade ingen utdata alls för dem).
 

@@ -20,6 +20,8 @@ describe("forklaraFel", () => {
     [fel("TypeError", "dubbla() takes 1 positional argument but 2 were given"), /`dubbla` vill ha 1/],
     [fel("TypeError", "'str' object is not callable"), /Du försöker använda/],
     [fel("TypeError", "bad operand type for unary -: 'str'"), /Typerna/],
+    [fel("TypeError", "'namn' is an invalid keyword argument for print()"), /==/],
+    [fel("TypeError", "print() got an unexpected keyword argument 'namn'"), /`namn = …`/],
     [fel("ZeroDivisionError", "division by zero"), /noll/],
     [fel("ValueError", "invalid literal for int() with base 10: 'abc'"), /`abc`/],
     [fel("ValueError", "could not convert string to float: 'x,5'"), /`x,5`/],

@@ -214,11 +214,11 @@ Ungefär 38 lektioner. Varje modul slutar med en liten sammanfattning och en bla
 | 2 | Variabler | Ett namn på ett värde; ändra en variabel; tal och text; sätta ihop text (`f"..."`); fråga användaren (`input`) | Namngivna celler | 1 h 40 min (beräknad) |
 | 3 | Val: om och annars | Ja/nej-frågor (jämförelser); `if`; `else`; `elif`; och/eller/inte | `OM()`, filter | 2 h 15 min (beräknad) |
 | 4 | Upprepning | `for`; `range`; summera i en loop; `while`; att avbryta | Fyll nedåt, `SUMMA()` | 2 h (beräknad) |
-| 5 | Listor och uppslag | Listor; gå igenom en lista; ändra och sortera; uppslag (`dict`); lista av poster; unika värden (`set`); delar av en lista; gruppera poster | Kolumn, rad i en tabell | 3 h 20 min (beräknad) |
+| 5 | Listor och uppslag | Listor; gå igenom en lista; ändra och sortera; uppslag (`dict`); lista av poster; unika värden (`set`); delar av en lista; gruppera poster | Kolumn, rad i en tabell | 3 h 40 min (beräknad) |
 | 6 | Funktioner | Ge kod ett namn; parametrar; `return`; dela upp ett problem; egna små bibliotek | Makron, namngivna formler | 2 h (beräknad) |
 | 7 | Data och filer | Läsa en CSV-fil; summera per grupp; filtrera; skriva resultat; ett enkelt diagram; topplistor; CSV från svensk Excel; skriva CSV | Kalkylblad, pivottabell | 4 h 5 min (beräknad) |
 | 8 | Databaser med SQL (valfri) | Tabeller; `SELECT` och `WHERE`; `ORDER BY`; `GROUP BY`; `JOIN` | Databasprogram, frågor | 2 h 20 min (beräknad, valfri) |
-| 9 | Egna projekt | Välj ett av tre: hushållsbudget, frågesport, rapport från en CSV-fil; steg-för-steg-guide och förslag på förbättringar | Allt | 2 h 35 min för alla tre (ca 1 h 5 min för ett), beräknad |
+| 9 | Egna projekt | Välj ett av tre: hushållsbudget, frågesport, rapport från en CSV-fil; steg-för-steg-guide och förslag på förbättringar | Allt | 3 h 20 min för alla tre (ca 1 h 10 min för ett), beräknad |
 | 10 | Fler verktyg (valfri) | Räkna förekomster (`Counter`); arbeta med text; datum och tid; slumptal; enkla textmönster (`re`) | Textfunktioner, datumfunktioner | 3 h (beräknad, valfri) |
 
 Under hela kursen finns **felsökning** som ett återkommande tema ("läs felet, titta i stegvisaren, förenkla"), och en

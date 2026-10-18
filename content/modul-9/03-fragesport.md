@@ -1,7 +1,7 @@
 ---
 titel: "Projekt: frågesport"
 mal: "Efter den här lektionen har du byggt en frågesport som ställer frågor, rättar svar och räknar poäng."
-tid: 45
+tid: 60
 ---
 
 Du bygger en frågesport som ställer frågor, tar emot svar och räknar poäng. Frågorna är en lista med uppslag. Svaren från den som spelar kommer genom `input()`, och i övningarna får programmet färdiga svar så att rättningen vet vad som ska hända.

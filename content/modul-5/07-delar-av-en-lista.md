@@ -78,18 +78,18 @@ facit: |
 ```
 
 ```ovning
-id: m5-delar-funktion
-uppgift: "Skriv en funktion `tre_minsta(lista)` som returnerar de tre minsta talen i listan som en lista, minst först."
+id: m5-delar-minsta
+uppgift: "Listan `tal` finns redan. Skriv ut de tre minsta talen som en lista, minst först."
 start: |
-  # skriv din funktion här
-ratta: {"funktion": "tre_minsta", "tester": [{"in": [[9, 4, 7, 1, 8, 6]], "ut": [1, 4, 6]}, {"in": [[5, 3]], "ut": [3, 5]}, {"in": [[2, 2, 2, 2]], "ut": [2, 2, 2]}]}
+  tal = [9, 4, 7, 1, 8, 6]
+ratta: {"utdata": "[1, 4, 6]"}
 ledtradar:
   - "Sortera stigande, och ta de första tre."
-  - "sorted(lista) sorterar stigande, och [:3] tar de tre första."
-  - "return sorted(lista)[:3]"
+  - "sorted(tal) sorterar stigande, och [:3] tar de tre första."
+  - "print(sorted(tal)[:3])"
 facit: |
-  def tre_minsta(lista):
-      return sorted(lista)[:3]
+  tal = [9, 4, 7, 1, 8, 6]
+  print(sorted(tal)[:3])
 ```
 
 ## Det här lärde du dig
