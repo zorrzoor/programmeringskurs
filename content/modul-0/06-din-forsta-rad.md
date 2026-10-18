@@ -17,8 +17,6 @@ Datorn läser uppifrån och ned och gör en rad i taget. Det är precis som i re
 
 Ändra ordningen på raderna och kör igen. Skrivs raderna ut i den nya ordningen?
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print("A")

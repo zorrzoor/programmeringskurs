@@ -38,8 +38,6 @@ print(frakt)
 
 Kommentaren `# sätter frakt till 0` hade inte tillfört något. Kommentaren ovan berättar *anledningen*, och den kan du inte läsa ut ur koden.
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print("A")

@@ -36,8 +36,6 @@ text: |
   Det liknar ett filter i Excel: med `continue` hoppas rader över som inte uppfyller ett villkor, och med `break` slutar loopen leta när det som söks är hittat.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   for t in [5, 8, 12, 3]:

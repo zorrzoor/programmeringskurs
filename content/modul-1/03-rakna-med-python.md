@@ -39,8 +39,6 @@ text: |
   I Excel ger `=2+3*4` talet 14 och `=(2+3)*4` talet 20. Python följer samma räkneregler som Excel och en miniräknare.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print(10 - 2 * 3)

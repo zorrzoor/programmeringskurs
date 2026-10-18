@@ -30,8 +30,6 @@ text: |
   En receptrad som "rör tills smeten är slät" säger inte hur många gånger du ska röra, bara när du ska sluta. `while` är samma sak: upprepa tills villkoret inte längre stämmer.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   n = 10

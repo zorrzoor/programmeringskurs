@@ -31,8 +31,6 @@ text: |
   I Excel kan en serie fyllas med start, steg och slutvärde. `range` gör samma sak, med skillnaden att slutet inte ingår.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   for i in range(1, 4):

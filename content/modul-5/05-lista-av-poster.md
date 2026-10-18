@@ -37,8 +37,6 @@ text: |
   Det här liknar ett kalkylblad: en rad för varje post och en kolumn för varje nyckel. Skillnaden är att raderna går igenom i en loop, vilket också gör sådant möjligt som är svårt i Excel, till exempel att blanda olika regler.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   varor = [{"namn": "kaffe", "pris": 30}, {"namn": "te", "pris": 25}]

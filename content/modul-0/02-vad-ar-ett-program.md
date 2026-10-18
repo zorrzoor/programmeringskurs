@@ -14,7 +14,7 @@ Så här kokar du ett ägg:
 
 Det är ett **program**: en lista med instruktioner som görs en i taget, i en bestämd ordning.
 
-Vad händer om du blandar ordningen? Gissa först.
+Vad händer om du blandar ordningen?
 
 ```forutsag
 kod: |

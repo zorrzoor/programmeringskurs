@@ -28,8 +28,6 @@ text: |
   I Excel visar `="Hej"` texten Hej i en cell. `print` visar på samma sätt en text, men på skärmen i stället för i en cell.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print("Kaffe")

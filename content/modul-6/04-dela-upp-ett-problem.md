@@ -38,8 +38,6 @@ text: |
   I Excel byggs en stor beräkning ofta av flera celler som refererar till varandra, i stället för en enda lång formel. Varje cell är en liten, namngiven del. I Python är varje funktion en sådan del.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   def dubbla(x):

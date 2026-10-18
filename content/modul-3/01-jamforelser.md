@@ -30,8 +30,6 @@ text: |
   I Excel ger `=A1>B1` svaret SANT eller FALSKT. I Python ger samma jämförelse `True` eller `False`. Det är samma sorts svar, och det är det som `if` använder för att välja väg i nästa lektion.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print(10 > 3)

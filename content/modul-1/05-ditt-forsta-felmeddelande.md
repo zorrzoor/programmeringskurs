@@ -39,8 +39,6 @@ print("Hej"
 
 Parentesen som öppnas stängs aldrig.
 
-## Förutsäg
-
 ```forutsag
 kod: |
   Print("Hej")
