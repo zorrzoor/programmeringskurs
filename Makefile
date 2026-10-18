@@ -8,6 +8,8 @@ RUNTIME ?= podman
 # Same base as the Dockerfile (Dependabot watches the Dockerfile; `make lint` checks that they agree).
 NODE_IMAGE := $(shell sed -n 's/^FROM \(docker.io\/library\/node:[^ ]*\).*/\1/p' Dockerfile | head -1)
 PORT ?= 8080
+# Same version as @playwright/test in package.json (Dependabot keeps both; the browser must match the library).
+PLAYWRIGHT_IMAGE := mcr.microsoft.com/playwright:v1.64.1-noble@sha256:7852dc5a7d72f5fe458a597d690f6c42fbc8e9e26ddfa95f8e6ef552558d9bbf
 
 NODE_RUN = $(RUNTIME) run --rm -i --userns=keep-id --user "$$(id -u):$$(id -g)" \
 	-e HOME=/tmp -e npm_config_cache=/tmp/npm -v "$(CURDIR):/work:Z" -w /work $(NODE_EXTRA) $(NODE_IMAGE)
@@ -55,6 +57,10 @@ validate: ## Validate deploy/ (kustomize + kubeconform) in the shared EE
 .PHONY: build
 build: deps ## Build the site into web/dist
 	$(NODE_RUN) npm run build
+
+.PHONY: browser-test
+browser-test: deps image ## Browser tests (Playwright) against the image; pulls a ~2 GB image that is removed afterwards
+	RUNTIME=$(RUNTIME) scripts/browser-test.sh
 
 .PHONY: dev
 dev: build ## Run the server on http://localhost:$(PORT) with a throwaway database (Ctrl-C to stop)

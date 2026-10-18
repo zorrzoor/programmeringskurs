@@ -6,3 +6,5 @@ __pycache__/
 .venv/
 web/src/generated/
 web/public/pyodide/
+test-results/
+playwright-report/
