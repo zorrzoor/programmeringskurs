@@ -51,15 +51,16 @@ text: |
   Ett recept säger "vispa", inte "gör något gott". Ett program är samma sak: en lista med exakta steg som datorn följer i tur och ordning. Ett makro i Excel är ett exempel på ett sådant program.
 ```
 
-Prova själv: vad saknas i den här instruktionen?
+Prova själv: vad händer med den här instruktionen?
 
 ```forutsag
 kod: |
-  Du ber datorn: "Visa de största kunderna först."
-alternativ: ["Ingenting, datorn förstår vad som menas", "En exakt regel för vad som räknas som störst (omsättning? antal köp?)", "En snabbare dator", "Fler kunder"]
+  Du ber datorn:
+  "Visa de största kunderna först."
+alternativ: ["Datorn gissar vad störst betyder och visar kunderna", "Ingenting händer, datorn förstår inte vad som menas med störst", "Datorn visar kunderna i bokstavsordning", "Datorn frågar vilken kund du menar"]
 kor: false
 ratt: 1
-forklaring: "Datorn kan inte gissa vad störst betyder. Allt den ska veta måste stå i instruktionerna, och att formulera dem exakt är kärnan i programmering."
+forklaring: "Datorn kan inte gissa vad störst betyder: störst omsättning, flest köp eller något annat? Allt den ska veta måste stå i instruktionerna, och att formulera dem exakt är kärnan i programmering."
 ```
 
 ## Vad kommer härnäst?
