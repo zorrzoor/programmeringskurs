@@ -1,0 +1,40 @@
+import { describe, expect, test } from "vitest";
+import { jamforUtdata, jamforVariabel, normalisera } from "../src/py/rattning.ts";
+
+describe("normalisera", () => {
+  test("trailing spaces, line endings and blank lines at the end do not count", () => {
+    expect(normalisera("a  \r\nb\n\n\n", false)).toEqual(["a", "b"]);
+    expect(normalisera("", false)).toEqual([]);
+  });
+  test("capitals can be ignored", () => {
+    expect(normalisera("Hej Åsa", true)).toEqual(["hej åsa"]);
+  });
+});
+
+describe("jamforUtdata", () => {
+  test("equal output gives no messages", () => {
+    expect(jamforUtdata("26000\n", "26000", false)).toEqual([]);
+    expect(jamforUtdata("Hej", "hej", true)).toEqual([]);
+  });
+  test("nothing printed", () => {
+    expect(jamforUtdata("", "5", false)[0]).toContain("inte ut något");
+  });
+  test("a wrong line is pointed out", () => {
+    expect(jamforUtdata("5\n", "6", false)).toEqual(["På rad 1 av utskriften skrev du `5`, men vi ville ha `6`."]);
+  });
+  test("too many and too few lines", () => {
+    expect(jamforUtdata("1\n2\n3", "1\n2", false)).toEqual(["Du skrev ut 3 rader, men vi väntade oss 2.", "Du har en extra rad i slutet: `3`."]);
+    expect(jamforUtdata("1", "1\n2", false)).toEqual(["Du skrev ut 1 rad, men vi väntade oss 2.", "Det saknar en rad i slutet: vi ville ha `2`."]);
+  });
+  test("blank lines are shown in words", () => {
+    expect(jamforUtdata("a\n\nb", "a\nb", false)[1]).toContain("(en tom rad)");
+  });
+});
+
+describe("jamforVariabel", () => {
+  test("missing, wrong and right", () => {
+    expect(jamforVariabel("lon", { finns: false, lika: false, faktisk: "" }, 1)[0]).toContain("finns inte");
+    expect(jamforVariabel("lon", { finns: true, lika: false, faktisk: "25000" }, 26000)).toEqual(["`lon` har värdet `25000`, men det ska vara `26000`."]);
+    expect(jamforVariabel("lon", { finns: true, lika: true, faktisk: "26000" }, 26000)).toEqual([]);
+  });
+});
