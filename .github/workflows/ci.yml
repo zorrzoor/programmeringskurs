@@ -1,0 +1,28 @@
+name: CI
+
+# Actions minutes are scarce: documentation-only PRs skip CI (the PR checks live in pr.yml). Everything runs
+# in containers via make, the same way as locally.
+on:
+  pull_request:
+    paths-ignore: ["**.md", "docs/**"]
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", "docs/**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: make lint
+      - name: Build the image and smoke-test it as the cluster runs it
+        run: |
+          make image
+          scripts/smoke-image.sh
