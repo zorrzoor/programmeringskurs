@@ -1,0 +1,3 @@
+titel: Databaser och SQL
+beskrivning: Valfri modul. Du frågar tabeller med SQL, inifrån Python, som en brygga från databasprogram till kod.
+kopplas: Databasprogram och frågor

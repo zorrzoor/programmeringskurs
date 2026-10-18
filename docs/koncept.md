@@ -217,7 +217,7 @@ Ungefär 38 lektioner. Varje modul slutar med en liten sammanfattning och en bla
 | 5 | Listor och uppslag | Listor; gå igenom en lista; ändra och sortera; uppslag (`dict`); lista av poster | Kolumn, rad i en tabell | 2 h 5 min (beräknad) |
 | 6 | Funktioner | Ge kod ett namn; parametrar; `return`; dela upp ett problem; egna små bibliotek | Makron, namngivna formler | 2 h (beräknad) |
 | 7 | Data och filer | Läsa en CSV-fil; summera per grupp; filtrera; skriva resultat; ett enkelt diagram | Kalkylblad, pivottabell | 2 h 30 min (beräknad) |
-| 8 | Databaser med SQL (valfri) | Tabeller; `SELECT` och `WHERE`; `ORDER BY`; `GROUP BY`; `JOIN` | Databasprogram, frågor | ca 2 h (valfri) |
+| 8 | Databaser med SQL (valfri) | Tabeller; `SELECT` och `WHERE`; `ORDER BY`; `GROUP BY`; `JOIN` | Databasprogram, frågor | 2 h 20 min (beräknad, valfri) |
 | 9 | Egna projekt | Välj ett av tre: hushållsbudget, frågesport, rapport från en CSV-fil; steg-för-steg-guide och förslag på förbättringar | Allt | ca 3–4 h |
 
 Under hela kursen finns **felsökning** som ett återkommande tema ("läs felet, titta i stegvisaren, förenkla"), och en
