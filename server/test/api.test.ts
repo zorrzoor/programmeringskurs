@@ -36,6 +36,8 @@ before(async () => {
   mkdirSync(join(dir, "web", "assets"), { recursive: true });
   writeFileSync(join(dir, "web", "index.html"), "<h1>Kurs</h1>");
   writeFileSync(join(dir, "web", "assets", "app-0123456789ab.js"), "console.log(1)");
+  writeFileSync(join(dir, "web", "assets", "index-D7mG7dK_.js"), "console.log(2)");
+  writeFileSync(join(dir, "web", "assets", "vendor-component.js"), "console.log(3)");
   writeFileSync(join(dir, "secret.txt"), "not served");
   server = start(":memory:");
   base = await listen(server);
@@ -201,6 +203,11 @@ describe("static files and headers", () => {
     const r = await call("GET", "/assets/app-0123456789ab.js");
     assert.equal(r.headers.get("content-type"), "text/javascript; charset=utf-8");
     assert.match(r.headers.get("cache-control") ?? "", /immutable/);
+  });
+
+  test("Vite-style hashed names are immutable, plain names are not", async () => {
+    assert.match((await call("GET", "/assets/index-D7mG7dK_.js")).headers.get("cache-control") ?? "", /immutable/);
+    assert.equal((await call("GET", "/assets/vendor-component.js")).headers.get("cache-control"), "no-cache");
   });
 
   test("unknown paths without extension get the start page, missing files are 404", async () => {

@@ -20,6 +20,10 @@ node_modules/.installed: package.json package-lock.json
 	$(NODE_RUN) npm ci --no-audit --no-fund
 	touch $@
 
+.PHONY: npm
+npm: ## Run npm in the container, e.g. make npm ARGS="install --save-exact -D vitest"
+	$(NODE_RUN) npm $(ARGS)
+
 .PHONY: deps
 deps: node_modules/.installed ## Install the locked npm dependencies (in a container)
 
@@ -48,10 +52,14 @@ validate: ## Validate deploy/ (kustomize + kubeconform) in the shared EE
 	$(RUNTIME) run --rm --userns=keep-id --user "$$(id -u):$$(id -g)" -e HOME=/tmp -v "$(CURDIR):/work:Z" -w /work \
 		$(EE_IMAGE) scripts/validate-deploy.sh
 
+.PHONY: build
+build: deps ## Build the site into web/dist
+	$(NODE_RUN) npm run build
+
 .PHONY: dev
-dev: ## Run the server on http://localhost:$(PORT) with a throwaway database (Ctrl-C to stop)
+dev: build ## Run the server on http://localhost:$(PORT) with a throwaway database (Ctrl-C to stop)
 	$(RUNTIME) run --rm -it --userns=keep-id --user "$$(id -u):$$(id -g)" -e HOME=/tmp -e PORT=8080 \
-		-e DATABASE_PATH=/tmp/dev/kurs.db -e WEB_DIR=/work/web/public \
+		-e DATABASE_PATH=/tmp/dev/kurs.db -e WEB_DIR=/work/web/dist \
 		-p 127.0.0.1:$(PORT):8080 -v "$(CURDIR):/work:Z" -w /work $(NODE_IMAGE) node server/main.ts
 
 .PHONY: image

@@ -197,7 +197,8 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
       info = await stat(file).catch(() => null);
     }
     if (!info?.isFile()) throw new HttpError(404, "saknas", "Sidan finns inte.");
-    const hashed = /[.-][0-9a-f]{8,}\./.test(file);
+    // Content-hashed file names (Vite: index-D7mG7dK_.js, or 12 hex digits) never change: cache them for a year.
+    const hashed = /-(?=[A-Za-z0-9_-]*[0-9A-Z])[A-Za-z0-9_-]{8,}\.(?:js|mjs|css|wasm|woff2|png|svg)$/.test(file) || /[.-][0-9a-f]{12}\.[a-z0-9]+$/.test(file);
     res.writeHead(200, {
       ...SECURITY_HEADERS,
       "content-type": TYPES[extname(file)] ?? "application/octet-stream",
