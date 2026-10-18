@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kurs
+spec:
+  replicas: 1
+  # One node, one replica, one SQLite file: stop the old pod before the new one starts.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: kurs
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: kurs
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+        - name: ghcr-pull
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: kurs
+          image: ghcr.io/zorrzoor/programmeringskurs
+          env:
+            - name: PORT
+              value: "8443"
+            - name: TLS_CERT_FILE
+              value: /tls/tls.crt
+            - name: TLS_KEY_FILE
+              value: /tls/tls.key
+          ports:
+            - name: https
+              containerPort: 8443
+          # Probes over HTTPS (kubelet does not verify the certificate).
+          startupProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /api/halsa
+              port: https
+            periodSeconds: 2
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /api/halsa
+              port: https
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              scheme: HTTPS
+              path: /api/halsa
+              port: https
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 48Mi
+            limits:
+              memory: 128Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tls
+              mountPath: /tls
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: kurs-data
+        - name: tls
+          secret:
+            secretName: kurs-tls
+        - name: tmp
+          emptyDir:
+            sizeLimit: 16Mi

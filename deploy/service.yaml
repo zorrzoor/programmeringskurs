@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kurs
+  annotations:
+    # Traefik -> pod over HTTPS, verified by the ServersTransport (<namespace>-<name>@kubernetescrd).
+    traefik.ingress.kubernetes.io/service.serversscheme: https
+    traefik.ingress.kubernetes.io/service.serverstransport: programmeringskurs-kurs@kubernetescrd
+spec:
+  selector:
+    app.kubernetes.io/name: kurs
+  ports:
+    - name: https
+      port: 443
+      targetPort: https

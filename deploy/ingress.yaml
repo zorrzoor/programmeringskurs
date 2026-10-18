@@ -1,0 +1,23 @@
+# The hostname is chosen here and approved by the platform (namespace allowed-hosts + Terraform, with the
+# decision on Cloudflare Access: the app has no password, see docs/koncept.md chapter 11). Public TLS comes from
+# Traefik's wildcard certificate.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kurs
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: kurs.feuerliden.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kurs
+                port:
+                  name: https

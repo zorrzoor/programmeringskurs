@@ -1,13 +1,38 @@
 // Starts the course server: static files from WEB_DIR, SQLite at DATABASE_PATH, port PORT.
-import { createServer } from "node:http";
+// With TLS_CERT_FILE and TLS_KEY_FILE it serves HTTPS (the cluster requires TLS all the way to the pod,
+// certificate from the internal CA); without them plain HTTP, for local development.
+import { readFileSync } from "node:fs";
+import { createServer as createHttpServer } from "node:http";
+import { createServer as createHttpsServer, Server as HttpsServer } from "node:https";
 import { createHandler } from "./app.ts";
 import { Store } from "./db.ts";
 
+const log = (meddelande: string, level = "info") => console.log(JSON.stringify({ level, meddelande }));
 const port = Number(process.env.PORT ?? 8080);
 const store = new Store(process.env.DATABASE_PATH ?? "./data/kurs.db");
-const server = createServer(createHandler({ store, webDir: process.env.WEB_DIR ?? "./web/dist" }));
+const handler = createHandler({ store, webDir: process.env.WEB_DIR ?? "./web/dist" });
+
+const certFile = process.env.TLS_CERT_FILE;
+const keyFile = process.env.TLS_KEY_FILE;
+const readTls = () => ({ cert: readFileSync(certFile ?? ""), key: readFileSync(keyFile ?? "") });
+const server = certFile && keyFile ? createHttpsServer(readTls(), handler) : createHttpServer(handler);
 server.requestTimeout = 15_000;
-server.listen(port, "0.0.0.0", () => console.log(JSON.stringify({ level: "info", meddelande: `lyssnar på ${port}` })));
+
+// cert-manager renews the certificate in the mounted secret; pick it up without a restart.
+if (server instanceof HttpsServer) {
+  setInterval(
+    () => {
+      try {
+        server.setSecureContext(readTls());
+      } catch (err) {
+        log(`kunde inte läsa om certifikatet: ${String(err)}`, "error");
+      }
+    },
+    12 * 3600 * 1000,
+  ).unref();
+}
+
+server.listen(port, "0.0.0.0", () => log(`lyssnar på ${port}${certFile ? " (TLS)" : ""}`));
 
 // Kubernetes sends SIGTERM: finish running requests, then close the database cleanly.
 for (const signal of ["SIGTERM", "SIGINT"] as const) {

@@ -1,7 +1,8 @@
 name: CI
 
 # Actions minutes are scarce: documentation-only PRs skip CI (the PR checks live in pr.yml). Everything runs
-# in containers via make, the same way as locally.
+# in containers via make, the same way as locally. On main the image and the manifests are published, the
+# way the platform expects a tenant (k3s_hosting docs/tenants.md): image sha-<7>, manifests as an OCI artifact.
 on:
   pull_request:
     paths-ignore: ["**.md", "docs/**"]
@@ -19,10 +20,66 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-24.04
+    env:
+      KUBECTL_VERSION: 1.37.0 # same as k3s in the cluster
+      KUBECTL_SHA256: 6129359f4e1f3848a5572ccb0b26cf28b8ca08cef38c95a765b2f64a2c961a2f
+      KUBECONFORM_VERSION: 0.8.0
+      KUBECONFORM_SHA256: 9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - run: make lint
+      - name: Install kubectl and kubeconform (checksums verified)
+        run: |
+          bin="$RUNNER_TEMP/bin"
+          mkdir -p "$bin"
+          curl -fsSL -o "$bin/kubectl" "https://dl.k8s.io/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+          echo "${KUBECTL_SHA256}  $bin/kubectl" | sha256sum -c -
+          chmod +x "$bin/kubectl"
+          curl -fsSL -o "$RUNNER_TEMP/kubeconform.tgz" \
+            "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+          echo "${KUBECONFORM_SHA256}  $RUNNER_TEMP/kubeconform.tgz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/kubeconform.tgz" -C "$bin" kubeconform
+          echo "$bin" >>"$GITHUB_PATH"
+      - name: Validate deploy/
+        run: scripts/validate-deploy.sh
       - name: Build the image and smoke-test it as the cluster runs it
         run: |
           make image
           scripts/smoke-image.sh
+
+  # After a merge: publish the image, then deploy/ as an OCI artifact pinned to that image. The cluster follows
+  # the tag main; rollback = point the platform at an older sha-<7>.
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: check
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: fluxcd/flux2/action@b9c17924adb533d3617ec7de97a7b0f4acc07b39 # v2.9.6
+        with:
+          version: 2.9.5
+      - name: Log in to GHCR
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: echo "$TOKEN" | podman login ghcr.io -u "${{ github.actor }}" --password-stdin
+      - name: Build and push the image
+        run: |
+          image="ghcr.io/${GITHUB_REPOSITORY,,}:sha-${GITHUB_SHA::7}"
+          podman build -t "$image" .
+          podman push "$image"
+      - name: Pin the image and push the manifests
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="sha-${GITHUB_SHA::7}"
+          artifact="oci://ghcr.io/${GITHUB_REPOSITORY,,}-manifests"
+          sed -i "s/^    newTag: .*/    newTag: ${tag}/" deploy/kustomization.yaml
+          grep -q "newTag: ${tag}" deploy/kustomization.yaml
+          flux push artifact "${artifact}:${tag}" --path=deploy \
+            --source="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
+            --revision="${GITHUB_REF_NAME}@sha1:${GITHUB_SHA}" \
+            --creds="${GITHUB_ACTOR}:${GH_TOKEN}"
+          flux tag artifact "${artifact}:${tag}" --tag main --creds="${GITHUB_ACTOR}:${GH_TOKEN}"

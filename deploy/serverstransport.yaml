@@ -1,0 +1,9 @@
+# Traefik verifies the pod certificate: issued by the internal CA, for the Service name.
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: kurs
+spec:
+  serverName: kurs.programmeringskurs.svc
+  rootCAs:
+    - configMap: internal-ca # published in every namespace by the platform (trust-manager)
