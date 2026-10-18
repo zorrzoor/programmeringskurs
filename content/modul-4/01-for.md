@@ -31,8 +31,6 @@ text: |
   I Excel kan en formel kopieras nedåt genom att dra i hörnet på cellen (fyll nedåt). En loop är samma idé: instruktionen skrivs en gång och datorn upprepar den. Prova **Stegvis** och se `i` ändras för varje varv.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   for i in range(4):

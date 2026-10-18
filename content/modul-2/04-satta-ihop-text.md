@@ -29,8 +29,6 @@ text: |
   I Excel sätts text och celler ihop med `&`: `=A1&" är "&B1&" år."`. En f-sträng gör samma sak, men variabelnamnen skrivs mitt i texten.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   pris = 20

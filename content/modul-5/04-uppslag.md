@@ -30,8 +30,6 @@ text: |
   Ett uppslag liknar **en rad** i en tabell, där kolumnrubrikerna är nycklarna: namn, ålder, stad. Det liknar också `=LETARAD()` i Excel: ett värde slås upp utifrån en nyckel.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   pris = {"kaffe": 30, "te": 25}

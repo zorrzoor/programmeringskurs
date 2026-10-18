@@ -35,8 +35,6 @@ print(a + a)
 print(b + b)
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   a = "Hej"

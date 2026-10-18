@@ -37,8 +37,6 @@ text: |
   I Excel kan en cell som heter *pris* användas i `=pris+5` i en annan cell. I Python skrivs det som ett **kommando** och resultatet *läggs tillbaka* i pris. Det är därför det bara står 25 på slutet, och inte både 20 och 25.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   a = 3

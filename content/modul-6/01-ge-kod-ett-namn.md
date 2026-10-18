@@ -30,8 +30,6 @@ text: |
   Ett **makro** i Excel som har fått ett namn är samma idé: stegen spelas in en gång och körs sedan med namnet. Ett **namngivet område** fungerar också så: namnet skrivs i stället för att innehållet upprepas.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   def hej():

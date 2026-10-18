@@ -32,8 +32,6 @@ text: |
   I Excel kan en cell få ett namn, till exempel *pris*, och användas som `=pris*2` i en annan cell. En variabel i Python är samma idé: ett värde med ett namn. Skillnaden är att den skapas med en rad kod.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   tal = 4

@@ -31,8 +31,6 @@ text: |
   I Excel finns dialogrutor och formulär där någon fyller i ett värde. `input` fungerar på samma sätt: programmet stannar, väntar på svar och går sedan vidare med det som skrevs.
 ```
 
-## Förutsäg
-
 Anta att någon svarar `5`.
 
 ```forutsag

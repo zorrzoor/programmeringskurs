@@ -29,8 +29,6 @@ text: |
   En lista liknar en **kolumn** i Excel: flera värden under varandra. Skillnaden är att platserna numreras från 0, inte från 1, och att hela kolumnen har ett namn.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   farger = ["röd", "grön", "blå"]

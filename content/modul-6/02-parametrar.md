@@ -31,8 +31,6 @@ text: |
   I Excel anger en formel som `=SUMMA(A1:A5)` vilka celler den ska räkna på. Områdena är argument, och formeln gör samma sak med dem varje gång.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   def visa(pris, antal):

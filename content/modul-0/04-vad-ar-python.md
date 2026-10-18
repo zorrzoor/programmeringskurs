@@ -27,8 +27,6 @@ I koden ovan finns tre delar:
 
 Kommandot `print` är ett engelskt ord, men Python är inte engelska. Det är ett språk med några hundra ord som du lär dig ett i taget. I den här kursen förklarar vi varje ord första gången det dyker upp.
 
-## Förutsäg och prova
-
 ```forutsag
 kod: |
   print("Hej, Anna!")

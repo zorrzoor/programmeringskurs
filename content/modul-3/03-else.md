@@ -27,8 +27,6 @@ text: |
   Funktionen `=OM(test; om sant; om falskt)` i Excel är hela if/else. Första delen efter OM motsvarar `if`, och den tredje delen motsvarar `else`.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   x = 4

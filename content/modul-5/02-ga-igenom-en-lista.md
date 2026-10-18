@@ -33,8 +33,6 @@ text: |
   I Excel kan samma sak göras med varje cell i en kolumn, till exempel summeras med `=SUMMA(A1:A3)`. I Python byggs summan upp i en loop, och vad som helst kan göras med varje värde.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   tal = [1, 2, 3]

@@ -32,8 +32,6 @@ text: |
   I Excel läggs en kolumn ihop med `=SUMMA(A1:A5)`. I Python byggs summan upp ett tal i taget. Det låter omständligt, men fungerar på allt som går att upprepa, inte bara tal i celler.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   total = 0

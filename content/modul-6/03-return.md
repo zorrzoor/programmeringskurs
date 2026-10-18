@@ -30,8 +30,6 @@ text: |
   En formel i Excel, som `=SUMMA(A1:A5)`, ger ett **svar** som kan användas i en annan formel. En funktion med `return` fungerar likadant. En funktion som bara skriver ut liknar mer ett makro som visar något.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   def plus_ett(x):

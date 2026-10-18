@@ -29,8 +29,6 @@ text: |
   I Excel är skillnaden mellan tal och text synlig: ett tal kan summeras med `SUMMA`, medan ett tal som står som text (ofta vänsterjusterat med en liten grön triangel) inte räknas med. I Python är det citattecknen som avgör.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print("2" + "3")

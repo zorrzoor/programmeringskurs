@@ -55,7 +55,7 @@ print(pris)
 
 Behöver programmet svar på `input()`, ge dem på första raden: `# stdin: Anna | 7` (skilda av ` | `).
 
-### `forutsag`: gissa innan man kör
+### `forutsag`: en fråga innan man kör (visas som "Fråga")
 
 Fyra skrivsätt, välj ett av de två: **flervalsfråga** (`alternativ` + `ratt`, numret från 0) eller **fritt svar** (`svar`).
 Efter svaret får deltagaren köra koden och jämföra. `forklaring` visas efteråt. `id` är valfritt (annars `<lektion>-f<n>`).

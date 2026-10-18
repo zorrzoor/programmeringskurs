@@ -29,8 +29,6 @@ text: |
   I Excel sorteras en kolumn med ett klick, och ett värde kan letas upp med `=LETARAD()`. `sorted` och `in` gör samma sak i kod: sorterar och söker i en lista.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   tal = [3, 1, 2]

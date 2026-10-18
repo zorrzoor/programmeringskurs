@@ -31,8 +31,6 @@ text: |
   I Excel går flera `OM` att lägga inuti varandra, vilket blir rörigt. `elif` är ett renare sätt att skriva en kedja av val. Prova **Stegvis** och se att Python slutar leta när ett villkor har stämt.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   poang = 85

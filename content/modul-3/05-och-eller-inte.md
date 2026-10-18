@@ -30,8 +30,6 @@ text: |
   I Excel finns funktionerna `OCH()`, `ELLER()` och `INTE()`. De fungerar likadant: de får några villkor och ger tillbaka SANT eller FALSKT.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   print(True and False)

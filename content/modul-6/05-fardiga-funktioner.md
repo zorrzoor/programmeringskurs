@@ -41,8 +41,6 @@ text: |
   `SUMMA`, `MAX` och `AVRUNDA` i Excel är färdiga funktioner: någon har gjort dem åt dig. Moduler liknar de tillägg i Excel som slås på för särskilda uppgifter.
 ```
 
-## Förutsäg
-
 ```forutsag
 kod: |
   tal = [3, 9, 1]

@@ -179,8 +179,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
   });
   const kod = h("pre", { class: "kod" }, h("code", {}, b.kod));
   rot.append(
-    h("h3", {}, "Förutsäg ", klarMarke),
-    h("p", {}, b.kor ? "Läs koden och gissa innan du kör den." : "Läs och gissa."),
+    h("h3", {}, "Fråga ", klarMarke),
     kod,
     fraga,
     h("div", { class: "knappar" }, svara),
