@@ -219,6 +219,18 @@ describe("static files and headers", () => {
     assert.equal(r.headers.get("cache-control"), "no-cache");
   });
 
+  test("files have an ETag and answer 304 when unchanged; every page is cross-origin isolated", async () => {
+    const r = await call("GET", "/");
+    const etag = r.headers.get("etag") ?? "";
+    assert.match(etag, /^W\/"[0-9a-f]+-[0-9a-f]+"$/);
+    assert.equal(r.headers.get("cross-origin-embedder-policy"), "require-corp");
+    assert.equal(r.headers.get("cross-origin-opener-policy"), "same-origin");
+    const again = await fetch(base + "/", { headers: { "if-none-match": etag } });
+    assert.equal(again.status, 304);
+    assert.equal(await again.text(), "");
+    assert.equal((await fetch(base + "/", { headers: { "if-none-match": 'W/"0-0"' } })).status, 200);
+  });
+
   test("hashed assets are cached for a long time", async () => {
     const r = await call("GET", "/assets/app-0123456789ab.js");
     assert.equal(r.headers.get("content-type"), "text/javascript; charset=utf-8");

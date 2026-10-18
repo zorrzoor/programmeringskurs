@@ -33,6 +33,8 @@ const SECURITY_HEADERS = {
   "referrer-policy": "no-referrer",
   "permissions-policy": "camera=(), microphone=(), geolocation=()",
   "cross-origin-opener-policy": "same-origin",
+  // With COOP this makes the page cross-origin isolated: SharedArrayBuffer (input() in the Python worker) needs it.
+  "cross-origin-embedder-policy": "require-corp",
 };
 
 export interface Options {
@@ -198,12 +200,20 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     }
     if (!info?.isFile()) throw new HttpError(404, "saknas", "Sidan finns inte.");
     // Content-hashed file names (Vite: index-D7mG7dK_.js, or 12 hex digits) never change: cache them for a year.
+    // Validators for the rest (Pyodide's files are big): the browser asks, the server answers 304 when unchanged.
+    const etag = `W/"${info.size.toString(16)}-${Math.floor(info.mtimeMs).toString(16)}"`;
+    if (req.headers["if-none-match"] === etag) {
+      res.writeHead(304, { ...SECURITY_HEADERS, etag, "cache-control": "no-cache" });
+      res.end();
+      return "static";
+    }
     const hashed = /-(?=[A-Za-z0-9_-]*[0-9A-Z])[A-Za-z0-9_-]{8,}\.(?:js|mjs|css|wasm|woff2|png|svg)$/.test(file) || /[.-][0-9a-f]{12}\.[a-z0-9]+$/.test(file);
     res.writeHead(200, {
       ...SECURITY_HEADERS,
       "content-type": TYPES[extname(file)] ?? "application/octet-stream",
       "content-length": info.size,
       "cache-control": hashed ? "public, max-age=31536000, immutable" : "no-cache",
+      ...(hashed ? {} : { etag }),
     });
     if (req.method === "HEAD") res.end();
     else createReadStream(file).pipe(res);
