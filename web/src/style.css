@@ -90,6 +90,9 @@ h1:focus { outline: none; }
 .block h3 { margin: 0 0 .5rem; font-size: 1.15rem; }
 .text h2, .text h3 { margin: 1.5rem 0 .5rem; }
 .ruta { background: var(--ruta-bg); border-left: 4px solid var(--accent); padding: .6rem 1rem; margin: 1.5rem 0; border-radius: .25rem; }
+.fil { margin: 1.5rem 0; }
+.fil figcaption { font-size: .9rem; font-weight: 600; margin-bottom: .25rem; }
+.fil pre { margin: 0; padding: .6rem 1rem; background: var(--ruta-bg); border-radius: .25rem; overflow-x: auto; }
 .ruta h3 { margin-top: 0; font-size: 1rem; }
 pre.kod { background: var(--editor-bg); border: 1px solid var(--border); border-radius: .5rem; padding: .7rem .9rem; overflow-x: auto; font-size: 1rem; }
 code { font-family: ui-monospace, "Cascadia Code", Menlo, Consolas, monospace; font-size: .95em; }

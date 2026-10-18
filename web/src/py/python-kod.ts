@@ -2,7 +2,26 @@
 // streamed to a callback, describes an error as plain data, and answers the three kinds of checks. Comparing and
 // the Swedish wording are done in TypeScript (rattning.ts, felmeddelanden.ts), so that they can be tested without it.
 export const PYTHON_KOD = `
-import sys, json, math, builtins
+import sys, json, math, builtins, os, shutil
+
+_ARBETE = "/tmp/kurs"
+
+def _satt_filer(filer_json):
+    # A fresh working directory for every run: the lesson's files and nothing left over from earlier runs.
+    os.chdir("/tmp")
+    shutil.rmtree(_ARBETE, ignore_errors=True)
+    os.makedirs(_ARBETE, exist_ok=True)
+    os.chdir(_ARBETE)
+    for namn, innehall in json.loads(filer_json).items():
+        with open(os.path.join(_ARBETE, namn), "w", encoding="utf-8", newline="") as f:
+            f.write(innehall)
+
+def _las_fil(namn):
+    try:
+        with open(os.path.join(_ARBETE, namn), encoding="utf-8", newline="") as f:
+            return json.dumps({"finns": True, "text": f.read()})
+    except OSError:
+        return json.dumps({"finns": False, "text": ""})
 
 class _ForMycket(Exception):
     pass

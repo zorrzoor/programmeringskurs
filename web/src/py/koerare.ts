@@ -1,11 +1,13 @@
 // The page's side of the Python worker: starts it once (loading Pyodide takes a few seconds, so it is started early),
 // runs code with a time limit, passes the learner's answers to input(), and replaces the worker when a program is
 // stopped or runs too long.
-import type { Ratta } from "../kurs-typer.ts";
+import type { Filer, Ratta } from "../kurs-typer.ts";
 import type { Kontroll, KorResultat, StegResultat } from "./engine.ts";
 
 export interface KorValj {
   stdin?: string[];
+  /** The lesson's files (docs/skriva-lektioner.md, block `fil`). */
+  filer?: Filer;
   onUtdata?: (text: string) => void;
   /** Shows an input box and resolves with the answer (undefined = cancelled). */
   fraga?: () => Promise<string | undefined>;
@@ -101,7 +103,7 @@ export class Koerare {
         stoppa,
       });
       starta();
-      w.postMessage({ typ, id, kod, stdin: v.stdin ?? [], ratta });
+      w.postMessage({ typ, id, kod, stdin: v.stdin ?? [], filer: v.filer, ratta });
     });
   }
 

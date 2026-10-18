@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { jamforUtdata, jamforVariabel, normalisera } from "../src/py/rattning.ts";
+import { jamforFil, jamforUtdata, jamforVariabel, normalisera } from "../src/py/rattning.ts";
 
 describe("normalisera", () => {
   test("trailing spaces, line endings and blank lines at the end do not count", () => {
@@ -36,5 +36,15 @@ describe("jamforVariabel", () => {
     expect(jamforVariabel("lon", { finns: false, lika: false, faktisk: "" }, 1)[0]).toContain("finns inte");
     expect(jamforVariabel("lon", { finns: true, lika: false, faktisk: "25000" }, 26000)).toEqual(["`lon` har värdet `25000`, men det ska vara `26000`."]);
     expect(jamforVariabel("lon", { finns: true, lika: true, faktisk: "26000" }, 26000)).toEqual([]);
+  });
+});
+
+describe("jamforFil", () => {
+  test("says what is wrong with a file, and nothing when it matches", () => {
+    expect(jamforFil("ut.txt", { finns: true, text: "a\nb\n" }, "a\nb")).toEqual([]);
+    expect(jamforFil("ut.txt", { finns: false, text: "" }, "a")[0]).toContain("finns inte");
+    expect(jamforFil("ut.txt", { finns: true, text: "" }, "a")[0]).toContain("är tom");
+    expect(jamforFil("ut.txt", { finns: true, text: "a\nx\n" }, "a\nb")).toEqual(["På rad 2 i filen står `x`, men vi ville ha `b`."]);
+    expect(jamforFil("ut.txt", { finns: true, text: "a\nb\nc\n" }, "a\nb")[1]).toContain("extra rad");
   });
 });

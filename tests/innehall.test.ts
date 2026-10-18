@@ -149,3 +149,18 @@ test("a lesson gets its estimate, or the time given in the front matter", () => 
     assert.throws(() => parseLektion(`---\ntitel: T\nmal: M\n${bad}\n---\n` + OVNING(), "f.md", 2, 3, "t"), /"tid" ska vara minuter/);
   }
 });
+
+test("a file block is shown and goes with the code blocks of the lesson", () => {
+  const l = parse("```fil\nnamn: f.csv\ninnehall: |\n  a,b\n  1,2\n```\n\n```python-exempel\nprint(1)\n```\n\n```ovning\nid: t-fil\nuppgift: u\nratta: {fil: ut.txt, innehall: \"x\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n");
+  assert.deepEqual(l.block[0], { typ: "fil", namn: "f.csv", innehall: "a,b\n1,2\n" });
+  assert.deepEqual((l.block[1] as { filer: unknown }).filer, { "f.csv": "a,b\n1,2\n" });
+  const ov = l.block[2] as { filer: unknown; ratta: unknown };
+  assert.deepEqual(ov.filer, { "f.csv": "a,b\n1,2\n" });
+  assert.deepEqual(ov.ratta, { typ: "fil", namn: "ut.txt", forvantat: "x" });
+});
+
+test("file names are checked", () => {
+  fails("```fil\nnamn: ../x.csv\ninnehall: a\n```\n```python-exempel\nx\n```\n", /ogiltigt filnamn/, 6);
+  fails("```fil\nnamn: a.csv\ninnehall: a\n```\n```fil\nnamn: a.csv\ninnehall: b\n```\n```python-exempel\nx\n```\n", /två gånger/);
+  fails("```ovning\nid: t-a\nuppgift: u\nratta: {fil: a/b.txt, innehall: x}\nledtradar: [a, b, c]\nfacit: x\n```\n", /filnamn utan katalog/);
+});
