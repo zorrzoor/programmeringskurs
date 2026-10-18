@@ -212,8 +212,8 @@ Ungefär 38 lektioner. Varje modul slutar med en liten sammanfattning och en bla
 | 0 | Vad är programmering? | Vad en dator gör; vad ett program är; recept och instruktioner; vad Python är; hur kursen fungerar; att köra första raden | Recept, makron | 1 h 20 min (beräknad) |
 | 1 | Dina första program | `print`; text och tal; räkna med Python; kommentarer; ditt första felmeddelande | Miniräknaren, Excels formelfält | 2 h (beräknad) |
 | 2 | Variabler | Ett namn på ett värde; ändra en variabel; tal och text; sätta ihop text (`f"..."`); fråga användaren (`input`) | Namngivna celler | 1 h 45 min (beräknad) |
-| 3 | Val: om och annars | Ja/nej-frågor (jämförelser); `if`; `else`; `elif`; och/eller/inte | `OM()`, filter | ca 2 h |
-| 4 | Upprepning | `for`; `range`; summera i en loop; `while`; att avbryta | Fyll nedåt, `SUMMA()` | ca 2 h |
+| 3 | Val: om och annars | Ja/nej-frågor (jämförelser); `if`; `else`; `elif`; och/eller/inte | `OM()`, filter | 2 h 15 min (beräknad) |
+| 4 | Upprepning | `for`; `range`; summera i en loop; `while`; att avbryta | Fyll nedåt, `SUMMA()` | 2 h (beräknad) |
 | 5 | Listor och uppslag | Listor; gå igenom en lista; ändra och sortera; uppslag (`dict`); lista av poster | Kolumn, rad i en tabell | ca 2 h 30 min |
 | 6 | Funktioner | Ge kod ett namn; parametrar; `return`; dela upp ett problem; egna små bibliotek | Makron, namngivna formler | ca 2 h |
 | 7 | Data och filer | Läsa en CSV-fil; summera per grupp; filtrera; skriva resultat; ett enkelt diagram | Kalkylblad, pivottabell | ca 2 h 30 min |

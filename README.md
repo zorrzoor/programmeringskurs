@@ -4,7 +4,7 @@ En interaktiv nybörjarkurs i programmering och Python som körs helt i webbläs
 inget konto och ingen inloggning (man väljer bara ett namn, och framsteget sparas på det). Kursen riktar sig till vuxna utan IT-bakgrund som är vana vid Office och
 databasprogram. Man skriver riktig Python, kör den direkt på sidan och ser steg för steg vad som händer.
 
-Status: **kursen är driftsatt** (https://kurs.feuerliden.se) med modul 0–2, 16 lektioner. Se [docs/manuellt.md](docs/manuellt.md) för hur du testar, och ärendena för det som återstår.
+Status: **kursen är driftsatt** (https://kurs.feuerliden.se) med modul 0–4, 28 lektioner (ca 9 timmar). Se [docs/manuellt.md](docs/manuellt.md) för hur du testar, och ärendena för det som återstår.
 Arbetet följs i ärendena, med [#1](https://github.com/zorrzoor/programmeringskurs/issues/1) som översikt.
 
 ## Innehåll i repot
