@@ -158,6 +158,34 @@ själv. Variabler som ändrats i det senaste steget markeras.
   ✔ Nästan! Du fick 25 men uppgiften ville ha 30. Titta på raden med +.
 ```
 
+### 4.5 Vem är du? (välj namn)
+
+Ingen inloggning och inget lösenord: man väljer ett **namn**, och framsteget sparas på det namnet. Det gör att man kan
+fortsätta från en annan dator, surfplatta eller telefon.
+
+```text
++----------------------------------------------------------------------------+
+|  Programmeringskurs                                                        |
++----------------------------------------------------------------------------+
+|  Vem är du?                                                                |
+|                                                                            |
+|      [ Anna ]     [ Bosse ]                                                |
+|                                                                            |
+|  Är du ny? Skriv ditt namn:  [____________]   [ Börja ]                    |
+|                                                                            |
+|  Fel namn eller vill börja om?   [ Ta bort ett namn ]                      |
++----------------------------------------------------------------------------+
+```
+
+- **Första gången på en enhet** visas namnen som finns och en ruta för ett nytt namn. Enheten kommer sedan ihåg det
+  senast valda namnet och går direkt till kursen. Byte av namn finns alltid i menyn.
+- **Ta bort ett namn** raderar allt framsteg för namnet och kräver att man skriver namnet för att bekräfta. Det är
+  det enda sättet att börja om från början, och det går inte att ångra.
+- Namn är 1–30 tecken (bokstäver, siffror, mellanslag, bindestreck). Samma namn med annan stavning av versaler räknas som
+  samma namn.
+- Det finns **inget skydd mellan namnen**: den som kan öppna sidan kan öppna alla namn. Skyddet sitter utanför
+  appen (se [kapitel 11](#11-publicering-och-drift)). Det är ett medvetet val för att hålla det enkelt.
+
 ## 5. Så fungerar en lektion
 
 En lektion följer alltid samma ordning, så att man vet vad som väntar:
@@ -249,8 +277,9 @@ tabelldriven och testas (en träff per feltyp, med exempel).
 
 ### 9.1 Överblick
 
-En **statisk webbplats**: HTML, JavaScript och data. Ingen server, ingen databas, ingen inloggning. Python körs i
-webbläsaren med **Pyodide** (CPython kompilerat till WebAssembly).
+En **webbapp med en liten server**. Sidan (HTML, JavaScript och data) levereras av en server som också sparar
+framsteg per namn. Ingen inloggning. Python körs i webbläsaren med **Pyodide** (CPython kompilerat till WebAssembly),
+så deltagarens kod lämnar aldrig webbläsaren. Servern ser bara namn och framsteg.
 
 ```text
  Webbläsaren
@@ -260,6 +289,12 @@ webbläsaren med **Pyodide** (CPython kompilerat till WebAssembly).
  │    └── Stegvisare, rättning, framsteg
  └── Web Worker
       └── Pyodide (Python)  ← kör deltagarens kod, kan avbrytas
+          │
+          │ framsteg (namn, klara övningar, egen kod)
+          ▼
+ Servern (Node.js, en container i k3s-klustret)
+ ├── Levererar sidan (statiska filer)
+ └── API för namn och framsteg  →  SQLite på en lagringsvolym
 ```
 
 ### 9.2 Python i webbläsaren
@@ -334,17 +369,40 @@ facit: |
 Formatet dokumenteras i `docs/skriva-lektioner.md` (ärende [#10](https://github.com/zorrzoor/programmeringskurs/issues/10)).
 Ett ogiltigt block ger ett byggfel med fil och rad.
 
-### 9.6 Framsteg och integritet
+### 9.6 Framsteg, namn och integritet
 
-- Framsteg (klara övningar, egen kod, senaste lektion) sparas **lokalt i webbläsaren**. Inget skickas någonstans.
-- **Export och import** till en fil ger säkerhetskopia och byte av enhet.
-- Fungerar lagringen inte (privat fönster, blockerad) visar sidan det tydligt och fungerar ändå, utan att spara.
-- Ingen statistik, inga cookies utöver lokal lagring, inga externa teckensnitt eller skript.
+- Framsteg (klara övningar, egen kod per övning, senaste lektion) sparas **på servern** under det valda namnet, så att
+  man kan växla mellan enheter. Servern sparar inget annat: ingen statistik, inga IP-adresser, inga cookies.
+- **Server:** en liten Node.js-server utan externa beroenden (inbyggda `node:sqlite`) med SQLite på en volym. Sidan och
+  API:et levereras från samma adress, så det finns inga CORS-inställningar och inget som kan köras från annan sida.
+- **API:**
+
+  | Anrop | Gör |
+  |---|---|
+  | `GET /api/namn` | lista namnen |
+  | `POST /api/namn` `{namn}` | skapa ett namn (409 om det finns) |
+  | `GET /api/namn/{namn}/framsteg` | hämta allt framsteg för namnet |
+  | `PUT /api/namn/{namn}/ovningar/{id}` `{kod, klar, tid}` | spara en övning (senaste ändring vinner) |
+  | `PUT /api/namn/{namn}/senast` `{lektion}` | spara var man var |
+  | `DELETE /api/namn/{namn}` | ta bort namnet och allt framsteg |
+  | `GET /api/halsa` | för driftens hälsokontroll |
+
+- **Begränsningar** mot missbruk och buggar: högst 50 namn, högst 20 kB kod per övning, högst 64 kB per anrop, enkel
+  begränsning av antal anrop per minut, strikt validering av namn och id.
+- **Flera enheter samtidigt:** per övning gäller senaste sparningen. Klar-markeringar bara läggs till (en övning som är
+  klar blir inte oklar av att en annan enhet har äldre läge).
+- **Export och import** av framsteg till en fil finns kvar som säkerhetskopia och som sätt att flytta till en annan
+  installation.
+- **Säkerhetskopia av servern:** databasen kopieras regelbundet (se [#33](https://github.com/zorrzoor/programmeringskurs/issues/33)).
+- **Integritet:** namn och kod är personliga. Inget skickas till tredje part, inga externa teckensnitt eller skript.
+  Det finns inget lösenord: åtkomsten skyddas utanför appen (kapitel 11).
 
 ### 9.7 Utan nätverk
 
 Efter första besöket cachas allt (service worker), och kursen går att installera som app. Uppdateringar läggs på i
-ett svep så att en halv uppdatering aldrig lämnas kvar.
+ett svep så att en halv uppdatering aldrig lämnas kvar. Utan nätverk går det att läsa och köra kod; ändringar i
+framsteg köas i webbläsaren och skickas när servern svarar igen. Sidan visar tydligt "sparat" eller "sparas när du är
+online igen".
 
 ### 9.8 Utseende och tillgänglighet
 
@@ -354,7 +412,11 @@ ett svep så att en halv uppdatering aldrig lämnas kvar.
 - Färg är aldrig det enda som skiljer rätt från fel.
 - Automatisk tillgänglighetskontroll (axe) i CI, och en manuell genomgång.
 
-### 9.9 Byggkedja
+### 9.9 Byggkedja och leverans
+
+Servern och sidan paketeras i **en container-image** som byggs i CI och publiceras i GHCR med en oföränderlig tagg
+(`sha-<7>`). Manifesten (`deploy/`) publiceras som OCI-artefakt bredvid imagen enligt klustrets tenant-modell, och
+Flux tillämpar dem. Se [kapitel 11](#11-publicering-och-drift).
 
 TypeScript och Vite, byggd och testad i **containrar** via `make` (inga verktyg installeras på arbetsmaskinen). Alla
 beroenden och Pyodide-versionen är låsta. Hur verktygsmiljön (EE) delas med övriga repon avgörs i ett separat ärende
@@ -379,16 +441,20 @@ efter modul 2, efter modul 5 och efter hela kursen. Observera, hjälp inte, ante
 
 ## 11. Publicering och drift
 
-Kursen är en statisk webbplats och har inga driftsberoenden. Alternativ (beslut i
-[#26](https://github.com/zorrzoor/programmeringskurs/issues/26)):
+**Beslut: kursen körs i k3s-klustret** (eftersom framsteg sparas på servern). Den blir en *tenant* enligt klustrets
+modell: appen äger sina manifest (`deploy/`) och sin image, plattformen ger en avgränsad namnrymd, ett godkänt värdnamn,
+nätverksregler (inget in utom från Traefik) och backup.
 
-1. **Lokalt:** installerbar webbapp eller en lokal server. Enklast, men bara på en dator.
-2. **I klustret** bakom Cloudflare Tunnel och Cloudflare Access (`kurs.feuerliden.se`): fungerar överallt, privat,
-   kräver en liten tenant i `k3s_hosting`.
-3. **GitHub Pages:** kräver ett publikt repo eller ett betalt konto.
-
-Rekommendation: alternativ 2 när kursen är klar nog att dela, och alternativ 1 under tiden (kursen går att köra lokalt
-från början).
+- **Åtkomst: skydda utanför appen.** Appen har inget lösenord, så sidan får inte vara öppen mot internet. Två sätt,
+  beslut i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26):
+  1. **Cloudflare Access** framför sidan (inloggning med e-post, bara utvalda adresser). Fungerar var som helst, även
+     hos släkt och vänner du bjuder in. Kräver en ändring av Cloudflare-inställningarna (Terraform).
+  2. **Bara hemma:** värdnamn som bara går att nå på det lokala nätet. Enklast, men fungerar inte utanför hemmet.
+- **Drift:** en pod, liten (≈ 50 MB minne), en volym för databasen (`local-path-sata`), hälsokontroll, loggar till
+  stdout. Pod Security `restricted`, skrivskyddat rotfilsystem.
+- **Utveckling lokalt:** `make dev` startar servern och sidan i containrar, utan klustret.
+- **Plattformssidan** (namnrymd, värdnamn, nätverksregler, ev. Access) görs i `k3s_hosting` ([#34](https://github.com/zorrzoor/programmeringskurs/issues/34)).
+  Alla åtgärder som kräver ägaren samlas i [docs/manuellt.md](manuellt.md).
 
 ## 12. Öppna frågor och risker
 
@@ -400,7 +466,10 @@ från början).
 | **Mycket innehåll att skriva** | Moduler skrivs och provkörs en i taget. Valfria moduler (8) kan vänta. |
 | **Svårt att veta om texten är begriplig** | Provkörning med en riktig nybörjare, och pedagogikreglerna som granskningslista. |
 | **Wi-Fi/surfplatta/olika webbläsare** | Webbläsartester i Chromium och Firefox, manuell kontroll på Safari/surfplatta. |
-| **Var ska kursen ligga?** | Beslut i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26). |
+| **Var ska kursen ligga?** | I k3s-klustret (kapitel 11). Åtkomstsättet beslutas i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26). |
+| **Inget lösenord: alla med åtkomst kan öppna och ta bort alla namn** | Medvetet val för enkelhetens skull. Skydd utanför appen (Access eller bara lokalt nät), bekräftelse genom att skriva namnet vid borttagning, och regelbunden säkerhetskopia. |
+| **Förlorat framsteg** (felaktig borttagning, trasig volym) | Säkerhetskopia av databasen ([#33](https://github.com/zorrzoor/programmeringskurs/issues/33)) och export/import i appen. |
+| **Servern ligger nere** | Sidan fungerar utan nätverk och köar framsteg tills servern svarar. |
 | **Ska kursen ha en AI-handledare?** | Nej i första versionen: det kräver extern tjänst och bryter "inget lämnar sidan". Kan utredas senare. |
 | **Gemensam EE med övriga repon** | Separat ärende i `k3s_hosting`. Skelettet (#3) börjar med en liten egen Node-image. |
 
@@ -414,10 +483,10 @@ Ordning, med det som inte kräver ägarens medverkan först:
    [#5](https://github.com/zorrzoor/programmeringskurs/issues/5), [#6](https://github.com/zorrzoor/programmeringskurs/issues/6).
 4. Övningsformat, rättning, lektionsformat och CI-kontroll av facit — [#8](https://github.com/zorrzoor/programmeringskurs/issues/8),
    [#10](https://github.com/zorrzoor/programmeringskurs/issues/10), [#9](https://github.com/zorrzoor/programmeringskurs/issues/9).
-5. Stegvisare, framsteg, utseende — [#7](https://github.com/zorrzoor/programmeringskurs/issues/7),
-   [#11](https://github.com/zorrzoor/programmeringskurs/issues/11), [#12](https://github.com/zorrzoor/programmeringskurs/issues/12).
+5. Stegvisare, utseende — [#7](https://github.com/zorrzoor/programmeringskurs/issues/7), [#12](https://github.com/zorrzoor/programmeringskurs/issues/12).
+5b. Server för framsteg, namnval, synk, image och leverans — [#30](https://github.com/zorrzoor/programmeringskurs/issues/30), [#31](https://github.com/zorrzoor/programmeringskurs/issues/31), [#32](https://github.com/zorrzoor/programmeringskurs/issues/32), [#35](https://github.com/zorrzoor/programmeringskurs/issues/35), [#36](https://github.com/zorrzoor/programmeringskurs/issues/36), [#11](https://github.com/zorrzoor/programmeringskurs/issues/11); plattformssidan [#34](https://github.com/zorrzoor/programmeringskurs/issues/34) och säkerhetskopia [#33](https://github.com/zorrzoor/programmeringskurs/issues/33).
 6. Innehåll, modul 0–2 (#15–#17), **provkörning** (#27), justering.
 7. Modul 3–7 (#18–#22), provkörning, ordlista (#25), offline (#13), end-to-end-tester (#14).
 8. Valfri modul 8 (#23), projekt (#24), publicering (#26).
 
-Beslut och manuella steg som väntar på ägaren: publicering (#26) och provkörningar (#27).
+Beslut och manuella steg som väntar på ägaren: åtkomstsätt (#26) och provkörningar (#27). Allt samlas i [manuellt.md](manuellt.md).
