@@ -33,7 +33,7 @@ kod: |
   print("Kaffe")
   print()
   print("Te")
-alternativ: ["Kaffe, Te (tre rader, ingen tom)", "Kaffe, en tom rad, Te", "KaffeTe på en rad", "Ett felmeddelande"]
+alternativ: ["Kaffe, Te (två rader, ingen tom)", "Kaffe, en tom rad, Te", "KaffeTe på en rad", "Ett felmeddelande"]
 ratt: 1
 forklaring: "print() skriver ut en tom rad. Därför blir det Kaffe, en tom rad och sedan Te."
 ```

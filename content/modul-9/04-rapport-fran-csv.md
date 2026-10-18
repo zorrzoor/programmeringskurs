@@ -1,7 +1,7 @@
 ---
 titel: "Projekt: rapport från en CSV-fil"
 mal: "Efter den här lektionen har du byggt en rapport som läser en CSV-fil, summerar per projekt, sparar resultatet och ritar ett diagram."
-tid: 45
+tid: 60
 ---
 
 ```ruta

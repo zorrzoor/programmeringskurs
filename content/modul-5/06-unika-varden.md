@@ -75,24 +75,24 @@ facit: |
 ```
 
 ```ovning
-id: m5-unika-funktion
-uppgift: "Skriv en funktion `utan_dubbletter(lista)` som returnerar en ny lista utan dubbletter, där varje värde står kvar på den plats där det först förekom."
+id: m5-unika-ordning
+uppgift: "Listan `tal` finns redan. Skriv ut en ny lista utan dubbletter, där varje värde står kvar på den plats där det först förekom. Det ska bli `[3, 1, 2]`."
 start: |
-  # skriv din funktion här
-ratta: {"funktion": "utan_dubbletter", "tester": [{"in": [[3, 1, 3, 2, 1]], "ut": [3, 1, 2]}, {"in": [["a", "a"]], "ut": ["a"]}, {"in": [[]], "ut": []}]}
+  tal = [3, 1, 3, 2, 1]
+ratta: {"utdata": "[3, 1, 2]"}
 ledtradar:
   - "En mängd tappar ordningen, så du behöver en lista också. Använd mängden för att komma ihåg vad du har sett."
   - "Gå igenom listan, och lägg bara till värden som inte redan finns i mängden."
-  - "if x not in sett: sett.add(x) och ny.append(x), och return ny efter loopen."
+  - "if x not in sett: sett.add(x) och ny.append(x) i loopen, och print(ny) efteråt."
 facit: |
-  def utan_dubbletter(lista):
-      sett = set()
-      ny = []
-      for x in lista:
-          if x not in sett:
-              sett.add(x)
-              ny.append(x)
-      return ny
+  tal = [3, 1, 3, 2, 1]
+  sett = set()
+  ny = []
+  for x in tal:
+      if x not in sett:
+          sett.add(x)
+          ny.append(x)
+  print(ny)
 ```
 
 ## Det här lärde du dig

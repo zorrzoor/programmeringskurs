@@ -16,6 +16,7 @@ Det finns inga poäng, ingen tid och ingen som tittar. Du kan gå tillbaka och g
 
 - **Kör** kör koden och visar resultatet.
 - **Stoppa** avbryter ett program som inte tar slut.
+- **Stegvis** visar vad som händer rad för rad och hur variablerna ändras. Du får använda den när du vill förstå varför ett program gör som det gör.
 - **Kontrollera** (i uppgifter) säger om det du skrev stämmer, och var det skiljer sig om det inte gör det.
 - **Ledtråd** ger en liten hjälp i taget, tre steg. Facit finns alltid, men du måste välja att visa det.
 - **Börja om** sätter tillbaka den ursprungliga koden.

@@ -178,3 +178,15 @@ describe("files", () => {
     expect(e.kontrollera('open("ut.txt", "w").write("Anna: 100\\n")', ratta).meddelanden[0]).toContain("1 rad");
   });
 });
+
+describe("explanations that point the learner the right way", () => {
+  test("a = inside print(...) suggests ==", () => {
+    const fel = e.run('print(namn = "Anna")').fel;
+    expect(fel?.typ).toBe("TypeError");
+    expect(forklaraFel(fel as NonNullable<typeof fel>).tips).toContain("==");
+  });
+  test("text plus a number from input() suggests int(...)", () => {
+    const fel = e.run('alder = "30"\nprint(alder + 1)').fel;
+    expect(forklaraFel(fel as NonNullable<typeof fel>).tips).toContain("int(");
+  });
+});

@@ -14,7 +14,7 @@ for i in range(1, 5):
 print(total)
 ```
 
-Resultatet är 15, alltså 1 + 2 + 3 + 4 + 5.
+Resultatet är 10, alltså 1 + 2 + 3 + 4. Talet 5 kommer inte med, eftersom `range(1, 5)` slutar före 5.
 
 ## Mönstret
 

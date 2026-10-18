@@ -13,7 +13,7 @@ export function visaOversikt(rot: HTMLElement, namn: string, senast: string | nu
     h("h1", { tabindex: "-1", id: "sidtitel" }, "Programmeringskurs"),
     h("p", { class: "valkomst" }, harBorjat ? `Välkommen tillbaka, ${namn}.` : `Välkommen, ${namn}. Det här är en kurs som lär dig programmera i Python, steg för steg. Du behöver inga förkunskaper.`),
     dit ? h("p", {}, h("a", { class: "knapp-lank stor", href: lank({ vy: "lektion", id: dit.id }) }, harBorjat ? `Fortsätt där du var: ${dit.titel}` : `Börja: ${dit.titel}`)) : null,
-    h("p", { class: "hjalp" }, `Du har gjort ${klaraAntal} av ${lektioner.length} lektioner. Hela kursen hittills tar ${visaTid(totalMinuter())} för en nybörjare; varje lektion visar sin egen tid.`),
+    h("p", { class: "hjalp" }, `Du har gjort ${klaraAntal} av ${lektioner.length} lektioner. Alla lektioner tillsammans tar ${visaTid(totalMinuter())} för en nybörjare, men modul 8 och 10 är valfria och du väljer själv vilket projekt du gör i modul 9. Varje lektion visar sin egen tid.`),
     ...kurs.moduler.map((m) =>
       h(
         "section",

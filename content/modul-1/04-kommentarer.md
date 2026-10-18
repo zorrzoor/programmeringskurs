@@ -31,12 +31,11 @@ text: |
 En bra kommentar förklarar **varför**, inte vad koden redan säger:
 
 ```python-exempel
-# Frakten är gratis över 500 kr.
-frakt = 0
-print(frakt)
+# Momsen är 25 procent av priset.
+print(200 * 0.25)
 ```
 
-Kommentaren `# sätter frakt till 0` hade inte tillfört något. Kommentaren ovan berättar *anledningen*, och den kan du inte läsa ut ur koden.
+Kommentaren `# räknar ut 200 gånger 0.25` hade inte tillfört något. Kommentaren ovan berättar *anledningen*, och den kan du inte läsa ut ur koden.
 
 ```forutsag
 kod: |

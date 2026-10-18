@@ -1,7 +1,7 @@
 ---
 titel: "Projekt: hushållsbudget"
 mal: "Efter den här lektionen har du byggt ett litet budgetprogram i fyra steg."
-tid: 45
+tid: 60
 ---
 
 Du bygger ett program som summerar hushållets utgifter per kategori och visar vilka kategorier som gått över budget. Varje steg bygger på det förra, men har egen startkod, så att du kan göra dem i ordning.
@@ -79,7 +79,7 @@ facit: |
 
 ```ovning
 id: m9-budget-over
-uppgift: "Skriv en funktion `over_budget(summor, budget)` som returnerar en lista, i bokstavsordning, med de kategorier där summan är **större** än budgeten."
+uppgift: "Skriv en funktion `over_budget(summor, budget)` som returnerar en lista, i bokstavsordning, med de kategorier där summan är **större** än budgeten. Både `summor` och `budget` är uppslag med kategorin som nyckel och ett tal som värde, till exempel `{\"mat\": 3700}`."
 start: |
   # skriv din funktion här
 ratta: {"funktion": "over_budget", "tester": [{"in": [{"mat": 10, "nöje": 20}, {"mat": 10, "nöje": 5}], "ut": ["nöje"]}, {"in": [{"a": 1}, {"a": 1}], "ut": []}, {"in": [{"b": 5, "a": 6}, {"b": 4, "a": 5}], "ut": ["a", "b"]}]}

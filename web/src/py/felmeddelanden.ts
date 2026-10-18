@@ -124,7 +124,16 @@ const REGLER: Regel[] = [
     gor: () => ({
       rubrik: "Text och tal går inte att sätta ihop med +",
       forklaring: `Du försökte lägga ihop en text och ett tal med ${q("+")}. Det är som att försöka lägga ihop ordet "sju" med siffran 7.`,
-      tips: "Gör om talet till text med str(...), eller skriv en f-sträng: f\"Du är {alder} år\".",
+      tips: "Vill du skriva ut talet i en text: gör om det med str(...), eller skriv en f-sträng: f\"Du är {alder} år\". Vill du räkna med ett svar från input(): gör om svaret till ett tal med int(...) eller float(...).",
+    }),
+  },
+  {
+    typ: /^TypeError$/,
+    meddelande: /(?:'(\w+)' is an invalid keyword argument for (\w+)\(\)|(\w+)\(\) got an unexpected keyword argument '(\w+)')/,
+    gor: (m) => ({
+      rubrik: "Ett = där det ska vara ==, eller ett namn som inte finns",
+      forklaring: `Inom parentesen till ${q(m?.[2] ?? m?.[3] ?? "funktionen")} står ${q(`${m?.[1] ?? m?.[4] ?? "namn"} = …`)}. Ett enkelt = sparar ett värde, det jämför inte.`,
+      tips: `Vill du jämföra två värden ska du skriva ${q("==")}, till exempel ${q('namn == "Anna"')}. Vill du skriva ut en text, sätt den inom citattecken.`,
     }),
   },
   {

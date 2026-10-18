@@ -44,7 +44,7 @@ kod: |
   print(a)
 alternativ: ["3", "6", "9", "Ett felmeddelande"]
 ratt: 1
-forklaring: "Först sparas 3 i a. Sedan tas 3, ganger 2 blir 6, och 6 läggs tillbaka i a. Därför skrivs 6 ut."
+forklaring: "Först sparas 3 i a. Sedan tas 3, gånger 2 blir 6, och 6 läggs tillbaka i a. Därför skrivs 6 ut."
 ```
 
 ```forutsag

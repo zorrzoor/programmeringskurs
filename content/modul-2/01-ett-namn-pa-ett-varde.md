@@ -24,7 +24,7 @@ Raden `pris = 20` **skapar en variabel**. En variabel är ett **namn på ett vä
 
 - Namnet står till vänster, värdet till höger.
 - `=` betyder här **"spara i"**, inte "är lika med". Läs raden som "lägg 20 i pris".
-- Namnet får innehålla bokstäver (även å, ä, ö), siffror och understreck, men inte börja med en siffra och inte ha mellanslag. `pris`, `antal_varor` och `lön` går bra.
+- Namnet får innehålla bokstäver (även å, ä, ö), siffror och understreck, men inte börja med en siffra och inte ha mellanslag. `pris`, `antal_varor` och `lön` går bra. I övningarna skriver vi ändå namnen utan å, ä och ö (till exempel `alder`), så att rättningen hittar rätt variabel.
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
