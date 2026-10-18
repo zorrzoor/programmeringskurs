@@ -38,10 +38,10 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   // Lesson 1: two predictions
   await page.getByRole("link", { name: "Vad gör en dator?", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Vad gör en dator?", level: 1 })).toBeFocused();
-  await page.getByLabel("12", { exact: true }).check();
+  await page.getByLabel("20", { exact: true }).check();
   await page.getByRole("button", { name: "Svara" }).first().click();
   await expect(page.getByText("Rätt!").first()).toBeVisible();
-  await page.getByLabel("Datorn kan inte göra det, för den vet inte vad du heter").check();
+  await page.getByLabel("En exakt regel för vad som räknas som störst (omsättning? antal köp?)").check();
   await page.getByRole("button", { name: "Svara" }).nth(1).click();
   await expect(page.getByText("Du har gjort alla uppgifter i den här lektionen")).toBeVisible();
 
