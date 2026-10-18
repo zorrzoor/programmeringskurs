@@ -138,3 +138,6 @@ ol.lektionslista { padding-left: 1.5rem; }
 ol.lektionslista li { padding: .15rem 0; }
 @media (max-width: 40rem) { #app { padding: .75rem .75rem 3rem; } body { font-size: 1.05rem; } }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+.tid { color: var(--muted); font-size: .95rem; margin: .1rem 0; }
+.lektionslista .tid { margin: 0; }

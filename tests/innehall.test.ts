@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { ContentError, kontrolleraKurs, parseLektion, parseModul } from "../scripts/lib/innehall.ts";
+import { ContentError, kontrolleraKurs, parseLektion, parseModul, uppskattaMinuter } from "../scripts/lib/innehall.ts";
 
 const FM = "---\ntitel: Testlektion\nmal: Du kan något.\n---\n";
 const parse = (body: string) => parseLektion(FM + body, "f.md", 2, 3, "test");
@@ -126,4 +126,26 @@ test("module metadata and unique ids across the course", () => {
   const m = { id: 0, titel: "m", beskrivning: "b", kopplas: "", lektioner: [l, { ...l, id: "m2-annan" }] };
   assert.throws(() => kontrolleraKurs([m]), /id "t-lon" finns både i m2-test och i m2-annan/);
   kontrolleraKurs([{ ...m, lektioner: [l] }]);
+});
+
+test("time estimate: reading, examples, predictions and exercises, rounded up to 5 and never under 10", () => {
+  const ord = (n: number) => Array.from({ length: n }, () => "ord").join(" ");
+  const text = (n: number) => ({ typ: "text" as const, markdown: ord(n) });
+  const ex = { typ: "exempel" as const, kod: "x", stdin: [] };
+  const fo = { typ: "forutsag" as const, id: "a", kod: "x", kor: true, stdin: [], alternativ: [], ratt: -1, svar: "1", forklaring: "" };
+  const ov = (u: string) => ({ typ: "ovning" as const, id: "b", uppgift: u, start: "", stdin: [], ratta: { typ: "utdata" as const, forvantat: "1", ignoreraVersaler: false }, ledtradar: ["a", "b", "c"] as [string, string, string], facit: "x" });
+  assert.equal(uppskattaMinuter([text(50), fo]), 10); // 2 min: the minimum
+  assert.equal(uppskattaMinuter([text(200), ex, ex, fo, ov(ord(10)), ov(ord(10))]), 20); // 2 + 4 + 1.5 + 12.2 = 19.7
+  assert.equal(uppskattaMinuter([text(1000)]), 10);
+  assert.equal(uppskattaMinuter([text(1500)]), 15);
+  assert.equal(uppskattaMinuter([text(3000)]), 30);
+});
+
+test("a lesson gets its estimate, or the time given in the front matter", () => {
+  assert.equal(parse(OVNING()).minuter, 10);
+  const l = parseLektion("---\ntitel: T\nmal: M\ntid: 25\n---\n" + OVNING(), "f.md", 2, 3, "t");
+  assert.equal(l.minuter, 25);
+  for (const bad of ["tid: 3", "tid: 200", "tid: lång"]) {
+    assert.throws(() => parseLektion(`---\ntitel: T\nmal: M\n${bad}\n---\n` + OVNING(), "f.md", 2, 3, "t"), /"tid" ska vara minuter/);
+  }
 });

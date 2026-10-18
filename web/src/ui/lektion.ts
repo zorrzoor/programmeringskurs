@@ -1,7 +1,7 @@
 // A lesson page: navigation, the goal, and the blocks in order. When the last task is done the page says so and
 // points to the next lesson.
 import type { Lektion } from "../kurs-typer.ts";
-import { grannar, lektionKlar, modulAv, uppgifter, type Klara } from "../kurs.ts";
+import { grannar, lektionKlar, modulAv, uppgifter, visaTid, type Klara } from "../kurs.ts";
 import { lank } from "../router.ts";
 import { renderBlock, type Kontext } from "./block.ts";
 import { h } from "./dom.ts";
@@ -26,7 +26,7 @@ export function visaLektion(rot: HTMLElement, l: Lektion, ctx: Kontext, klar: Kl
 
   const titel = h("h1", { tabindex: "-1", id: "sidtitel" }, l.titel);
   rot.replaceChildren(
-    h("nav", { class: "lektion-nav", "aria-label": "Lektion" }, h("a", { href: lank({ vy: "oversikt" }) }, "← Översikt"), h("span", {}, `Modul ${modul.id} · lektion ${iModulen} av ${modul.lektioner.length}`), navLank(forra, "← Förra"), navLank(nasta, "Nästa →")),
+    h("nav", { class: "lektion-nav", "aria-label": "Lektion" }, h("a", { href: lank({ vy: "oversikt" }) }, "← Översikt"), h("span", {}, `Modul ${modul.id} · lektion ${iModulen} av ${modul.lektioner.length} · ${visaTid(l.minuter)}`), navLank(forra, "← Förra"), navLank(nasta, "Nästa →")),
     titel,
     h("p", { class: "mal" }, h("strong", {}, "Mål: "), l.mal),
   );

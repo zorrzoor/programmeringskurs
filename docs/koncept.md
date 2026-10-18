@@ -203,20 +203,22 @@ kopplingen till Office eller databaser.
 
 ## 6. Kursplan
 
-Ungefär 38 lektioner, cirka 12–15 timmar. Varje modul slutar med en liten sammanfattning och en blandad övning.
+Ungefär 38 lektioner. Varje modul slutar med en liten sammanfattning och en blandad övning.
 
-| Modul | Rubrik | Lektioner (urval) | Kopplas till |
-|---|---|---|---|
-| 0 | Vad är programmering? | Vad en dator gör; vad ett program är; recept och instruktioner; vad Python är; hur kursen fungerar; att köra första raden | Recept, makron |
-| 1 | Dina första program | `print`; text och tal; räkna med Python; kommentarer; ditt första felmeddelande | Miniräknaren, Excels formelfält |
-| 2 | Variabler | Ett namn på ett värde; ändra en variabel; tal och text; sätta ihop text (`f"..."`); fråga användaren (`input`) | Namngivna celler |
-| 3 | Val: om och annars | Ja/nej-frågor (jämförelser); `if`; `else`; `elif`; och/eller/inte | `OM()`, filter |
-| 4 | Upprepning | `for`; `range`; summera i en loop; `while`; att avbryta | Fyll nedåt, `SUMMA()` |
-| 5 | Listor och uppslag | Listor; gå igenom en lista; ändra och sortera; uppslag (`dict`); lista av poster | Kolumn, rad i en tabell |
-| 6 | Funktioner | Ge kod ett namn; parametrar; `return`; dela upp ett problem; egna små bibliotek | Makron, namngivna formler |
-| 7 | Data och filer | Läsa en CSV-fil; summera per grupp; filtrera; skriva resultat; ett enkelt diagram | Kalkylblad, pivottabell |
-| 8 | Databaser med SQL (valfri) | Tabeller; `SELECT` och `WHERE`; `ORDER BY`; `GROUP BY`; `JOIN` | Databasprogram, frågor |
-| 9 | Egna projekt | Välj ett av tre: hushållsbudget, frågesport, rapport från en CSV-fil; steg-för-steg-guide och förslag på förbättringar | Allt |
+**Tid:** varje lektion och modul visar en uppskattning i kursen ("ca 20 min", "ca 2 h"), för en nybörjare som läser, provar och gör uppgifterna. Den räknas ut av bygget (se [skriva-lektioner](skriva-lektioner.md#tid)) och ska kontrolleras mot riktiga deltagare (#27). Hela kursen väntas ta **ungefär 20–25 timmar**, alltså flera veckor med en lektion eller två per tillfälle.
+
+| Modul | Rubrik | Lektioner (urval) | Kopplas till | Tid |
+|---|---|---|---|---|
+| 0 | Vad är programmering? | Vad en dator gör; vad ett program är; recept och instruktioner; vad Python är; hur kursen fungerar; att köra första raden | Recept, makron | 1 h 20 min (beräknad) |
+| 1 | Dina första program | `print`; text och tal; räkna med Python; kommentarer; ditt första felmeddelande | Miniräknaren, Excels formelfält | 2 h (beräknad) |
+| 2 | Variabler | Ett namn på ett värde; ändra en variabel; tal och text; sätta ihop text (`f"..."`); fråga användaren (`input`) | Namngivna celler | 1 h 45 min (beräknad) |
+| 3 | Val: om och annars | Ja/nej-frågor (jämförelser); `if`; `else`; `elif`; och/eller/inte | `OM()`, filter | ca 2 h |
+| 4 | Upprepning | `for`; `range`; summera i en loop; `while`; att avbryta | Fyll nedåt, `SUMMA()` | ca 2 h |
+| 5 | Listor och uppslag | Listor; gå igenom en lista; ändra och sortera; uppslag (`dict`); lista av poster | Kolumn, rad i en tabell | ca 2 h 30 min |
+| 6 | Funktioner | Ge kod ett namn; parametrar; `return`; dela upp ett problem; egna små bibliotek | Makron, namngivna formler | ca 2 h |
+| 7 | Data och filer | Läsa en CSV-fil; summera per grupp; filtrera; skriva resultat; ett enkelt diagram | Kalkylblad, pivottabell | ca 2 h 30 min |
+| 8 | Databaser med SQL (valfri) | Tabeller; `SELECT` och `WHERE`; `ORDER BY`; `GROUP BY`; `JOIN` | Databasprogram, frågor | ca 2 h (valfri) |
+| 9 | Egna projekt | Välj ett av tre: hushållsbudget, frågesport, rapport från en CSV-fil; steg-för-steg-guide och förslag på förbättringar | Allt | ca 3–4 h |
 
 Under hela kursen finns **felsökning** som ett återkommande tema ("läs felet, titta i stegvisaren, förenkla"), och en
 **ordlista** som växer.
@@ -397,12 +399,12 @@ Ett ogiltigt block ger ett byggfel med fil och rad.
 - **Integritet:** namn och kod är personliga. Inget skickas till tredje part, inga externa teckensnitt eller skript.
   Det finns inget lösenord: åtkomsten skyddas utanför appen (kapitel 11).
 
-### 9.7 Utan nätverk
+### 9.7 Nätverk och avbrott
 
-Efter första besöket cachas allt (service worker), och kursen går att installera som app. Uppdateringar läggs på i
-ett svep så att en halv uppdatering aldrig lämnas kvar. Utan nätverk går det att läsa och köra kod; ändringar i
-framsteg köas i webbläsaren och skickas när servern svarar igen. Sidan visar tydligt "sparat" eller "sparas när du är
-online igen".
+Kursen kräver servern: det är där framstegen sparas, och sidan och Pyodide hämtas därifrån. Kursen är **inte** en
+installerbar app och fungerar inte utan nätverk (beslut: det behövs inte). Kortvariga avbrott hanteras ändå: ändringar i
+framsteg köas i webbläsaren och skickas när servern svarar igen, och sidan visar tydligt "sparat" eller "sparas när du är
+online igen". Filer som inte ändrats hämtas inte om (ETag).
 
 ### 9.8 Utseende och tillgänglighet
 
@@ -433,7 +435,6 @@ Eftersom en kurs är något man litar på är testerna en del av produkten.
 | Felmeddelandetabell | Att varje feltyp har en svensk förklaring |
 | Webbläsartester (Playwright) | Hela flödet: läsa, skriva, köra, rätta, spara, stegvisa |
 | Tillgänglighet (axe) | Kontrast, etiketter, tangentbord |
-| Offlinetest | Att kursen kör utan nätverk |
 | Granskning av innehåll | Pedagogikreglerna i [kapitel 2](#2-pedagogiska-principer) bockas av i varje PR som ändrar lektioner |
 
 Och viktigast: **provkörning med en riktig nybörjare** (ärende [#27](https://github.com/zorrzoor/programmeringskurs/issues/27))
@@ -485,7 +486,7 @@ Ordning, med det som inte kräver ägarens medverkan först:
 5. Stegvisare, utseende — [#7](https://github.com/zorrzoor/programmeringskurs/issues/7), [#12](https://github.com/zorrzoor/programmeringskurs/issues/12).
 5b. Server för framsteg, namnval, synk, image och leverans — [#30](https://github.com/zorrzoor/programmeringskurs/issues/30), [#31](https://github.com/zorrzoor/programmeringskurs/issues/31), [#32](https://github.com/zorrzoor/programmeringskurs/issues/32), [#35](https://github.com/zorrzoor/programmeringskurs/issues/35), [#36](https://github.com/zorrzoor/programmeringskurs/issues/36), [#11](https://github.com/zorrzoor/programmeringskurs/issues/11); plattformssidan [#34](https://github.com/zorrzoor/programmeringskurs/issues/34) och säkerhetskopia [#33](https://github.com/zorrzoor/programmeringskurs/issues/33).
 6. Innehåll, modul 0–2 (#15–#17), **provkörning** (#27), justering.
-7. Modul 3–7 (#18–#22), provkörning, ordlista (#25), offline (#13), end-to-end-tester (#14).
+7. Modul 3–7 (#18–#22), provkörning, ordlista (#25), end-to-end-tester (#14, klart).
 8. Valfri modul 8 (#23), projekt (#24), publicering (#26).
 
 Beslut och manuella steg som väntar på ägaren: provkörningar (#27) och åtgärderna i manuellt.md. Allt samlas i [manuellt.md](manuellt.md).

@@ -39,3 +39,15 @@ export function fortsatt(senast: string | null, klar: Klara, k: Kurs = kurs): Le
   const forstaOklara = a.find((l) => !lektionKlar(l, klar));
   return forstaOklara ?? last ?? a[0];
 }
+
+/** Minutes for a module and for the whole course (what exists so far). */
+export const modulMinuter = (m: Modul): number => m.lektioner.reduce((sum, l) => sum + l.minuter, 0);
+export const totalMinuter = (k: Kurs = kurs): number => k.moduler.reduce((sum, m) => sum + modulMinuter(m), 0);
+
+/** "ca 15 min", "ca 1 h", "ca 1 h 40 min". */
+export function visaTid(minuter: number): string {
+  if (minuter < 60) return `ca ${minuter} min`;
+  const h = Math.floor(minuter / 60);
+  const m = minuter % 60;
+  return `ca ${h} h${m ? ` ${m} min` : ""}`;
+}

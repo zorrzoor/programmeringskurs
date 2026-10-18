@@ -106,6 +106,23 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
   };
 }
 
+/**
+ * How long a lesson takes a beginner, in minutes (rounded up to a multiple of 5, at least 10). Reading is slow when
+ * everything is new (100 words a minute); an example is run and changed (2 min), a prediction is thought through
+ * (1.5 min) and an exercise takes the longest, with hints and a second try (6 min). Checked against real learners in #27.
+ */
+export function uppskattaMinuter(block: Block[]): number {
+  const ord = (t: string) => t.split(/\s+/).filter(Boolean).length;
+  let min = 0;
+  for (const b of block) {
+    if (b.typ === "text" || b.typ === "ruta") min += ord(b.markdown) / 100;
+    else if (b.typ === "exempel") min += 2;
+    else if (b.typ === "forutsag") min += 1.5;
+    else min += 6 + ord(b.uppgift) / 100;
+  }
+  return Math.max(10, Math.ceil(min / 5) * 5);
+}
+
 /** One lesson file (front matter + Markdown with special blocks). */
 export function parseLektion(text: string, file: string, modul: number, nr: number, slug: string): Lektion {
   const lines = text.replace(/\r\n/g, "\n").split("\n");
@@ -114,7 +131,8 @@ export function parseLektion(text: string, file: string, modul: number, nr: numb
   if (end < 0) throw new ContentError(file, 1, "front matter saknar avslutande ---");
   const meta = yamlOf(lines.slice(1, end).join("\n"), file, 2, "front matter");
   const id = `m${modul}-${slug}`;
-  const lektion: Lektion = { id, titel: str(meta, "titel", file, 2, "front matter"), mal: str(meta, "mal", file, 2, "front matter"), modul, nr, block: [] };
+  const lektion: Lektion = { id, titel: str(meta, "titel", file, 2, "front matter"), mal: str(meta, "mal", file, 2, "front matter"), modul, nr, minuter: 0, block: [] };
+  if (meta.tid !== undefined && (!Number.isInteger(meta.tid) || (meta.tid as number) < 5 || (meta.tid as number) > 90)) throw new ContentError(file, 2, 'front matter: "tid" ska vara minuter, ett heltal mellan 5 och 90');
 
   const counter = { forutsag: 0 };
   let md: string[] = [];
@@ -147,6 +165,7 @@ export function parseLektion(text: string, file: string, modul: number, nr: numb
     i = j + 1;
   }
   flush();
+  lektion.minuter = typeof meta.tid === "number" ? meta.tid : uppskattaMinuter(lektion.block);
   if (!lektion.block.some((b) => b.typ !== "text")) throw new ContentError(file, end + 2, "lektionen har inget exempel, ingen förutsägelse och ingen övning");
   return lektion;
 }
