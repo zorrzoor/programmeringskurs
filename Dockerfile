@@ -6,6 +6,8 @@ WORKDIR /src
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY web/ ./web/
+COPY scripts/ ./scripts/
+COPY content/ ./content/
 RUN npm run build
 
 FROM docker.io/library/node:24-alpine@sha256:429bdfbc204b4eabc6438e6d34e4e9d8dd2ca1df8289bcd78cdd3c5db387b7a5
