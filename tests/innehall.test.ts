@@ -68,6 +68,12 @@ test("input() answers for an example", () => {
   assert.deepEqual(l.block[0], { typ: "exempel", kod: "namn = input()", stdin: ["Anna", "7"] });
 });
 
+test("a prediction about pseudo-code can turn off running", () => {
+  const l = parse("```forutsag\nkod: Ta fram 7\nalternativ: [a, b]\nratt: 0\nkor: false\n```\n```forutsag\nkod: print(1)\nsvar: \"1\"\n```\n");
+  assert.deepEqual(l.block.map((b) => (b as { kor: boolean }).kor), [false, true]);
+  fails("```forutsag\nkod: x\nsvar: y\nkor: kanske\n```\n", /"kor" ska vara/, 6);
+});
+
 test("free-text prediction and the three kinds of rating", () => {
   const l = parse(`\`\`\`forutsag
 kod: print(1+1)

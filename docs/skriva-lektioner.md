@@ -59,6 +59,8 @@ Behöver programmet svar på `input()`, ge dem på första raden: `# stdin: Anna
 
 Fyra skrivsätt, välj ett av de två: **flervalsfråga** (`alternativ` + `ratt`, numret från 0) eller **fritt svar** (`svar`).
 Efter svaret får deltagaren köra koden och jämföra. `forklaring` visas efteråt. `id` är valfritt (annars `<lektion>-f<n>`).
+Är `kod` låtsaskod som Python inte kan köra (som "Rad 1: ta fram 7"), skriv `kor: false`: då finns ingen "Kör koden"-knapp.
+Är `kod` riktig Python kontrollerar bygget att det rätta svaret stämmer med det programmet faktiskt skriver ut.
 
 ````markdown
 ```forutsag

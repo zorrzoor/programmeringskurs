@@ -14,6 +14,8 @@ export type Block =
       typ: "forutsag";
       id: string;
       kod: string;
+      /** False when the code is pseudo-code that Python cannot run: then there is no "run it" button. */
+      kor: boolean;
       stdin: string[];
       /** Multiple choice: the alternatives and the index of the right one. Otherwise a free-text answer in `svar`. */
       alternativ: string[];

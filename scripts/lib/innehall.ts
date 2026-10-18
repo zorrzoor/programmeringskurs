@@ -79,13 +79,15 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
     const id = o.id === undefined ? `${lessonId}-f${counter.forutsag}` : String(o.id);
     if (!ID_RE.test(id)) throw new ContentError(file, line, `forutsag: ogiltigt id "${id}"`);
     const kod = str(o, "kod", file, line, "forutsag").replace(/\n+$/, "");
+    if (o.kor !== undefined && typeof o.kor !== "boolean") throw new ContentError(file, line, 'forutsag: "kor" ska vara true eller false');
+    const kor = o.kor !== false;
     if (o.alternativ !== undefined) {
       const alt = o.alternativ;
       if (!Array.isArray(alt) || alt.length < 2 || !alt.every((a) => typeof a === "string")) throw new ContentError(file, line, 'forutsag: "alternativ" ska vara minst två texter');
       if (!Number.isInteger(o.ratt) || (o.ratt as number) < 0 || (o.ratt as number) >= alt.length) throw new ContentError(file, line, 'forutsag: "ratt" ska vara numret (från 0) på det rätta alternativet');
-      return { typ: "forutsag", id, kod, stdin: stdinOf(o, file, line, "forutsag"), alternativ: alt as string[], ratt: o.ratt as number, svar: "", forklaring: str(o, "forklaring", file, line, "forutsag", true) };
+      return { typ: "forutsag", id, kod, kor, stdin: stdinOf(o, file, line, "forutsag"), alternativ: alt as string[], ratt: o.ratt as number, svar: "", forklaring: str(o, "forklaring", file, line, "forutsag", true) };
     }
-    return { typ: "forutsag", id, kod, stdin: stdinOf(o, file, line, "forutsag"), alternativ: [], ratt: -1, svar: str(o, "svar", file, line, "forutsag"), forklaring: str(o, "forklaring", file, line, "forutsag", true) };
+    return { typ: "forutsag", id, kod, kor, stdin: stdinOf(o, file, line, "forutsag"), alternativ: [], ratt: -1, svar: str(o, "svar", file, line, "forutsag"), forklaring: str(o, "forklaring", file, line, "forutsag", true) };
   }
   // ovning
   const id = str(o, "id", file, line, "ovning");
