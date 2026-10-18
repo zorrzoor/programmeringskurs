@@ -138,7 +138,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
       ? h(
           "fieldset",
           { class: "alternativ" },
-          h("legend", {}, "Vad skrivs ut, eller vad händer?"),
+          h("legend", {}, b.kor ? "Vad skrivs ut, eller vad händer?" : "Vilket svar stämmer?"),
           ...b.alternativ.map((a, i) => {
             const id = `${b.id}-a${i}`;
             const r = h("input", { type: "radio", name: b.id, id }) as HTMLInputElement;

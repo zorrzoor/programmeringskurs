@@ -6,7 +6,10 @@ mal: "Efter den här lektionen kan du sortera grupper efter deras summa och gör
 ```ruta
 rubrik: Kort om CSV
 text: |
-  **CSV** (comma-separated values) är en tabell som textfil: en rad per rad i tabellen, med kolumnerna åtskilda av ett tecken (oftast komma) och rubrikerna på första raden. **Med Excel:** en CSV-fil öppnas i Excel som ett vanligt kalkylblad, och ett kalkylblad sparas som CSV med Arkiv, Spara som och filtypen CSV, så att data kan flyttas mellan program. **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader` och skriver dem med `csv.DictWriter`.
+  **CSV** (comma-separated values) är en tabell som textfil: en rad per rad i tabellen, kolumnerna åtskilda av ett tecken (oftast komma) och rubrikerna på första raden.
+
+  - **Med Excel:** en CSV-fil öppnas i Excel som ett vanligt kalkylblad, och ett kalkylblad sparas som CSV med Arkiv, Spara som och filtypen CSV. Så flyttas data mellan program.
+  - **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader` och skriver dem med `csv.DictWriter`.
 ```
 
 Samma fil som förut följer med.
