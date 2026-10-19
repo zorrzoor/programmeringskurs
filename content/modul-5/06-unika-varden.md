@@ -26,7 +26,7 @@ En **mängd** (`set`) är som en lista där varje värde bara kan finnas en gån
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel finns Ta bort dubbletter under Data, och Unika-värden i en filtrerad lista. En mängd gör samma sak i Python: den behåller varje värde en gång.
+  I Excel finns Ta bort dubbletter under Data, och funktionen UNIK i nyare versioner. En mängd gör samma sak i Python: den behåller varje värde en gång.
 ```
 
 ## Fråga

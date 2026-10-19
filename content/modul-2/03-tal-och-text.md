@@ -26,7 +26,7 @@ Tryck på **Stegvis**. I tabellen visas texter med citattecken (`'Anna'`) och ta
 - Ett tal står utan citattecken: `30`.
 - Decimaltal skrivs med punkt: `12.5`.
 
-Skillnaden märks när du räknar. Ett tal kan du räkna med, men med en text blir det något annat.
+Skillnaden märks när du använder `+`: tal räknas ihop, men texter sätts ihop till en längre text.
 
 ```python-exempel
 a = "5"

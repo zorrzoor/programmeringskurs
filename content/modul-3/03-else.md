@@ -24,7 +24,7 @@ Exakt **en** av vägarna körs: antingen raderna under `if`, eller raderna under
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  Funktionen `=OM(test; om sant; om falskt)` i Excel är hela if/else. Första delen efter OM motsvarar `if`, och den tredje delen motsvarar `else`.
+  I Excels `=OM(test; om sant; om falskt)` motsvarar `test` villkoret efter `if`, `om sant` raderna under `if`, och `om falskt` raderna under `else`.
 ```
 
 ```forutsag

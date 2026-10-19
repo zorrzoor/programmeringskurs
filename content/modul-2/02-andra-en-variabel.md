@@ -29,7 +29,7 @@ Raden `pris = pris + 5` ser ut som en ekvation som aldrig kan stämma, men den �
 
 Därför står det 25 på slutet, inte 20. Det gamla värdet 20 försvann när det nya lades dit.
 
-Det finns ett kortare sätt att skriva samma sak: `pris += 5`. Det betyder "lägg på 5 till pris". Det går lika bra med `-=`, `*=` och `/=`.
+Det finns ett kortare sätt att skriva samma sak: `pris += 5`. Det betyder "lägg till 5 i pris". Det går lika bra med `-=`, `*=` och `/=`.
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel

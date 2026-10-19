@@ -20,8 +20,8 @@ print(abs(-5))
 
 Python kommer med många färdiga funktioner. De vanligaste:
 
-- `len(x)` antal element, och `sum(lista)` summan av talen.
-- `max(lista)` och `min(lista)` det största och minsta.
+- `len(x)` ger antalet element, och `sum(lista)` summan av talen.
+- `max(lista)` och `min(lista)` ger det största och minsta.
 - `round(tal, n)` avrundar till `n` decimaler, och `abs(tal)` tar bort minustecknet.
 - `sorted(lista)` sorterar.
 

@@ -31,7 +31,7 @@ Datorn fyller aldrig i luckor åt dig. Det låter jobbigt, men det är också sk
 
 ## Dela upp stora problem
 
-Programmerare gör nästan alltid samma sak med ett stort problem: de delar upp det i små steg som var och en är exakta. Varje steg gör en sak. Och ibland behöver ett steg resultatet av ett steg före det, så ordningen måste följa det.
+Programmerare gör nästan alltid samma sak med ett stort problem: de delar upp det i små steg som var och en är exakta. Varje steg gör en sak. Och ibland behöver ett steg resultatet av ett tidigare steg, och då måste ordningen ta hänsyn till det.
 
 Ta ett problem med flera delar: *Du köper tre varor à 20 kr. Du får 10 procent rabatt på varorna, men inte på frakten. Frakten är 10 kr. Visa vad du ska betala.*
 

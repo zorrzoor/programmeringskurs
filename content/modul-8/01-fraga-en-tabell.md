@@ -5,7 +5,7 @@ mal: Efter den här lektionen kan du hämta kolumner och rader från en tabell m
 
 Det här är en valfri modul. Du får använda **SQL**, språket för att fråga databaser, inifrån Python. Tabellerna `varor` och `ordrar` ligger i filen `butik.sql` (en butik med varor och beställningar).
 
-Varje exempel och övning i lektionen börjar med samma fem rader: de skapar en liten databas i minnet från filen `butik.sql` och definierar funktionen `visa`, som kör en SQL-fråga och skriver ut varje rad. Du behöver bara skriva SQL-frågan inom citattecknen i `visa(...)`.
+Varje exempel och övning i lektionen börjar med samma sex rader: de skapar en liten databas i minnet från filen `butik.sql` och definierar funktionen `visa`, som kör en SQL-fråga och skriver ut varje rad. Du behöver bara skriva SQL-frågan inom citattecknen i `visa(...)`.
 
 ```fil
 namn: butik.sql

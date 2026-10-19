@@ -49,7 +49,7 @@ kod: |
 kor: true
 alternativ: ["tel ###-###", "tel #", "tel 070-123", "tel ###"]
 ratt: 0
-forklaring: "Mönstret \\\\d är en enda siffra, och sub byter ut varje siffra mot ett #. Bokstäverna och bindestrecket påverkas inte."
+forklaring: "Mönstret \\d är en enda siffra, och sub byter ut varje siffra mot ett #. Bokstäverna och bindestrecket påverkas inte."
 ```
 
 ## Din tur
