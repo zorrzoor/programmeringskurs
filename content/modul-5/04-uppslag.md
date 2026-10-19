@@ -22,6 +22,7 @@ Ett **uppslag** (på engelska *dict*, från dictionary) sparar värden under **n
 - Du slår upp ett värde med nyckeln: `person["namn"]`.
 - Du lägger till eller ändrar med `person["stad"] = "Lund"`.
 - `"namn" in person` kollar om nyckeln finns.
+- `for nyckel in person:` går igenom nycklarna, och `sorted(person)` ger nycklarna i bokstavsordning.
 - Slår du upp en nyckel som inte finns får du ett `KeyError`.
 
 ```ruta

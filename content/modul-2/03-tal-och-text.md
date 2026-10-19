@@ -57,16 +57,16 @@ text: |
 
 ```ovning
 id: m2-tal-text-tre
-uppgift: "Skapa tre variabler: `förnamn` med texten `Eva`, `antal` med talet `3` och `pris` med decimaltalet `12.5`."
+uppgift: "Skapa tre variabler: `fornamn` med texten `Eva`, `antal` med talet `3` och `pris` med decimaltalet `12.5`."
 start: |
   # skriv din kod här
-ratta: {variabler: {förnamn: "Eva", antal: 3, pris: 12.5}}
+ratta: {variabler: {fornamn: "Eva", antal: 3, pris: 12.5}}
 ledtradar:
   - Tre rader, en variabel på varje.
   - Texten ska ha citattecken, talen inte. Decimaltal skrivs med punkt.
-  - förnamn = "Eva", antal = 3 och pris = 12.5.
+  - fornamn = "Eva", antal = 3 och pris = 12.5.
 facit: |
-  förnamn = "Eva"
+  fornamn = "Eva"
   antal = 3
   pris = 12.5
 ```

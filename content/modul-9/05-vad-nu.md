@@ -3,7 +3,7 @@ titel: "Vad nu?"
 mal: "Efter den här lektionen vet du hur du går vidare med Python på egen hand."
 ---
 
-Du har gått igenom hela kursen och byggt egna program. Det här är sista lektionen.
+Du har gått igenom hela kursen och byggt egna program. Det här är sista lektionen i huvudkursen. Vill du ha mer finns den valfria modul 10, Fler verktyg, med bland annat slumptal (`random`) och datum (`datetime`).
 
 ## Det du kan nu
 

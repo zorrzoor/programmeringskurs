@@ -7,8 +7,8 @@ mal: Efter den här lektionen vet du hur du kör kod, får hjälp, och att det �
 
 1. **Prova.** Ett exempel som du kör och ändrar.
 2. **Läs.** Några korta stycken som förklarar vad som hände.
-3. **Fråga.** Du svarar på en fråga om vad som händer *innan* du kör. Det är det bästa sättet att lära sig.
-4. **Gör själv.** Små uppgifter där du skriver koden.
+3. **Test.** Du svarar på en fråga om vad som händer *innan* du kör. Det är det bästa sättet att lära sig.
+4. **Övning.** Små uppgifter där du skriver koden.
 
 Det finns inga poäng, ingen tid och ingen som tittar. Du kan gå tillbaka och göra om vad du vill.
 

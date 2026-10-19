@@ -61,16 +61,16 @@ text: |
 
 ```forutsag
 kod: |
-  import csv, io
+  import csv
 
-  ut = io.StringIO()
-  skrivare = csv.DictWriter(ut, fieldnames=["stad"])
-  skrivare.writerow({"stad": "Lund, Sverige"})
-  print(ut.getvalue().strip())
+  with open("stad.csv", "w", newline="") as fil:
+      skrivare = csv.DictWriter(fil, fieldnames=["stad"])
+      skrivare.writerow({"stad": "Lund, Sverige"})
+  print(open("stad.csv").read().strip())
 kor: true
 alternativ: ["\"Lund, Sverige\"", "Lund, Sverige", "Lund Sverige", "Ett felmeddelande"]
 ratt: 0
-forklaring: "Värdet innehåller ett komma, så DictWriter sätter citattecken runt det: \"Lund, Sverige\". Då förstår en som läser filen att det är en enda kolumn."
+forklaring: "Värdet innehåller ett komma, så DictWriter sätter citattecken runt det: \"Lund, Sverige\". Då ser ett program som läser filen att det är en enda kolumn."
 ```
 
 ## Din tur

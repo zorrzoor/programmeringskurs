@@ -30,7 +30,7 @@ facit: |
 
 ## Steg 2: Gör jämförelsen förlåtande
 
-En spelare som skriver `stockholm ` med liten bokstav och ett mellanslag har rätt, men är inte exakt lika med `Stockholm`. Gör jämförelsen i en funktion som ignorerar stora och små bokstäver och mellanslag i början och slutet.
+En spelare som skriver `stockholm ` med liten bokstav och ett mellanslag har rätt, men är inte exakt lika med `Stockholm`. Gör jämförelsen i en funktion som ignorerar stora och små bokstäver och mellanslag i början och slutet. Du behöver två textfunktioner: `text.lower()` ger texten med små bokstäver, och `text.strip()` tar bort mellanslag i kanterna.
 
 ```ovning
 id: m9-fraga-ratta
@@ -136,7 +136,7 @@ facit: |
 
 ## Förbättra själv
 
-- Lägg till fler frågor, och ställ dem i slumpmässig ordning (modulen `random`, se lektionen om färdiga funktioner).
+- Lägg till fler frågor, och ställ dem i slumpmässig ordning (modulen `random`, se lektionen Slumptal i den valfria modul 10).
 - Låt spelaren välja svar bland alternativ.
 - Spara högsta poäng i en fil (modul 7).
 
