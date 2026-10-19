@@ -19,7 +19,7 @@ print(tal[-1])
 
 Med ett kolon i hakparentesen får du en **del** av listan:
 
-- `lista[1:4]` är elementen från plats 1 till **före** plats 4, alltså plats 1, 2 och 3. (Slutet ingår inte, precis som i `range`.)
+- `lista[1:4]` är elementen från plats 1 till **före** plats 4, alltså plats 1, 2 och 3. (Slutet ingår inte, precis som i `range`: `lista[1:4]` ger 4 - 1 = 3 element.)
 - `lista[:2]` är de **två första**, och `lista[2:]` är allt från plats 2 och framåt.
 - Negativa tal räknar bakifrån: `lista[-1]` är det **sista** elementet och `lista[-2:]` de **två sista**.
 

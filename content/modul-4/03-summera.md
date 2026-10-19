@@ -14,7 +14,7 @@ for i in range(1, 5):
 print(total)
 ```
 
-Resultatet är 10, alltså 1 + 2 + 3 + 4. Talet 5 kommer inte med, eftersom `range(1, 5)` slutar före 5.
+Resultatet är 10, alltså 1 + 2 + 3 + 4. Talet 5 kommer inte med, eftersom `range(1, 5)` stannar när den kommer till 5. Det är samma regel som i förra lektionen: starten ingår, slutet ingår inte, och antalet varv är 5 - 1 = 4. Vill du ha med 5 skriver du `range(1, 6)`.
 
 ## Mönstret
 
