@@ -30,7 +30,7 @@ Tillsammans med `sorted` blir det en topplista: `sorted(tal, reverse=True)[:3]` 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel kan du markera ett område, till exempel A2:A4. En del av en lista är samma sak: ett område av elementen.
+  I Excel kan du markera ett område, till exempel A2:A4. En del av en lista är samma idé, med en skillnad: i Excel ingår A4 i A2:A4, men i Python ingår slutet inte: `lista[2:4]` är plats 2 och 3.
 ```
 
 ## Fråga

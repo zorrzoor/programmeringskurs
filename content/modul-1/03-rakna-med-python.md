@@ -36,7 +36,7 @@ print((2 + 3) * 4)
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel ger `=2+3*4` talet 14 och `=(2+3)*4` talet 20. Python följer samma räkneregler som Excel och en miniräknare.
+  I Excel ger `=2+3*4` talet 14 och `=(2+3)*4` talet 20. Python följer samma räkneregler som Excel (en enkel miniräknare räknar däremot ofta från vänster till höger).
 
   **Två skillnader:** upphöjt till skrivs `^` i Excel (`=2^3`) men `**` i Python (`2 ** 3`). Resten vid delning är funktionen `REST(7;2)` i Excel, men operatorn `%` i Python (`7 % 2`).
 ```

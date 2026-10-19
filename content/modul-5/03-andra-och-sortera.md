@@ -26,7 +26,7 @@ print("Anna" in namn)
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel sorteras en kolumn med ett klick, och ett värde kan letas upp med `=LETARAD()`. `sorted` och `in` gör samma sak i kod: sorterar och söker i en lista.
+  I Excel sorteras en kolumn med ett klick, och du kan se om ett värde finns med till exempel `=ANTAL.OM(A:A;"Anna")>0` (funktionens exakta namn kan variera med Excels version och språkinställning). `sorted` och `in` gör samma sak i kod: sorterar och söker i en lista.
 ```
 
 ```forutsag

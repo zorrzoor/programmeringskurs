@@ -36,7 +36,7 @@ Funktionerna:
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  Det liknar jokertecknen i Excel (* och ?) när du söker, men mycket mer kraftfullt. Excel har egentligen inga reguljära uttryck, så det här är nytt.
+  Det liknar jokertecknen i Excel (* och ?) när du söker, men mycket mer kraftfullt. Äldre Excel har inga reguljära uttryck, men i nyare Microsoft 365 finns funktioner som REGEXTEST som använder samma sorts mönster (namnen kan variera med version och språkinställning).
 ```
 
 ## Fråga

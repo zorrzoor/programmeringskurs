@@ -33,7 +33,7 @@ Metoderna **ändrar inte** texten: de ger tillbaka en ny. Spara resultatet i en 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  De motsvarar textfunktionerna i Excel: RENSA, GEMENER, VERSALER, BYT.UT, DELA och TEXTJOIN. Skillnaden är att du kan kedja dem: text.strip().lower().split().
+  De motsvarar textfunktionerna i Excel: RENSA, GEMENER, VERSALER, BYT.UT, TEXTDELA (bara i Microsoft 365) och TEXTJOIN, och `title()` motsvarar INITIAL. Funktionernas exakta namn kan variera med Excels version och språkinställning. Skillnaden är att du kan kedja dem: text.strip().lower().split().
 ```
 
 ## Fråga

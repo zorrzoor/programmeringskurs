@@ -34,7 +34,7 @@ För dagens datum finns `date.today()`. Övningarna här använder fasta datum, 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  Det motsvarar Excels datumfunktioner: DATUM, DAGAR, DAG.VECKA och TEXT(datum; "åååå-mm-dd"). Excel lagrar datum som tal, men Python har en egen sorts värde för datum.
+  Det motsvarar Excels datumfunktioner: DATUM, DAGAR, VECKODAG och TEXT(datum; "åååå-mm-dd"). Funktionernas exakta namn kan variera med Excels version och språkinställning. Excel lagrar datum som tal, men Python har en egen sorts värde för datum. Veckodagen räknas också olika: i Excel är söndag dag 1, i Python är måndag 0.
 ```
 
 ## Fråga
