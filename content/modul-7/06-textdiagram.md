@@ -50,7 +50,7 @@ Riktiga diagram med färger och axlar görs med särskilda bibliotek. De ingår 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  Det motsvarar att välja Infoga, Stapeldiagram på en kolumn med summor. Skillnaden är att du själv bestämmer hur varje stapel ritas.
+  Det motsvarar att välja Infoga, Liggande stapeldiagram på en kolumn med summor. Skillnaden är att du själv bestämmer hur varje stapel ritas.
 ```
 
 ```forutsag

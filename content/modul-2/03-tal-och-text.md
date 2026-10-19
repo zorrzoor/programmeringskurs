@@ -50,7 +50,7 @@ forklaring: "Plus mellan två texter sätter ihop dem (\"Hej\" och \"!\" blir \"
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel går ett tal i en cell att summera, medan ett tal som är formaterat som text inte gör det. I Python avgör citattecknen vilket det är.
+  I Excel går ett tal i en cell att summera, medan ett tal som är lagrat som text (den gröna triangeln i cellen) inte gör det. I Python avgör citattecknen vilket det är.
 ```
 
 ## Din tur

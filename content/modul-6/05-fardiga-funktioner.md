@@ -38,7 +38,7 @@ Efter `import math` når du modulens funktioner med punkt: `math.sqrt(16)` (kvad
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  `SUMMA`, `MAX` och `AVRUNDA` i Excel är färdiga funktioner: någon har gjort dem åt dig. Moduler liknar de tillägg i Excel som slås på för särskilda uppgifter.
+  `SUMMA`, `MAX` och `AVRUNDA` i Excel är färdiga funktioner: någon har gjort dem åt dig. (Pythons `round` avrundar exakt mitt emellan, som 2.5, till närmaste jämna tal: 2, inte alltid uppåt som i Excel.) Moduler liknar de tillägg i Excel som slås på för särskilda uppgifter.
 ```
 
 ```forutsag
