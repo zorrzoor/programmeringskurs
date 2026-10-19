@@ -63,7 +63,7 @@ describe("skillnad: the rating is strict but says what differs", () => {
     expect(jamforVariabel("pris", { finns: true, lika: false, faktisk: "12" }, 12.5)).toHaveLength(1);
   });
   test("every requirement has a message", () => {
-    for (const k of ["uträkning", "kommentar-först", "kommentar", "f-sträng", "for", "while", "loop", "and", "or", "funktion", "import:math", "anropa:len", "inte-anropa:max"]) {
+    for (const k of ["uträkning", "kommentar-först", "kommentar", "f-sträng", "for", "while", "loop", "and", "or", "break", "continue", "funktion", "import:math", "anropa:len", "inte-anropa:max"]) {
       expect(kravMeddelande(k)).toMatch(/^Uppgiften ber/);
     }
   });

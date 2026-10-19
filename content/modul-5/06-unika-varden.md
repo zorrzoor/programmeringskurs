@@ -21,6 +21,7 @@ En **mängd** (`set`) är som en lista där varje värde bara kan finnas en gån
 - `len(mangd)` ger antalet olika värden.
 - En mängd har **ingen bestämd ordning**. Vill du ha en ordnad lista gör du `sorted(mangd)`.
 - `x in mangd` kollar om ett värde finns, och är snabbt även i stora mängder.
+- `x not in mangd` är tvärtom: det är sant om värdet inte finns. `set()` ger en tom mängd.
 - `mangd.add(x)` lägger till ett värde, men bara om det inte redan finns.
 
 ```ruta
@@ -83,14 +84,14 @@ ratta: {"utdata": "[3, 1, 2]"}
 ledtradar:
   - "En mängd tappar ordningen, så du behöver en lista också. Använd mängden för att komma ihåg vad du har sett."
   - "Gå igenom listan, och lägg bara till värden som inte redan finns i mängden."
-  - "if x not in sett: sett.add(x) och ny.append(x) i loopen, och print(ny) efteråt."
+  - "if x not in sedda: sedda.add(x) och ny.append(x) i loopen, och print(ny) efteråt."
 facit: |
   tal = [3, 1, 3, 2, 1]
-  sett = set()
+  sedda = set()
   ny = []
   for x in tal:
-      if x not in sett:
-          sett.add(x)
+      if x not in sedda:
+          sedda.add(x)
           ny.append(x)
   print(ny)
 ```

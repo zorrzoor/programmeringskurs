@@ -96,7 +96,7 @@ En bra frågesport berättar rätt svar när du har fel. Bygg vidare på ditt pr
 
 ```ovning
 id: m9-fraga-visa-ratt
-uppgift: "Skriv ut `Fel! Rätt svar: ` följt av rätt svar när spelaren har fel (till exempel `Fel! Rätt svar: 4`). Allt annat är som i förra steget."
+uppgift: "Programmet från steg 3 står nedan. Ändra det så att det skriver ut `Fel! Rätt svar: ` följt av rätt svar när spelaren har fel (till exempel `Fel! Rätt svar: 4`). Allt annat ska vara som förut."
 start: |
   fragor = [
       {"fraga": "Vilken är Sveriges huvudstad?", "svar": "Stockholm"},
@@ -106,11 +106,20 @@ start: |
   def ratta(svar, ratt):
       return svar.strip().lower() == ratt.strip().lower()
 
-  # skriv din kod här
+  poang = 0
+  for f in fragor:
+      print(f["fraga"])
+      svar = input()
+      if ratta(svar, f["svar"]):
+          print("Rätt!")
+          poang = poang + 1
+      else:
+          print("Fel!")
+  print(f"Poäng: {poang} av {len(fragor)}")
 stdin: ["Stockholm", "5"]
 ratta: {"utdata": "Vilken är Sveriges huvudstad?\nRätt!\nVad är 2 + 2?\nFel! Rätt svar: 4\nPoäng: 1 av 2"}
 ledtradar:
-  - "Det är samma program som i steg 3, men med en annan text vid fel svar."
+  - "Du behöver bara ändra texten i else-grenen."
   - "Rätt svar finns i f[\"svar\"]."
   - "print(\"Fel! Rätt svar: \" + f[\"svar\"]) i else-grenen."
 facit: |

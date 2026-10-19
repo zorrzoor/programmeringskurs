@@ -53,7 +53,7 @@ forklaring: "b = a betyder \"lägg det som finns i a i b\". Då finns 3 i b, och
 
 ```ovning
 id: m2-variabel-alder
-uppgift: "Skapa en variabel som heter `alder` och ge den värdet `30`. Skriv också ut den."
+uppgift: "Skapa en variabel som heter `alder` och ge den värdet `30`."
 start: |
   # skriv din kod här
 ratta: {variabler: {alder: 30}}

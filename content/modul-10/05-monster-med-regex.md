@@ -104,14 +104,16 @@ start: |
   # skriv din funktion här
 ratta: {"funktion": "har_datum", "tester": [{"in": ["Mötet är 2026-10-18 klockan nio"], "ut": true}, {"in": ["Inget datum här"], "ut": false}, {"in": ["18-10-2026"], "ut": false}]}
 ledtradar:
-  - "re.search ger None om mönstret inte finns."
+  - "re.search ger None om mönstret inte finns, och då är villkoret i en if falskt."
   - "Mönstret är fyra siffror, bindestreck, två siffror, bindestreck, två siffror."
-  - "return re.search(r\"\\d{4}-\\d{2}-\\d{2}\", text) is not None"
+  - "if re.search(r\"\\d{4}-\\d{2}-\\d{2}\", text): return True, och return False efteråt."
 facit: |
   import re
 
   def har_datum(text):
-      return re.search(r"\d{4}-\d{2}-\d{2}", text) is not None
+      if re.search(r"\d{4}-\d{2}-\d{2}", text):
+          return True
+      return False
 ```
 
 ```ovning

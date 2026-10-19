@@ -61,6 +61,8 @@ export function kravMeddelande(krav: string): string {
     case "loop": return "Uppgiften ber om en loop, men koden har ingen (`for` eller `while`).";
     case "and": return "Uppgiften ber dig använda `and`, men koden gör inte det.";
     case "or": return "Uppgiften ber dig använda `or`, men koden gör inte det.";
+    case "break": return "Uppgiften ber dig använda `break`, men koden gör inte det.";
+    case "continue": return "Uppgiften ber dig använda `continue`, men koden gör inte det.";
     case "funktion": return "Uppgiften ber om en funktion, men koden har ingen `def`.";
     case "import": return `Uppgiften ber dig använda modulen \`${namn}\`, men koden hämtar den inte med \`import ${namn}\`.`;
     case "anropa": return `Uppgiften ber dig använda \`${namn}\`, men koden anropar den inte.`;

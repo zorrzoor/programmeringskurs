@@ -114,7 +114,7 @@ spelade någon roll.
 
 **`krav`** på en övning kontrollerar *hur* uppgiften löstes, genom att läsa koden (Pythons `ast`), så att `print(70)` inte
 godkänns när uppgiften säger "med en uträkning". Använd det när uppgiftstexten ber om ett visst sätt. Kända krav:
-`uträkning`, `kommentar-först`, `kommentar`, `f-sträng`, `for`, `while`, `loop` (for eller while), `and`, `or`, `funktion`,
+`uträkning`, `kommentar-först`, `kommentar`, `f-sträng`, `for`, `while`, `loop` (for eller while), `and`, `or`, `break`, `continue`, `funktion`,
 `import:<modul>`, `anropa:<namn>` och `inte-anropa:<namn>`. Facit måste uppfylla sina egna krav (det testas).
 
 ````yaml

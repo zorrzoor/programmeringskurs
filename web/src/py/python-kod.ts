@@ -138,6 +138,10 @@ def _krav(kod, krav_json):
             ok = boolop(ast.And)
         elif k == "or":
             ok = boolop(ast.Or)
+        elif k == "break":
+            ok = any(isinstance(n, ast.Break) for n in noder)
+        elif k == "continue":
+            ok = any(isinstance(n, ast.Continue) for n in noder)
         elif k == "funktion":
             ok = any(isinstance(n, ast.FunctionDef) for n in noder)
         elif k.startswith("import:"):

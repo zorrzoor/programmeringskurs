@@ -221,6 +221,10 @@ describe("rating stays strict but explains, and checks how the task was solved",
     expect(ok("print(70)", ["import:math"]).ok).toBe(false);
     expect(ok("print(len([1]) + 69)", ["anropa:len", "uträkning"]).ok).toBe(true);
     expect(ok("print(1 < 2 and 70)", ["and"]).ok).toBe(true);
+    expect(ok("for i in range(3):\n    if i == 1:\n        break\nprint(70)", ["break"]).ok).toBe(true);
+    expect(ok("print(70)", ["break"]).ok).toBe(false);
+    expect(ok("for i in range(3):\n    if i == 1:\n        continue\nprint(70)", ["continue"]).ok).toBe(true);
+    expect(ok("print(70)", ["continue"]).ok).toBe(false);
   });
   test("a decimal with a comma gets a hint", () => {
     const k = e.kontrollera("pris = 12,5", { typ: "variabler", forvantat: { pris: 12.5 } });
