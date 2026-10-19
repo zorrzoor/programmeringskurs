@@ -28,6 +28,8 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await expect(page.getByRole("heading", { name: "Programmeringskurs", level: 1 })).toBeVisible();
   await expect(page.getByText(`Välkommen, ${namn}.`)).toBeVisible();
   await expect(page.getByText("Älskar dig!")).toBeVisible();
+  expect(await page.locator("img.ikon").evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
+  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/ikon.svg");
   await expect(page.getByRole("heading", { name: "Så använder du kursen" })).toBeVisible();
 
   // The page is cross-origin isolated (needed for input() in the worker)

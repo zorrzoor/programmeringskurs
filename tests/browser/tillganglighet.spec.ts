@@ -80,7 +80,7 @@ test("no sideways scrolling on a narrow phone, also with the largest text", asyn
 
 test("the display settings are applied, remembered and respected", async ({ page }) => {
   await logIn(page);
-  await page.getByText("Visning", { exact: true }).click();
+  await page.locator("summary", { hasText: "Visning" }).click();
   await page.getByLabel("Större", { exact: true }).check();
   await page.getByLabel("Mörkt", { exact: true }).check();
   await expect(page.locator("html")).toHaveAttribute("data-text", "storre");
