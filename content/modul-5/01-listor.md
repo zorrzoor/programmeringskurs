@@ -18,7 +18,7 @@ print(len(namn))
 
 En **lista** (på engelska *list*) samlar flera värden under ett namn. Den skrivs med hakparenteser, och värdena skiljs åt med kommatecken: `["Anna", "Bo", "Cia"]`.
 
-- Varje värde i listan har en **plats**, och platserna räknas från **noll**: `namn[0]` är det första, `namn[1]` det andra.
+- Varje värde i listan har en **plats**, och platserna räknas från **noll**, precis som `range` börjar på 0: `namn[0]` är det första, `namn[1]` det andra och `namn[2]` det tredje. I `["Anna", "Bo", "Cia"]` ligger alltså "Anna" på plats 0, "Bo" på plats 1 och "Cia" på plats 2, och det sista elementet har plats `len(namn) - 1`.
 - `len(namn)` ger **antalet** element, här 3.
 - Det sista elementet är `namn[-1]`.
 - En lista kan innehålla tal, text eller en blandning.
