@@ -28,6 +28,8 @@ Notera **två** likhetstecken när du jämför. Ett enda `=` betyder "spara i" (
 rubrik: Du kanske känner igen det från Excel
 text: |
   I Excel ger `=A1>B1` svaret SANT eller FALSKT. I Python ger samma jämförelse `True` eller `False`. Det är samma sorts svar, och det är det som `if` använder för att välja väg i nästa lektion.
+
+  **Se upp, här skiljer sig Excel och Python:** i Excel skrivs lika med med ett enkelt `=` (`=A1=B1`) och inte lika med som `<>`. I Python är det `==` och `!=`. Skriver du `=` i Python sparar du ett värde i stället för att jämföra.
 ```
 
 ```forutsag

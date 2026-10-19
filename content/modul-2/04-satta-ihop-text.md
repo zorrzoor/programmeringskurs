@@ -20,6 +20,7 @@ En **f-sträng** är en text med ett `f` framför första citattecknet. Inuti te
 - `f"{namn} är {alder} år."` blir `Anna är 30 år.`
 - Du kan till och med räkna inom klamrarna: `f"Totalt: {antal * pris} kr"`.
 - Glömmer du f:et skrivs klamrarna ut som de står. Prova.
+- Klamrarna `{ }` skrivs på ett svenskt tangentbord med AltGr+7 och AltGr+0 (på Mac med Alt+Skift+8 och Alt+Skift+9).
 
 Det går också att sätta ihop med `+`, men då måste talen göras om till text först. F-strängar är enklare.
 

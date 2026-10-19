@@ -25,6 +25,10 @@ alder = int(input("Hur gammal är du? "))
 print(f"Nästa år fyller du {alder + 1}.")
 ```
 
+`int(input("Hur gammal är du? "))` läses **inifrån och ut**: först körs `input(...)`, som ställer frågan och ger svaret som text, och sedan gör `int(...)` om den texten till ett tal. Det är samma sak som att göra det i två steg: `svar = input("Hur gammal är du? ")` och sedan `alder = int(svar)`.
+
+Frågetexten i `input("...")` skrivs ut som en del av resultatet. Med `input("Vad heter du? ")` blir utskriften `Vad heter du? Hej Anna!` (frågan, och sedan det programmet skriver ut). Det måste du ta med om en uppgift ber om en exakt utskrift.
+
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
