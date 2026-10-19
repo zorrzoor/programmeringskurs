@@ -29,7 +29,7 @@ export function startApp(rot: HTMLElement, namn: string, sync: ProgressSync, bas
   const sida = h("main", { class: "sida", id: "innehall" });
   rot.replaceChildren(
     h("a", { class: "hoppa", href: "#innehall" }, "Hoppa till innehållet"),
-    h("header", { class: "topp" }, h("a", { class: "logga", href: "#/" }, "Programmeringskurs"), h("nav", { class: "meny", "aria-label": "Hjälp" }, h("a", { href: "#/ordlista" }, "Ordlista"), h("a", { href: "#/fastnat" }, "Jag har fastnat"), skapaVisningsval()), h("span", { class: "vem" }, `Du är ${namn} `, h("button", { type: "button", class: "link", onclick: onByt }, "Byt namn")), status),
+    h("header", { class: "topp" }, h("a", { class: "logga", href: "#/" }, h("img", { class: "ikon", src: "/ikon.svg", alt: "", width: "32", height: "32" }), "Programmeringskurs"), h("nav", { class: "meny", "aria-label": "Hjälp" }, h("a", { href: "#/ordlista" }, "Ordlista"), h("a", { href: "#/fastnat" }, "Jag har fastnat"), skapaVisningsval()), h("span", { class: "vem" }, `Du är ${namn} `, h("button", { type: "button", class: "link", onclick: onByt }, "Byt namn")), status),
     sida,
   );
   const ctx: Kontext = {
