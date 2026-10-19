@@ -40,7 +40,7 @@ Mellan stegen håller datorn reda på värden i **minnet**. Det som ser avancera
 
 ## Exakt, inte klok
 
-En dator är **snabb** men inte **klok**. Den tolkar och gissar inte, utan gör precis det som står. Det har två följder som du kommer att märka direkt:
+En dator är **snabb** men inte **klok**. Den läser instruktionerna och gör precis det som står, utan att fundera över vad du kanske menade. Det har två följder som du kommer att märka direkt:
 
 - Samma instruktioner och samma indata ger **alltid** samma resultat.
 - Det som inte står i instruktionerna görs inte. Datorn fyller aldrig i luckor åt dig.
