@@ -55,6 +55,7 @@ uppgift: "Skriv ut talen `1` till och med `10`, ett per rad, men hoppa över tal
 start: |
   # skriv din kod här
 ratta: {utdata: "1\n2\n3\n4\n6\n7\n8\n9\n10"}
+krav: ["continue"]
 ledtradar:
   - Loopa över 1 till 10, och kontrollera om talet är 5.
   - Är talet 5 ska du hoppa över resten av varvet med continue.
@@ -72,6 +73,7 @@ uppgift: "Skriv ut talen från `1` och uppåt, men avbryt med `break` när talet
 start: |
   # skriv din kod här
 ratta: {utdata: "1\n2\n3\n4"}
+krav: ["break"]
 ledtradar:
   - Loopa över ett stort område, till exempel range(1, 100).
   - Kontrollera om talet är större än 4 och avbryt då.

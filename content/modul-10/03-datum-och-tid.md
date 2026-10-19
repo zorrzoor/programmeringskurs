@@ -114,13 +114,13 @@ start: |
 ratta: {"funktion": "omvandla", "tester": [{"in": ["24/12/2026"], "ut": "2026-12-24"}, {"in": ["01/03/2025"], "ut": "2025-03-01"}]}
 ledtradar:
   - "Läs texten som ett datum med strptime, och skriv ut det i den andra formen."
-  - "datetime.strptime(text, \"%d/%m/%Y\") läser texten, och .date().isoformat() ger år-månad-dag."
-  - "return datetime.strptime(text, \"%d/%m/%Y\").date().isoformat()"
+  - "datetime.strptime(text, \"%d/%m/%Y\") läser texten, och .strftime(\"%Y-%m-%d\") skriver ut den som år-månad-dag."
+  - "return datetime.strptime(text, \"%d/%m/%Y\").strftime(\"%Y-%m-%d\")"
 facit: |
   from datetime import datetime
 
   def omvandla(text):
-      return datetime.strptime(text, "%d/%m/%Y").date().isoformat()
+      return datetime.strptime(text, "%d/%m/%Y").strftime("%Y-%m-%d")
 ```
 
 ## Det här lärde du dig

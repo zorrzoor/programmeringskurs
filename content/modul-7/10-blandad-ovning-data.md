@@ -60,7 +60,7 @@ ratta: {fil: storkunder.txt, innehall: "Anna\nCia"}
 ledtradar:
   - Räkna först totalen per kund.
   - Gå sedan igenom summorna och skriv bara de som är över 500.
-  - "if summa > 500: ut.write(kund + \"\n\") inne i loopen, med filen öppnad för skrivning."
+  - "if summa > 500: ut.write(kund + \"\\n\") inne i loopen, med filen öppnad för skrivning."
 facit: |
   import csv
 

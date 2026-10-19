@@ -83,14 +83,14 @@ ratta: {"utdata": "[3, 1, 2]"}
 ledtradar:
   - "En mängd tappar ordningen, så du behöver en lista också. Använd mängden för att komma ihåg vad du har sett."
   - "Gå igenom listan, och lägg bara till värden som inte redan finns i mängden."
-  - "if x not in sett: sett.add(x) och ny.append(x) i loopen, och print(ny) efteråt."
+  - "if x not in sedda: sedda.add(x) och ny.append(x) i loopen, och print(ny) efteråt."
 facit: |
   tal = [3, 1, 3, 2, 1]
-  sett = set()
+  sedda = set()
   ny = []
   for x in tal:
-      if x not in sett:
-          sett.add(x)
+      if x not in sedda:
+          sedda.add(x)
           ny.append(x)
   print(ny)
 ```

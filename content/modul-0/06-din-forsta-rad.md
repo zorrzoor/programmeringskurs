@@ -40,7 +40,7 @@ start: |
 ratta: {utdata: "Hej!\nJag lär mig Python."}
 ledtradar:
   - Du behöver två rader med print, en för varje rad som ska skrivas ut.
-  - Varje rad ser ut så här, med en text mellan citattecknen, inom parenteserna.
+  - Varje rad är print, sedan parenteser, och inuti dem texten mellan citattecken, som print("...").
   - print("Hej!") på första raden och print("Jag lär mig Python.") på andra.
 facit: |
   print("Hej!")

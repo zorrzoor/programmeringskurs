@@ -109,7 +109,7 @@ ratta: {utdata: "kaffe"}
 ledtradar:
   - Börja med att räkna ut omsättningen per vara, precis som i förra uppgiften.
   - Gå sedan igenom uppslaget och håll reda på den vara som har störst summa.
-  - "Du kan också använda max(summor, key=summor.get), som ger nyckeln med störst värde."
+  - "Sätt basta = \"\" före loopen. I loopen: if basta == \"\" or summor[vara] > summor[basta]: basta = vara"
 facit: |
   import csv
 

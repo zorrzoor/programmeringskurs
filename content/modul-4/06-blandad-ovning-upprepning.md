@@ -45,7 +45,7 @@ facit: |
 
 ```ovning
 id: m4-blandat-fizz
-uppgift: "För varje tal från `1` till `15`: skriv ut `Fizz` om talet är delbart med 3, annars talet självt."
+uppgift: "För varje tal från `1` till och med `15`: skriv ut `Fizz` om talet är delbart med 3, annars talet självt."
 start: |
   # skriv din kod här
 ratta: {utdata: "1\n2\nFizz\n4\n5\nFizz\n7\n8\nFizz\n10\n11\nFizz\n13\n14\nFizz"}

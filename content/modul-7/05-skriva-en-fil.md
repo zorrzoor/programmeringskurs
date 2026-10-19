@@ -72,7 +72,7 @@ ratta: {fil: rapport.txt, innehall: "kaffe: 4\nte: 3\nbulle: 4"}
 ledtradar:
   - Räkna först antalet per vara i ett uppslag, och skriv sedan filen.
   - Öppna rapport.txt med "w", och skriv en rad för varje vara med fil.write.
-  - "fil.write(f\"{vara}: {antal}\n\") inne i en for-loop över antal.items()."
+  - "fil.write(f\"{vara}: {summa}\\n\") inne i for vara, summa in antal.items():"
 facit: |
   import csv
 
@@ -95,7 +95,7 @@ ratta: {fil: omsattning.csv, innehall: "vara,summa\nkaffe,120\nte,75\nbulle,60"}
 ledtradar:
   - Räkna omsättningen per vara först, och skriv sedan filen.
   - Skriv rubrikraden som en egen rad före loopen. Kom ihåg radbyte.
-  - "fil.write(\"vara,summa\n\") före loopen och fil.write(f\"{vara},{summa}\n\") i loopen."
+  - "fil.write(\"vara,summa\\n\") före loopen och fil.write(f\"{vara},{summa}\\n\") i loopen."
 facit: |
   import csv
 

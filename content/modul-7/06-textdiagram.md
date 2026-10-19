@@ -66,7 +66,7 @@ forklaring: "Varje varv ger n stycken x följt av ett lodrätt streck. Med n = 0
 
 ```ovning
 id: m7-diagram-omsattning
-uppgift: "Rita omsättningen per vara (antal gånger pris) som staplar där varje `#` är tio kronor, på formen `kaffe: ############`. Varorna i den ordning de först förekommer."
+uppgift: "Rita omsättningen per vara (antal gånger pris) som staplar där varje `#` är tio hela kronor (använd `// 10`, så att 75 kr blir sju `#`), på formen `kaffe: ############`. Varorna i den ordning de först förekommer."
 start: |
   import csv
 ratta: {utdata: "kaffe: ############\nte: #######\nbulle: ######"}
