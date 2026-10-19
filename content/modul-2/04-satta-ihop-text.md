@@ -15,7 +15,7 @@ print(f"{namn} är {alder} år.")
 
 ## Så fungerar det
 
-En **f-sträng** är en text med ett `f` framför första citattecknet. Inuti texten sätter du variabelnamn inom `{ }`, och Python byter ut dem mot värdena.
+En **f-sträng** är en text med ett `f` framför första citattecknet. Inuti texten sätter du variabelnamn inom klamrar `{ }` (klammerparenteser), och Python byter ut dem mot värdena.
 
 - `f"{namn} är {alder} år."` blir `Anna är 30 år.`
 - Du kan till och med räkna inom klamrarna: `f"Totalt: {antal * pris} kr"`.

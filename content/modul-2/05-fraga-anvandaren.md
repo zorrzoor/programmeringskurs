@@ -14,7 +14,7 @@ print(f"Hej {namn}!")
 
 ## Så fungerar input
 
-`input(...)` är ett kommando som **väntar på att någon skriver något**. Texten inom parenteserna visas som en fråga, och det som skrivs in blir svaret. Du sparar svaret i en variabel, här `namn`.
+`input(...)` är en funktion som **väntar på att någon skriver något**. Texten inom parenteserna visas som en fråga, och det som skrivs in blir svaret. Du sparar svaret i en variabel, här `namn`.
 
 - Texten i `input("...")` är frågan. Den kan vara tom: `input()`.
 - Svaret är **alltid text**, även om man skriver en siffra.

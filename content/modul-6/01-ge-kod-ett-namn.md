@@ -22,7 +22,7 @@ En **funktion** (på engelska *function*) är en bit kod som du har gett ett **n
 
 - `def halsa():` är **definitionen**. Den slutar med kolon, och raderna som hör till är indragna.
 - Definitionen **gör ingenting** i sig. Den berättar bara för Python vilka rader som hör till namnet. Koden körs först när du anropar funktionen.
-- Funktionen du har använt hela tiden, `print(...)`, är också en funktion, som någon annan har skrivit åt dig.
+- `print(...)`, som du har använt hela tiden, är också en funktion som någon annan har skrivit åt dig. Det gäller även `input` och `len`.
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel

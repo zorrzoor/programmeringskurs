@@ -57,7 +57,7 @@ Prova själv: vad händer med den här instruktionen?
 kod: |
   Du ber datorn:
   "Visa de största kunderna först."
-alternativ: ["Datorn gissar vad störst betyder och visar kunderna", "Ingenting händer, datorn förstår inte vad som menas med störst", "Datorn visar kunderna i bokstavsordning", "Datorn frågar vilken kund du menar"]
+alternativ: ["Datorn gissar vad störst betyder och visar kunderna", "Datorn kan inte följa instruktionen: den säger inte vad störst betyder", "Datorn visar kunderna i bokstavsordning", "Datorn frågar vilken kund du menar"]
 kor: false
 ratt: 1
 forklaring: "Datorn kan inte gissa vad störst betyder: störst omsättning, flest köp eller något annat? Allt den ska veta måste stå i instruktionerna, och att formulera dem exakt är kärnan i programmering."

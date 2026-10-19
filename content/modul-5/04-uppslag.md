@@ -17,7 +17,7 @@ print(person)
 
 ## Vad är ett uppslag?
 
-Ett **uppslag** (på engelska *dict*, från dictionary) sparar värden under **nycklar** i stället för under platsnummer. Det skrivs med klammerparenteser: `{"nyckel": värde, "nyckel2": värde2}`.
+Ett **uppslag** (på engelska *dict*, från dictionary) sparar värden under **nycklar** i stället för under platsnummer. Det skrivs med klamrar: `{"nyckel": värde, "nyckel2": värde2}`.
 
 - Du slår upp ett värde med nyckeln: `person["namn"]`.
 - Du lägger till eller ändrar med `person["stad"] = "Lund"`.

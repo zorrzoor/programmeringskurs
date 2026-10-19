@@ -44,7 +44,7 @@ kod: |
   Print("Hej")
 alternativ: ["Hej skrivs ut", "Python känner inte till namnet Print (stort P)", "Ingenting händer, men inget fel"]
 ratt: 1
-forklaring: "Python skiljer på stora och små bokstäver. print med litet p är kommandot, Print är något annat som Python inte känner till."
+forklaring: "Python skiljer på stora och små bokstäver. print med litet p är funktionen, Print är något annat som Python inte känner till."
 ```
 
 ## Din tur: rätta felen
@@ -71,8 +71,8 @@ start: |
 ratta: {utdata: "Hej då"}
 ledtradar:
   - Python känner inte till ordet längst till vänster. Läs felmeddelandet.
-  - Det är ett stavfel i kommandot.
-  - Kommandot heter print.
+  - Det är ett stavfel i funktionens namn.
+  - Funktionen heter print.
 facit: |
   print("Hej då")
 ```

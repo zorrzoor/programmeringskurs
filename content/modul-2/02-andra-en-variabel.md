@@ -21,7 +21,7 @@ Tryck på **Stegvis** under exemplet och gå fram med **Nästa**. Titta i tabell
 
 ## Raden som ser ut som en ekvation
 
-Raden `pris = pris + 5` ser ut som en ekvation som aldrig kan stämma, men den är inget påstående. Den är ett **kommando**:
+Raden `pris = pris + 5` ser ut som en ekvation som aldrig kan stämma, men den är inget påstående. Den är en **instruktion**:
 
 1. Ta det som finns i `pris` (20).
 2. Lägg på 5 (blir 25).
@@ -34,7 +34,7 @@ Det finns ett kortare sätt att skriva samma sak: `pris += 5`. Det betyder "läg
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  I Excel kan en cell som heter *pris* användas i `=pris+5` i en annan cell. I Python skrivs det som ett **kommando** och resultatet *läggs tillbaka* i pris. Det är därför det bara står 25 på slutet, och inte både 20 och 25.
+  I Excel kan en cell som heter *pris* användas i `=pris+5` i en annan cell. I Python skrivs det som en **instruktion** och resultatet *läggs tillbaka* i pris. Det är därför det bara står 25 på slutet, och inte både 20 och 25.
 ```
 
 ```forutsag
@@ -93,6 +93,6 @@ facit: |
 
 ## Det här lärde du dig
 
-- `pris = pris + 5` är ett kommando: ta värdet, räkna, lägg tillbaka.
+- `pris = pris + 5` är en instruktion: ta värdet, räkna, lägg tillbaka.
 - Det gamla värdet ersätts av det nya.
 - `pris += 5` är en kortare variant.

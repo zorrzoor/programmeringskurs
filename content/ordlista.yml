@@ -140,9 +140,6 @@
 - ord: "felsökning"
   former: ["felsöka", "felsöker"]
   forklaring: "Att leta reda på varför ett program inte gör som det ska, och rätta det. På engelska: debugging."
-- ord: "kommando"
-  former: ["kommandot", "kommandon"]
-  forklaring: "En instruktion till datorn, till exempel pris = pris + 5."
 - ord: "True och False"
   former: ["True", "False"]
   forklaring: "De två svaren på en jämförelse: sant eller falskt. Skrivs med stor första bokstav i Python."

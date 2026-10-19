@@ -43,7 +43,7 @@ print(total)
 I Sverige skrivs decimaltal med **komma** (`31500,50`), men ett komma skulle då förväxlas med kolumnavskiljaren. Därför sparar en svensk Excel CSV-filer med **semikolon** mellan kolumnerna. Du anpassar Python på två ställen:
 
 1. `csv.DictReader(fil, delimiter=";")` talar om att kolumnerna skiljs åt med semikolon.
-2. `rad["lon"].replace(",", ".")` byter decimalkomma mot decimalpunkt, och `float(...)` gör sedan om texten till ett tal. Python förstår bara punkt.
+2. `rad["lon"].replace(",", ".")` byter decimalkomma mot decimalpunkt, och `float(...)` gör sedan om texten till ett tal. `float` godtar bara punkt som decimaltecken.
 
 Ett tredje som kan hända: väljer du CSV UTF-8 i Excel läggs ett osynligt märke (BOM) först i filen, och då blir den första rubriken konstig. Öppna filen med `encoding="utf-8-sig"` i stället för `"utf-8"` så försvinner det.
 
@@ -128,5 +128,5 @@ facit: |
 ## Det här lärde du dig
 
 - Svensk Excel sparar CSV med semikolon mellan kolumnerna och komma som decimaltecken.
-- `csv.DictReader(fil, delimiter=";")` läser semikolon, och `.replace(",", ".")` ger ett tal som `float` förstår.
+- `csv.DictReader(fil, delimiter=";")` läser semikolon, och `.replace(",", ".")` ger en text som `float` kan göra om till ett tal.
 - `encoding="utf-8-sig"` tar bort det osynliga märke (BOM) som Excel kan lägga först i filen, och `encoding="cp1252"` läser filer som Excel sparat i Windows-1252.
