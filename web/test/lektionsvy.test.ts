@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, test, vi } from "vitest";
 import type { Block } from "../src/kurs-typer.ts";
 import type { Kontroll, KorResultat, StegResultat } from "../src/py/engine.ts";
 import { renderBlock, type KoerareLike, type Kontext } from "../src/ui/block.ts";
+import { hittaLektion } from "../src/kurs.ts";
+import { visaLektion } from "../src/ui/lektion.ts";
 import type { Editor, EditorFabrik } from "../src/ui/editor.ts";
 
 // A text box instead of CodeMirror.
@@ -314,5 +316,34 @@ describe("förväntad utskrift", () => {
     const r = renderBlock(b, ctx());
     expect(r.querySelector("pre.forvantad")?.textContent).toBe("Hej!\nJag lär mig Python.");
     expect(renderBlock(OVNING, ctx()).querySelector("pre.forvantad")).toBeNull();
+  });
+});
+
+describe("en rubrik per del", () => {
+  test("a lesson has Test and Övning headings, numbers several exercises in a row, and no heading on the blocks", () => {
+    const l = hittaLektion("m0-din-forsta-rad");
+    expect(l).toBeDefined();
+    const rot = document.createElement("main");
+    visaLektion(rot, l as NonNullable<typeof l>, ctx(), () => false);
+    const h2 = [...rot.querySelectorAll("h2")].map((x) => x.textContent);
+    expect(h2).toContain("Test");
+    expect(h2).toContain("Övning");
+    expect(h2).not.toContain("Din tur");
+    expect(h2).not.toContain("Fråga");
+    // the two exercises are numbered, the single question is not
+    expect([...rot.querySelectorAll(".block.ovning .nr")].map((x) => x.textContent)).toEqual(["1.", "2."]);
+    expect(rot.querySelectorAll(".block.forutsag .nr")).toHaveLength(0);
+    // no heading of its own inside a question, exercise or example
+    expect(rot.querySelectorAll(".block.forutsag h3, .block.ovning h3, .block.exempel h3")).toHaveLength(0);
+  });
+
+  test("the klar mark is shown in the head of the block, also without a number", () => {
+    const b: Block = { typ: "forutsag", id: "t-klar", kod: "x", kor: false, stdin: [], alternativ: ["a", "b"], ratt: 0, svar: "", forklaring: "" };
+    const c = ctx();
+    c.sparad = () => ({ kod: "", klar: true });
+    const r = renderBlock(b, c);
+    const huvud = r.querySelector(".blockhuvud") as HTMLElement;
+    expect(huvud.hidden).toBe(false);
+    expect(huvud.textContent).toContain("klar");
   });
 });

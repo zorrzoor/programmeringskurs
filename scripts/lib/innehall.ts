@@ -144,6 +144,28 @@ export function uppskattaMinuter(block: Block[]): number {
   return Math.max(10, Math.ceil(min / 5) * 5);
 }
 
+/**
+ * The page puts one heading ("Test" or "Övning") before a run of questions or exercises. A generic heading written
+ * just before one in the lesson text ("Fråga", "Din tur") would double it, so the build removes it.
+ */
+const GENERISK_RUBRIK = /^#{1,4} (Fråga|Ett test|Test|Din tur|Uppgift|Uppgifter|Övning|Övningar)\s*$/;
+export function taBortGeneriskaRubriker(block: Block[]): Block[] {
+  const ut: Block[] = [];
+  for (const [i, b] of block.entries()) {
+    const nasta = block[i + 1];
+    if (b.typ === "text" && (nasta?.typ === "forutsag" || nasta?.typ === "ovning")) {
+      const rader = b.markdown.split("\n");
+      while (rader.length > 0 && (rader[rader.length - 1] ?? "").trim() === "") rader.pop();
+      if (GENERISK_RUBRIK.test(rader[rader.length - 1] ?? "")) rader.pop();
+      const markdown = rader.join("\n").replace(/\n+$/, "");
+      if (markdown.trim() !== "") ut.push({ ...b, markdown });
+      continue;
+    }
+    ut.push(b);
+  }
+  return ut;
+}
+
 /** One lesson file (front matter + Markdown with special blocks). */
 export function parseLektion(text: string, file: string, modul: number, nr: number, slug: string): Lektion {
   const lines = text.replace(/\r\n/g, "\n").split("\n");
@@ -186,6 +208,7 @@ export function parseLektion(text: string, file: string, modul: number, nr: numb
     i = j + 1;
   }
   flush();
+  lektion.block = taBortGeneriskaRubriker(lektion.block);
   // The lesson's files go with every example, prediction and exercise in it, so that the code can open them.
   const filer: Record<string, string> = {};
   for (const b of lektion.block) {

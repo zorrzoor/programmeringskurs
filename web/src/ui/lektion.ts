@@ -31,7 +31,22 @@ export function visaLektion(rot: HTMLElement, l: Lektion, ctx: Kontext, klar: Kl
     h("p", { class: "mal" }, h("strong", {}, "Mål: "), l.mal),
   );
   const kontext: Kontext = { ...ctx, klarNu: () => (ctx.klarNu(), uppdatera()) };
-  for (const b of l.block) rot.append(renderBlock(b, kontext));
+  // One heading per part: "Test" before questions and "Övning" before exercises, unless the lesson text just before has its
+  // own heading ("Steg 2: …"). Several in a row are numbered 1, 2, 3; a single one has no number and no heading of its own.
+  l.block.forEach((b, i) => {
+    const forra = l.block[i - 1];
+    if (b.typ !== "forutsag" && b.typ !== "ovning") return void rot.append(renderBlock(b, kontext));
+    const borjar = forra?.typ !== b.typ;
+    if (borjar) {
+      const harRubrik = forra?.typ === "text" && /(^|\n)#{1,4} [^\n]*\s*$/.test(forra.markdown);
+      if (!harRubrik) rot.append(h("h2", {}, b.typ === "forutsag" ? "Test" : "Övning"));
+    }
+    let fran = i;
+    while (l.block[fran - 1]?.typ === b.typ) fran -= 1;
+    let till = i;
+    while (l.block[till + 1]?.typ === b.typ) till += 1;
+    rot.append(renderBlock(b, kontext, till > fran ? i - fran + 1 : undefined));
+  });
   rot.append(status, h("p", { class: "hjalp" }, "Fastnat? Gå tillbaka en lektion och läs igen, eller använd ledtrådarna. Det är normalt att behöva prova flera gånger."));
   uppdatera();
 }

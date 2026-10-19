@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { byggKurs } from "../scripts/build-content.ts";
-import { ContentError, kontrolleraKurs, lankaOrd, ordId, parseLektion, parseModul, parseOrdlista, uppskattaMinuter, visaForvantadUtskrift } from "../scripts/lib/innehall.ts";
+import { ContentError, kontrolleraKurs, lankaOrd, ordId, parseLektion, parseModul, parseOrdlista, taBortGeneriskaRubriker, uppskattaMinuter, visaForvantadUtskrift } from "../scripts/lib/innehall.ts";
 
 const FM = "---\ntitel: Testlektion\nmal: Du kan något.\n---\n";
 const parse = (body: string) => parseLektion(FM + body, "f.md", 2, 3, "test");
@@ -233,4 +233,16 @@ test("krav on an exercise is validated and kept", () => {
   assert.deepEqual((ok.block[0] as { krav?: string[] }).krav, ["for", "anropa:range"]);
   fails("```ovning\nid: t-krav2\nuppgift: u\nkrav: [dansa]\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n", /"krav" ska vara/);
   fails("```ovning\nid: t-krav3\nuppgift: u\nkrav: for\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n", /"krav" ska vara/);
+});
+
+test("a generic heading just before a question or exercise is removed, a real one is kept", () => {
+  const l = parse("Text före.\n\n## Din tur\n\n```ovning\nid: t-g1\nuppgift: u\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n\n## Steg 2: Summan\n\n```ovning\nid: t-g2\nuppgift: u\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n\n## Fråga\n\n```forutsag\nkod: x\nsvar: y\n```\n");
+  const texter = l.block.filter((b) => b.typ === "text").map((b) => (b as { markdown: string }).markdown);
+  assert.deepEqual(texter, ["Text före.", "## Steg 2: Summan"]);
+  assert.deepEqual(l.block.map((b) => b.typ), ["text", "ovning", "text", "ovning", "forutsag"]);
+});
+
+test("a text block that only had a generic heading disappears", () => {
+  const ut = taBortGeneriskaRubriker([{ typ: "text", markdown: "## Ett test" }, { typ: "forutsag", id: "a", kod: "x", kor: true, stdin: [], alternativ: [], ratt: -1, svar: "1", forklaring: "" }]);
+  assert.deepEqual(ut.map((b) => b.typ), ["forutsag"]);
 });
