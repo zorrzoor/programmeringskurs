@@ -12,6 +12,7 @@ Modulens sammanfattning: uppgifter som blandar listor, uppslag, loopar och val. 
 ```ovning
 id: m5-blandat-storst
 uppgift: "Skriv ut det största talet i listan `tal`, utan att använda funktionen `max`. Gå igenom listan och håll koll på det största hittills."
+krav: ["inte-anropa:max"]
 start: |
   tal = [4, 17, 9, 12]
 ratta: {utdata: "17"}

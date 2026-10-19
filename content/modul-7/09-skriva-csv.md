@@ -104,6 +104,7 @@ facit: |
 ```ovning
 id: m7-skriv-csv-komma
 uppgift: "Listan `adresser` finns redan. Skriv den till `adresser.csv` med rubrikerna `namn` och `adress`. Adresserna innehåller kommatecken, så använd DictWriter."
+krav: ["anropa:DictWriter"]
 start: |
   import csv
 

@@ -18,7 +18,7 @@ const forutsagelser = alla().flatMap((l) => uppgifter(l).filter((b) => b.typ ===
 describe("every exercise", () => {
   test.each(ovningar.map((o) => [o.b.id, o] as const))("%s: the facit passes, the start code does not", (_id, { b }) => {
     if (b.typ !== "ovning") throw new Error("not an exercise");
-    const facit = e.kontrollera(b.facit, b.ratta, { stdin: b.stdin, filer: b.filer });
+    const facit = e.kontrollera(b.facit, b.ratta, { stdin: b.stdin, filer: b.filer, krav: b.krav });
     expect(facit.fel, `facit runs without error: ${JSON.stringify(facit.fel)}`).toBeNull();
     expect(facit.meddelanden, "facit passes its own rating").toEqual([]);
     expect(facit.ok).toBe(true);

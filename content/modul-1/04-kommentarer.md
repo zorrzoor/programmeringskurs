@@ -68,6 +68,7 @@ facit: |
 ```ovning
 id: m1-kommentar-skriv-egen
 uppgift: "Skriv en kommentar på första raden (börja med `#`) och sedan ett program som skriver ut `Klart!`."
+krav: ["kommentar-först"]
 start: |
   # skriv din kod här
 ratta: {utdata: "Klart!"}

@@ -215,11 +215,11 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
 
   const kontrollera = h("button", { type: "button" }, "✓ Kontrollera");
   kontrollera.addEventListener("click", () => {
-    void k.kor((v) => ctx.koerare.kontrollera(editor.get(), b.ratta, v)).then((r) => {
+    void k.kor((v) => ctx.koerare.kontrollera(editor.get(), b.ratta, { ...v, krav: b.krav })).then((r) => {
       if (!r) return;
       if (r.fel) return ut.visaFel(r.fel, editor.get());
       if (r.ok) {
-        ut.meddela("Rätt! Bra jobbat.", "ok");
+        ut.meddela(r.notering ? `Rätt! Bra jobbat. ${r.notering}` : "Rätt! Bra jobbat.", "ok");
         markeraKlar(true);
       } else {
         ut.meddela("Det är inte riktigt rätt än:", "info");

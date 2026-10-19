@@ -51,6 +51,7 @@ forklaring: "Utan f framför citattecknet byts inget ut. Texten skrivs ut precis
 ```ovning
 id: m2-fstrang-namn-alder
 uppgift: "Variablerna `namn` och `alder` finns redan. Skriv ut `Kalle är 35 år.` med en f-sträng."
+krav: ["f-sträng"]
 start: |
   namn = "Kalle"
   alder = 35
@@ -68,6 +69,7 @@ facit: |
 ```ovning
 id: m2-fstrang-total
 uppgift: "Variablerna `antal` och `pris` finns redan. Skriv ut `Totalt: 60 kr` med en f-sträng där du räknar ut summan inom klamrarna."
+krav: ["f-sträng", "uträkning"]
 start: |
   antal = 3
   pris = 20

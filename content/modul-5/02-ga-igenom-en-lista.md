@@ -48,6 +48,7 @@ forklaring: "Loopen tar ett tal i taget och skriver ut det gånger 10: 10, 20 oc
 ```ovning
 id: m5-ga-skriv-ut
 uppgift: "Listan `frukt` finns redan. Skriv ut varje element på en egen rad med en for-loop."
+krav: ["for"]
 start: |
   frukt = ["äpple", "banan", "citron"]
 ratta: {utdata: "äpple\nbanan\ncitron"}
@@ -64,6 +65,7 @@ facit: |
 ```ovning
 id: m5-ga-summa
 uppgift: "Listan `poang` finns redan. Räkna ihop alla tal i en loop och skriv ut summan."
+krav: ["loop"]
 start: |
   poang = [12, 7, 20, 11]
 ratta: {utdata: "50"}

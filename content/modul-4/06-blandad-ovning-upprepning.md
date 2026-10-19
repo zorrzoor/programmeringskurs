@@ -12,6 +12,7 @@ Modulens sammanfattning: uppgifter som blandar loopar med det du lärde dig om v
 ```ovning
 id: m4-blandat-tabell
 uppgift: "Skriv ut femmans multiplikationstabell, `5`, `10`, `15`, `20` och `25`, ett tal per rad, med en loop."
+krav: ["loop"]
 start: |
   # skriv din kod här
 ratta: {utdata: "5\n10\n15\n20\n25"}

@@ -74,6 +74,7 @@ facit: |
 ```ovning
 id: m1-rakna-totalpris
 uppgift: "Du köper 3 varor à 20 kr och betalar 10 kr i frakt. Skriv ut totalpriset med en uträkning, inte bara talet."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "70"}
@@ -88,6 +89,7 @@ facit: |
 ```ovning
 id: m1-rakna-parentes
 uppgift: "Skriv ut vad `(2 + 3) * 4` blir, alltså 20, med parenteser i uträkningen."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "20"}

@@ -106,6 +106,21 @@ facit: |
 
 `stdin: ["Anna", "7"]` ger svar på `input()` i en övning.
 
+**Rättningen är sträng, men tydlig.** Den förlåter inte en saknad punkt, ett komma i stället för en punkt eller fel skiftläge
+(det vore svårt att veta vad som är rätt, och deltagaren ska aldrig undra varför något blev rätt fast det inte ser likadant
+ut som önskat resultat). I stället säger meddelandet exakt vad som skiljer: "På rad 1 saknas ett . sist". Undantaget är
+`ignorera_versaler: true` på en övning: då godkänns skiftläge, och svaret säger uttryckligen att stora och små bokstäver inte
+spelade någon roll.
+
+**`krav`** på en övning kontrollerar *hur* uppgiften löstes, genom att läsa koden (Pythons `ast`), så att `print(70)` inte
+godkänns när uppgiften säger "med en uträkning". Använd det när uppgiftstexten ber om ett visst sätt. Kända krav:
+`uträkning`, `kommentar-först`, `kommentar`, `f-sträng`, `for`, `while`, `loop` (for eller while), `and`, `or`, `funktion`,
+`import:<modul>`, `anropa:<namn>` och `inte-anropa:<namn>`. Facit måste uppfylla sina egna krav (det testas).
+
+````yaml
+krav: [for, "anropa:range"]
+````
+
 Citerar uppgiftstexten hela den förväntade utskriften i kodstil (till exempel `Skriv ut \`Kalle är 35 år.\``), och utskriften
 är flera rader eller slutar med skiljetecken, visar sidan den dessutom som ett block under uppgiften ("Så här ska
 utskriften se ut"). Det sker automatiskt och ger aldrig bort svaret, eftersom det redan står i uppgiften. Skriv därför alltid

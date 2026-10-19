@@ -8,6 +8,8 @@ export interface KorValj {
   stdin?: string[];
   /** The lesson's files (docs/skriva-lektioner.md, block `fil`). */
   filer?: Filer;
+  /** The exercise's `krav`, checked in the code when rating. */
+  krav?: string[];
   onUtdata?: (text: string) => void;
   /** Shows an input box and resolves with the answer (undefined = cancelled). */
   fraga?: () => Promise<string | undefined>;
@@ -103,7 +105,7 @@ export class Koerare {
         stoppa,
       });
       starta();
-      w.postMessage({ typ, id, kod, stdin: v.stdin ?? [], filer: v.filer, ratta });
+      w.postMessage({ typ, id, kod, stdin: v.stdin ?? [], filer: v.filer, krav: v.krav, ratta });
     });
   }
 
