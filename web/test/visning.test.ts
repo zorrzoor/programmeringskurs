@@ -28,6 +28,8 @@ describe("visning", () => {
     const s = minne();
     sparaVisning({ text: "storre", tema: "morkt" }, s);
     expect(lasVisning(s)).toEqual({ text: "storre", tema: "morkt" });
+    sparaVisning({ text: "liten", tema: "auto" }, s);
+    expect(lasVisning(s)).toEqual({ text: "liten", tema: "auto" });
     expect(() => sparaVisning({ text: "stor", tema: "ljust" }, blockerat())).not.toThrow();
   });
 
@@ -43,7 +45,7 @@ describe("Visning menu", () => {
     const meny = skapaVisningsval();
     document.body.append(meny);
     const radios = [...meny.querySelectorAll<HTMLInputElement>("input[type=radio]")];
-    expect(radios).toHaveLength(6);
+    expect(radios).toHaveLength(7);
     for (const r of radios) expect(meny.querySelector(`label[for="${r.id}"]`)?.textContent).not.toBe("");
     expect(radios.find((r) => r.value === "normal")?.checked).toBe(true);
     const stor = radios.find((r) => r.value === "stor") as HTMLInputElement;

@@ -46,7 +46,7 @@ export function visaOversikt(rot: HTMLElement, namn: string, senast: string | nu
         {},
         h("li", {}, h("strong", {}, "Ordlista"), " (i menyn högst upp) förklarar orden som används i kursen. Du kan slå upp ett ord där när du vill."),
         h("li", {}, h("strong", {}, "Jag har fastnat"), " (i menyn) är en lista med saker att prova, i tur och ordning, när något inte fungerar som du tänkt."),
-        h("li", {}, h("strong", {}, "Visning"), " (i menyn) ändrar hur sidan ser ut: textstorlek (Normal, Stor, Större) och färger (ljust, mörkt eller som din enhet). Valet sparas på den här enheten."),
+        h("li", {}, h("strong", {}, "Visning"), " (i menyn) ändrar hur sidan ser ut: textstorlek (Liten, Normal, Stor, Större) och färger (ljust, mörkt eller som din enhet). Valet sparas på den här enheten."),
         h("li", {}, h("strong", {}, "Blå, understrukna ord i lektionerna"), " är länkar till ordlistan. Första gången ett ord förekommer i en modul är det en länk. Tryck på ordet för att läsa vad det betyder, och på webbläsarens bakåtknapp för att komma tillbaka till lektionen."),
         h("li", {}, h("strong", {}, "Programmeringskurs"), " högst upp till vänster är en länk som alltid tar dig tillbaka hit, till startsidan."),
       ),

@@ -3,6 +3,7 @@ import { lasVisning, sparaVisning, tillampaVisning, type Tema, type Textstorlek,
 import { h } from "./dom.ts";
 
 const TEXT: [Textstorlek, string][] = [
+  ["liten", "Liten"],
   ["normal", "Normal"],
   ["stor", "Stor"],
   ["storre", "Större"],

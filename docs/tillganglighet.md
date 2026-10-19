@@ -10,7 +10,7 @@ de är inte ett krav som styr arbetet.
 - **Stor, lugn text:** grundstorlek 18 px, god radavstånd, smal textkolumn. Inga poäng, inga tidsgränser, inget som blinkar
   (rörelse stängs av med `prefers-reduced-motion`).
 - **Ljust och mörkt läge** följer enheten, och kan väljas under **Visning** (Som enheten, Ljust, Mörkt).
-- **Textstorlek** väljs under **Visning** (Normal, Stor, Större) och gäller hela sidan. Valen sparas på enheten, inte på
+- **Textstorlek** väljs under **Visning** (Liten, Normal, Stor, Större) och gäller hela sidan. Valen sparas på enheten, inte på
   namnet (de beror på skärmen och ögonen, inte på vem som läser), och faller tillbaka till standard om webbläsaren blockerar lagring.
 - **Tangentbord:** hela flödet går att nå. Länken "Hoppa till innehållet" finns först. I en kodruta flyttar Tab in raden, så
   Esc och sedan Tab lämnar rutan (det står under varje ruta).
@@ -33,5 +33,5 @@ Gör den här kontrollen efter större ändringar i utseendet:
 
 1. **Telefon, surfplatta och dator:** öppna kursen på alla tre. Går det att läsa, trycka och skriva kod? Är något avklippt
    eller överlappande, stående och liggande?
-2. **Textstorlek:** prova Normal, Stor och Större under Visning. Är kodrutor, felrutor och ordlistan fortfarande läsbara?
+2. **Textstorlek:** prova Liten, Normal, Stor och Större under Visning. Är kodrutor, felrutor och ordlistan fortfarande läsbara?
 3. **Färger:** prova Som enheten, Ljust och Mörkt. Är kontrasten bra på kvällen (mörkt) och i solljus (ljust)?

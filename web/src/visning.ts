@@ -1,7 +1,7 @@
 // Display settings that belong to the device, not to the learner's name: text size and colours. They are kept in the
 // browser (localStorage, which can be blocked: then the defaults are used) and applied as attributes on <html>, which
 // the style sheet reacts to.
-export type Textstorlek = "normal" | "stor" | "storre";
+export type Textstorlek = "liten" | "normal" | "stor" | "storre";
 export type Tema = "auto" | "ljust" | "morkt";
 export interface Visning {
   text: Textstorlek;
@@ -10,7 +10,7 @@ export interface Visning {
 
 export const STANDARD: Visning = { text: "normal", tema: "auto" };
 export const KEY = "kurs-visning";
-const TEXT: Textstorlek[] = ["normal", "stor", "storre"];
+const TEXT: Textstorlek[] = ["liten", "normal", "stor", "storre"];
 const TEMA: Tema[] = ["auto", "ljust", "morkt"];
 
 function lagring(): Storage | null {
