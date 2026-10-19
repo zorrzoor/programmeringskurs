@@ -29,7 +29,7 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await expect(page.getByText(`Välkommen, ${namn}.`)).toBeVisible();
   await expect(page.getByText("Älskar dig!")).toBeVisible();
   expect(await page.locator("img.ikon").evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
-  await expect(page.locator('link[rel="icon"]')).toHaveAttribute("href", "/ikon.svg");
+  await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute("href", "/ikon.svg");
   for (const sti of ["/ikon-180.png", "/ikon-192.png", "/ikon-512.png"]) expect((await page.request.get(sti)).headers()["content-type"]).toBe("image/png");
   await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute("href", "/ikon-180.png");
   await expect(page.getByRole("heading", { name: "Så använder du kursen" })).toBeVisible();
