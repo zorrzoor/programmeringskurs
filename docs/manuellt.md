@@ -36,3 +36,7 @@ med `make tf-apply` (D). Steg B (fler e-postadresser) återstår bara när fler 
 ## Gjort utan att du behövde göra något
 
 - Repot, ärenden, koncept och arbetsordning. Bygge, tester, server, image och manifest. Beslut om åtkomst: Cloudflare Access (#26).
+
+## Tillgänglighet
+
+Genomgången med skärmläsare, tangentbord och zoom står i [docs/tillganglighet.md](tillganglighet.md) (ärende #90).

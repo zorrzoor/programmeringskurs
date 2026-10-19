@@ -15,7 +15,7 @@ export interface Utdata {
 }
 
 export function skapaUtdata(): Utdata {
-  const pre = h("pre", { class: "utdata", "aria-label": "Resultat" }, "");
+  const pre = h("pre", { class: "utdata", role: "group", "aria-label": "Resultat" }, "");
   const meddelande = h("div", { class: "meddelande", role: "status" });
   const rot = h("div", { class: "utdata-yta" }, pre, meddelande);
   return {
