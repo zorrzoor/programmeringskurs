@@ -21,7 +21,7 @@ for p in personer:
 
 Här har du en **lista av uppslag**. Varje uppslag är en rad (en person), och listan är hela tabellen. Så sparas nästan all verklig data: kunder, produkter, transaktioner.
 
-Du går igenom raderna med en `for`-loop, och slår upp värdena i varje rad med nycklarna. Du kan summera, räkna och välja ut, precis som förut:
+Du går igenom raderna med en `for`-loop, och slår upp värdena i varje rad med nycklarna. `print` kan skriva ut flera värden med komma emellan, och sätter då ett mellanslag mellan dem. Du kan summera, räkna och välja ut, precis som förut:
 
 ```python-exempel
 personer = [{"namn": "Anna", "alder": 30}, {"namn": "Bo", "alder": 25}]

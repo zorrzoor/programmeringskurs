@@ -40,7 +40,7 @@ kod: |
 
   random.seed(2)
   x = random.randint(1, 6)
-  print(1 <= x <= 6)
+  print(x >= 1 and x <= 6)
 kor: true
 alternativ: ["True", "False", "Det beror på", "Ett felmeddelande"]
 ratt: 0

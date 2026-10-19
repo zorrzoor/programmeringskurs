@@ -38,13 +38,13 @@ text: |
 
 ```forutsag
 kod: |
-  for t in [5, 8, 12, 3]:
-      if t > 10:
+  for t in range(5, 10):
+      if t > 7:
           break
       print(t)
-alternativ: ["5, 8", "5, 8, 3", "5, 8, 12", "12"]
+alternativ: ["5, 6, 7", "5, 6, 7, 8", "6, 7", "5, 6, 7, 8, 9"]
 ratt: 0
-forklaring: "Loopen går igenom 5 och 8 och skriver ut dem. Vid 12 körs break, så loopen slutar helt och 3 aldrig kommer med."
+forklaring: "Loopen går igenom 5, 6 och 7 och skriver ut dem. Vid 8 körs break, så loopen slutar helt och 9 kommer aldrig med."
 ```
 
 ## Din tur
