@@ -7,34 +7,34 @@
   forklaring: "Det programmeringsspråk du lär dig i kursen. Det är lätt att läsa och används av många."
 - ord: "programmeringsspråk"
   former: ["programmeringsspråket"]
-  forklaring: "Ett språk som man skriver instruktioner till datorn i. Python är ett exempel."
+  forklaring: "Ett språk som man skriver instruktioner till datorn i. Python är ett exempel. På engelska: programming language."
 - ord: "kod"
   former: ["koden", "koder"]
-  forklaring: "Det du skriver i ett programmeringsspråk: instruktionerna som utgör ett program."
+  forklaring: "Det du skriver i ett programmeringsspråk: instruktionerna som utgör ett program. På engelska: code."
 - ord: "instruktion"
   former: ["instruktioner", "instruktionen", "instruktionerna"]
-  forklaring: "Ett enda steg som datorn ska göra, till exempel att skriva ut en text."
+  forklaring: "Ett enda steg som datorn ska göra, till exempel att skriva ut en text. På engelska: instruction."
 - ord: "variabel"
   former: ["variabeln", "variabler", "variablerna"]
-  forklaring: "Ett namn på ett värde som programmet kommer ihåg. Som en cell med ett namn."
+  forklaring: "Ett namn på ett värde som programmet kommer ihåg. Som en cell med ett namn. På engelska: variable."
 - ord: "värde"
   former: ["värdet", "värden", "värdena"]
-  forklaring: "Det en variabel eller ett uttryck innehåller, till exempel talet 5 eller texten \"Anna\"."
+  forklaring: "Det en variabel eller ett uttryck innehåller, till exempel talet 5 eller texten \"Anna\". På engelska: value."
 - ord: "tal"
   former: ["talet", "talen"]
   forklaring: "En siffra eller ett nummer som man kan räkna med, till exempel 5 eller 3.14."
 - ord: "heltal"
   former: []
-  forklaring: "Ett tal utan decimaler, till exempel 7 eller -3. I Python heter typen int."
+  forklaring: "Ett tal utan decimaler, till exempel 7 eller -3. På engelska: integer, i Python skrivs typen `int`."
 - ord: "decimaltal"
   former: []
-  forklaring: "Ett tal med decimaler, till exempel 2.5. Skrivs med punkt, inte komma. I Python heter typen float."
+  forklaring: "Ett tal med decimaler, till exempel 2.5. Skrivs med punkt, inte komma. På engelska: floating-point number, i Python skrivs typen `float`."
 - ord: "sträng"
   former: ["strängen", "strängar", "strängarna"]
-  forklaring: "Text i ett program, inom citattecken, till exempel \"Hej\". Programmerare säger sträng om en text."
+  forklaring: "Text i ett program, inom citattecken, till exempel \"Hej\". Programmerare säger sträng om en text. På engelska: string, i Python skrivs typen `str`."
 - ord: "f-sträng"
   former: ["f-strängen", "f-strängar"]
-  forklaring: "En text med variabler inuti klamrar, som skrivs med ett f före citattecknet: f\"Hej {namn}\"."
+  forklaring: "En text med variabler inuti klamrar, som skrivs med ett f före citattecknet: f\"Hej {namn}\". På engelska: f-string."
 - ord: "print"
   former: []
   forklaring: "Funktionen som skriver ut något på skärmen."
@@ -43,52 +43,52 @@
   forklaring: "Funktionen som låter den som kör programmet skriva in ett svar."
 - ord: "kommentar"
   former: ["kommentaren", "kommentarer", "kommentarerna"]
-  forklaring: "En anteckning i koden som börjar med # och som Python hoppar över. Den är till för den som läser."
+  forklaring: "En anteckning i koden som börjar med # och som Python hoppar över. Den är till för den som läser. På engelska: comment."
 - ord: "felmeddelande"
   former: ["felmeddelandet", "felmeddelanden"]
-  forklaring: "Ett meddelande från Python som berättar att något gick fel, och ofta var. Läs det noga, det hjälper."
+  forklaring: "Ett meddelande från Python som berättar att något gick fel, och ofta var. Läs det noga, det hjälper. På engelska: error message."
 - ord: "syntaxfel"
   former: ["syntaxfelet"]
-  forklaring: "Ett fel i hur koden är skriven, till exempel ett citattecken eller en parentes som saknas. Programmet kan inte ens börja köras."
+  forklaring: "Ett fel i hur koden är skriven, till exempel ett citattecken eller en parentes som saknas. Programmet kan inte ens börja köras. På engelska: syntax error."
 - ord: "indrag"
   former: ["indraget", "indragen"]
-  forklaring: "Mellanrummet i början av en rad. Det visar vilka rader som hör ihop, till exempel under en if eller en loop."
+  forklaring: "Mellanrummet i början av en rad. Det visar vilka rader som hör ihop, till exempel under en if eller en loop. På engelska: indentation."
 - ord: "uttryck"
   former: ["uttrycket", "uttryck"]
-  forklaring: "Något som kan räknas ut till ett värde, till exempel 2 + 3 eller pris * antal."
+  forklaring: "Något som kan räknas ut till ett värde, till exempel 2 + 3 eller pris * antal. På engelska: expression."
 - ord: "operator"
   former: ["operatorn", "operatorer"]
   forklaring: "Ett tecken som gör en beräkning eller jämförelse, till exempel +, * eller >."
 - ord: "jämförelse"
   former: ["jämförelsen", "jämförelser"]
-  forklaring: "En fråga som har svaret True eller False, till exempel alder >= 18."
+  forklaring: "En fråga som har svaret True eller False, till exempel alder >= 18. På engelska: comparison."
 - ord: "villkor"
   former: ["villkoret", "villkoren"]
-  forklaring: "En jämförelse som avgör om något ska hända. Används med if, elif och while."
+  forklaring: "En jämförelse som avgör om något ska hända. Används med if, elif och while. På engelska: condition."
 - ord: "loop"
   former: ["loopen", "loopar", "looparna"]
   forklaring: "Instruktioner som upprepas flera gånger. Python har for-loopar och while-loopar."
 - ord: "varv"
   former: ["varvet"]
-  forklaring: "En omgång i en loop. En loop som körs tre gånger har tre varv."
+  forklaring: "En omgång i en loop. En loop som körs tre gånger har tre varv. På engelska: iteration."
 - ord: "lista"
   former: ["listan", "listor", "listorna"]
-  forklaring: "Flera värden under ett namn, i en bestämd ordning, till exempel [3, 5, 7]."
+  forklaring: "Flera värden under ett namn, i en bestämd ordning, till exempel [3, 5, 7]. På engelska: list."
 - ord: "element"
   former: ["elementet", "elementen"]
-  forklaring: "Ett värde i en lista, eller en post i ett uppslag."
+  forklaring: "Ett värde i en lista, eller en post i ett uppslag. På engelska: element, ibland item."
 - ord: "index"
   former: ["indexet"]
   forklaring: "Platsen för ett element i en lista. Platserna räknas från 0, så första elementet har index 0."
 - ord: "uppslag"
   former: ["uppslaget", "uppslagen"]
-  forklaring: "Värden som hittas med en nyckel i stället för ett nummer, till exempel {\"namn\": \"Anna\", \"alder\": 30}. Heter dict i Python."
+  forklaring: "Värden som hittas med en nyckel i stället för ett nummer, till exempel {\"namn\": \"Anna\", \"alder\": 30}. På engelska: dictionary, i Python skrivs typen `dict`."
 - ord: "nyckel"
   former: ["nyckeln", "nycklar", "nycklarna"]
-  forklaring: "Namnet man slår upp ett värde med i ett uppslag, till exempel \"namn\"."
+  forklaring: "Namnet man slår upp ett värde med i ett uppslag, till exempel \"namn\". På engelska: key."
 - ord: "funktion"
   former: ["funktionen", "funktioner", "funktionerna"]
-  forklaring: "En bit kod med ett namn som kan köras många gånger. Skapas med def."
+  forklaring: "En bit kod med ett namn som kan köras många gånger. Skapas med def. På engelska: function."
 - ord: "parameter"
   former: ["parametern", "parametrar", "parametrarna"]
   forklaring: "Ett namn på ett värde som en funktion får, i definitionen: def halsa(namn)."
@@ -97,49 +97,49 @@
   forklaring: "Det värde du skickar in när du anropar en funktion: halsa(\"Anna\")."
 - ord: "anropa"
   former: ["anropar", "anropet", "anrop", "anropas"]
-  forklaring: "Att köra en funktion genom att skriva dess namn med parenteser."
+  forklaring: "Att köra en funktion genom att skriva dess namn med parenteser. På engelska: call."
 - ord: "returnera"
   former: ["returnerar", "return"]
-  forklaring: "Att ge ett svar tillbaka från en funktion, så att anroparen kan använda det."
+  forklaring: "Att ge ett svar tillbaka från en funktion, så att anroparen kan använda det. På engelska: return."
 - ord: "modul"
   former: ["modulen", "moduler", "modulerna"]
-  forklaring: "En färdig samling funktioner som du hämtar med import, till exempel math."
+  forklaring: "En färdig samling funktioner som du hämtar med import, till exempel math. På engelska: module."
 - ord: "import"
   former: []
   forklaring: "Kommandot som hämtar en modul så att du kan använda den."
 - ord: "fil"
   former: ["filen", "filer", "filerna"]
-  forklaring: "Information som är sparad på en dator under ett namn, till exempel en textfil eller en CSV-fil."
+  forklaring: "Information som är sparad på en dator under ett namn, till exempel en textfil eller en CSV-fil. På engelska: file."
 - ord: "CSV"
   former: ["CSV-fil", "CSV-filer", "CSV-filen"]
   forklaring: "En tabell som textfil: en rad per rad i tabellen och komma mellan kolumnerna."
 - ord: "tabell"
   former: ["tabellen", "tabeller", "tabellerna"]
-  forklaring: "Information ordnad i rader och kolumner, som i ett kalkylblad eller en databas."
+  forklaring: "Information ordnad i rader och kolumner, som i ett kalkylblad eller en databas. På engelska: table."
 - ord: "databas"
   former: ["databasen", "databaser"]
-  forklaring: "Ett ställe där information sparas i tabeller som man kan ställa frågor till."
+  forklaring: "Ett ställe där information sparas i tabeller som man kan ställa frågor till. På engelska: database."
 - ord: "SQL"
   former: []
   forklaring: "Språket man frågar databaser med, till exempel SELECT och WHERE."
 - ord: "indata"
   former: []
-  forklaring: "Det som kommer in i ett program, till exempel ett svar från den som kör det eller innehållet i en fil."
+  forklaring: "Det som kommer in i ett program, till exempel ett svar från den som kör det eller innehållet i en fil. På engelska: input."
 - ord: "utdata"
   former: []
-  forklaring: "Det som programmet skriver ut eller ger tillbaka."
+  forklaring: "Det som programmet skriver ut eller ger tillbaka. På engelska: output."
 - ord: "minne"
   former: ["minnet"]
-  forklaring: "Där datorn håller reda på värden medan ett program körs."
+  forklaring: "Där datorn håller reda på värden medan ett program körs. På engelska: memory."
 - ord: "processor"
   former: ["processorn"]
-  forklaring: "Den del av datorn som utför instruktionerna, en i taget och mycket snabbt."
+  forklaring: "Den del av datorn som utför instruktionerna, en i taget och mycket snabbt. På engelska: processor, förkortat CPU."
 - ord: "algoritm"
   former: ["algoritmen", "algoritmer"]
-  forklaring: "En beskrivning i steg av hur man löser ett problem, som ett recept."
+  forklaring: "En beskrivning i steg av hur man löser ett problem, som ett recept. På engelska: algorithm."
 - ord: "felsökning"
   former: ["felsöka", "felsöker"]
-  forklaring: "Att leta reda på varför ett program inte gör som det ska, och rätta det."
+  forklaring: "Att leta reda på varför ett program inte gör som det ska, och rätta det. På engelska: debugging."
 - ord: "kommando"
   former: ["kommandot", "kommandon"]
   forklaring: "En instruktion till datorn, till exempel pris = pris + 5."
@@ -151,13 +151,13 @@
   forklaring: "Värdet \"inget\". En funktion utan return ger None."
 - ord: "mängd"
   former: ["mängden","mängder","set"]
-  forklaring: "Som en lista där varje värde bara kan finnas en gång. Skapas med set(lista) och tar bort dubbletter. Har ingen bestämd ordning."
+  forklaring: "Som en lista där varje värde bara kan finnas en gång. Skapas med set(lista) och tar bort dubbletter. Har ingen bestämd ordning. På engelska: set."
 - ord: "reguljärt uttryck"
   former: ["reguljära uttryck","regex"]
-  forklaring: "Ett mönster som beskriver hur text ska se ut, till exempel en följd av siffror. Används för att söka och byta ut text."
+  forklaring: "Ett mönster som beskriver hur text ska se ut, till exempel en följd av siffror. Används för att söka och byta ut text. På engelska: regular expression, förkortat regex."
 - ord: "slumptal"
   former: ["slumptalet","slumptalen"]
-  forklaring: "Ett tal som väljs på måfå. Datorn räknar ut tal som ser slumpmässiga ut, och med ett startvärde (seed) blir de samma varje gång."
+  forklaring: "Ett tal som väljs på måfå. Datorn räknar ut tal som ser slumpmässiga ut, och med ett startvärde (seed) blir de samma varje gång. På engelska: random number."
 - ord: "Counter"
   former: []
   forklaring: "Ett färdigt verktyg som räknar hur många gånger varje värde förekommer i en lista."

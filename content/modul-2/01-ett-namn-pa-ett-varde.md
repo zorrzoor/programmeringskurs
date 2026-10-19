@@ -20,7 +20,7 @@ Tryck på **Stegvis** under exemplet. Då körs koden en rad i taget. Pilen visa
 
 ## Vad är en variabel?
 
-Raden `pris = 20` **skapar en variabel**. En variabel är ett **namn på ett värde**. Efter raden kan du skriva `pris` var du vill använda värdet som variabeln `pris` har fått, här 20.
+Raden `pris = 20` **skapar en variabel** (på engelska *variable*). En variabel är ett **namn på ett värde**. Efter raden kan du skriva `pris` var du vill använda värdet som variabeln `pris` har fått, här 20.
 
 - Namnet står till vänster, värdet till höger.
 - `=` betyder här **"spara i"**, inte "är lika med". Läs raden som "lägg 20 i pris".
