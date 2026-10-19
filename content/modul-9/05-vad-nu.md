@@ -11,7 +11,7 @@ Du kan skriva program som läser data, tar beslut, upprepar, delar upp problem i
 
 ## Så går du vidare
 
-- **Bygg något du själv behöver.** Det är det bästa sättet att lära sig, för då vet du varför du fortsätter när det blir svårt.
+- **Bygg något du själv behöver.** Det är ett bra sätt att lära sig, för då vet du varför du fortsätter när det blir svårt.
 - **Läs dokumentationen** på python.org. Den är bättre än sitt rykte, och har en nybörjarguide.
 - **Sök på felmeddelandet.** Att kopiera ett felmeddelande till en sökmotor är vardag för alla som programmerar.
 - **Prova fler moduler** i Pythons standardbibliotek: `random` för slump, `datetime` för datum, `json` för data.
@@ -36,5 +36,5 @@ forklaring: "Felmeddelandet säger vilken sorts fel det är och vilken rad det g
 ## Det här lärde du dig
 
 - Du har byggt en bra grund i Python.
-- Bästa sättet att gå vidare är att bygga något du själv behöver.
+- Ett bra sätt att gå vidare är att bygga något du själv behöver.
 - Läs felmeddelandet, förenkla och prova en liten del i taget.
