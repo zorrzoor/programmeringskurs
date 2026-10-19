@@ -5,7 +5,7 @@ mal: Efter den här lektionen kan du räkna ihop något i en loop med en variabe
 
 ## Prova först
 
-Kör koden, och tryck sedan på **Stegvis** och gå fram med **Nästa**. Titta på `total` i tabellen.
+Kör koden, och tryck sedan på **Stegvis** och gå fram med **Nästa**. Titta på `total` i rutan **Variabler just nu**.
 
 ```python-exempel
 total = 0

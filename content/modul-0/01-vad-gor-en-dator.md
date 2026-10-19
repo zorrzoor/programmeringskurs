@@ -48,7 +48,7 @@ En dator är **snabb** men inte **klok**. Den läser instruktionerna och gör pr
 ```ruta
 rubrik: Tänk på ett recept
 text: |
-  Ett recept säger "vispa", inte "gör något gott". Ett program är samma sak: en lista med exakta steg som datorn följer i tur och ordning. Ett makro i Excel är ett exempel på ett sådant program.
+  Ett recept säger "vispa", inte "gör något gott". Ett program är samma sak: en rad exakta steg som datorn följer i tur och ordning. Ett makro i Excel är ett exempel på ett sådant program.
 ```
 
 Prova själv: vad händer med den här instruktionen?

@@ -18,7 +18,7 @@ Båda variablerna skrivs ut på samma sätt, men de är olika sorter: `namn` är
 
 ## Se vad som händer
 
-Tryck på **Stegvis**. I tabellen visas texter med citattecken (`'Anna'`) och tal utan (`30`). Det är ett bra sätt att se vilken sort en variabel har.
+Tryck på **Stegvis**. I rutan **Variabler just nu** visas texter med citattecken (`'Anna'`) och tal utan (`30`). Det är ett bra sätt att se vilken sort en variabel har.
 
 ## Samma regler som förut
 

@@ -270,45 +270,71 @@ export function parseOrdlista(text: string, file: string): Ord[] {
     seen.add(id);
     const former = o.former ?? [];
     if (!Array.isArray(former) || !former.every((f) => typeof f === "string" && f.trim() !== "")) throw new ContentError(file, 1, `${ord}: "former" ska vara en lista med text`);
-    return { id, ord, former: former as string[], forklaring: str(o, "forklaring", file, 1, ord) };
+    const ej = o.ej ?? [];
+    if (!Array.isArray(ej) || !ej.every((e) => typeof e === "string" && e.includes("«") && e.includes("»"))) {
+      throw new ContentError(file, 1, `${ord}: "ej" ska vara en lista med mönster som markerar ordet med « och »`);
+    }
+    for (const e of ej as string[]) {
+      try {
+        new RegExp(e, "u");
+      } catch {
+        throw new ContentError(file, 1, `${ord}: ogiltigt mönster i "ej": ${e}`);
+      }
+    }
+    return { id, ord, former: former as string[], forklaring: str(o, "forklaring", file, 1, ord), ...(ej.length > 0 ? { ej: ej as string[] } : {}) };
   });
 }
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 // Text that must not get glossary links: code, and links that already exist.
-const SKYDDAT = /(`[^`]*`|\[[^\]]*\]\([^)]*\))/;
+const SKYDDAT = /(`[^`]*`|\[[^\]]*\]\([^)]*\))/gu;
+// How much text on each side of a mention the `ej` patterns of a glossary word can see.
+const SIKT = 40;
+
+/**
+ * Whether a mention may be linked. The word's meaning depends on its surroundings, so a mention is left alone when it is
+ * part of a domain name (python.org), or when one of the word's `ej` patterns matches the text around it. The patterns
+ * mark the mention with « and », for example `valfria? «modul»` (a course module, not a Python module).
+ */
+function fornuftigtLankat(o: Ord, line: string, idx: number, len: number): boolean {
+  if (/^\.\p{L}{2,}/u.test(line.slice(idx + len))) return false;
+  const runt = `${line.slice(Math.max(0, idx - SIKT), idx)}«${line.slice(idx, idx + len)}»${line.slice(idx + len, idx + len + SIKT)}`;
+  return !(o.ej ?? []).some((e) => new RegExp(e, "u").test(runt));
+}
 
 /**
  * Links the first mention of every glossary word in a lesson's running text (not in headings, code or existing
  * links). `lankade` holds the words already linked and is shared by the lessons of a module, so that a word is linked
- * once per module and the text does not fill up with links.
+ * once per module and the text does not fill up with links. A mention that has another meaning than the glossary's is
+ * skipped (see `fornuftigtLankat`), so that the link goes to a place where it is right.
  */
 export function lankaOrd(lektion: Lektion, ordlista: Ord[], lankade: Set<string> = new Set()): void {
   const monster = ordlista.map((o) => {
     const former = [o.ord, ...o.former].sort((a, b) => b.length - a.length).map(escapeRe);
-    return { o, re: new RegExp(`(?<![\\p{L}\\p{N}_-])(?:${former.join("|")})(?![\\p{L}\\p{N}_-])`, "iu") };
+    return { o, re: new RegExp(`(?<![\\p{L}\\p{N}_-])(?:${former.join("|")})(?![\\p{L}\\p{N}_-])`, "giu") };
   });
-  const segment = (text: string): string => {
-    let rest = text;
+  const rad = (line: string): string => {
+    // Code and existing links are hidden from the search, but the patterns still see them in `line`.
+    const dold = line.replace(SKYDDAT, (m) => "\u0000".repeat(m.length));
     let ut = "";
+    let pos = 0;
     for (;;) {
       let bast: { idx: number; len: number; id: string } | undefined;
       for (const { o, re } of monster) {
         if (lankade.has(o.id)) continue;
-        const m = re.exec(rest);
-        if (m && (!bast || m.index < bast.idx || (m.index === bast.idx && m[0].length > bast.len))) bast = { idx: m.index, len: m[0].length, id: o.id };
+        re.lastIndex = pos;
+        for (let m = re.exec(dold); m; m = re.exec(dold)) {
+          if (!fornuftigtLankat(o, line, m.index, m[0].length)) continue;
+          if (!bast || m.index < bast.idx || (m.index === bast.idx && m[0].length > bast.len)) bast = { idx: m.index, len: m[0].length, id: o.id };
+          break;
+        }
       }
-      if (!bast) return ut + rest;
+      if (!bast) return ut + line.slice(pos);
       lankade.add(bast.id);
-      ut += `${rest.slice(0, bast.idx)}[${rest.slice(bast.idx, bast.idx + bast.len)}](#/ordlista/${bast.id})`;
-      rest = rest.slice(bast.idx + bast.len);
+      ut += `${line.slice(pos, bast.idx)}[${line.slice(bast.idx, bast.idx + bast.len)}](#/ordlista/${bast.id})`;
+      pos = bast.idx + bast.len;
     }
   };
-  const rad = (line: string) =>
-    line
-      .split(SKYDDAT)
-      .map((del, i) => (i % 2 === 1 ? del : segment(del)))
-      .join("");
   for (const b of lektion.block) {
     if (b.typ !== "text" && b.typ !== "ruta") continue;
     let kod = false;

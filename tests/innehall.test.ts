@@ -186,6 +186,32 @@ test("the first mention of a word is linked, but not in headings, code or existi
   assert.match(md, /Mer \[kod\]\(#\/ordlista\/kod\) här, och en \[f-sträng\]\(#\/ordlista\/f-strang\) och en \[sträng\]\(#\/ordlista\/strang\)\./);
 });
 
+test("a mention with another meaning is not linked: domain names, and the word's own exceptions", () => {
+  const ord = parseOrdlista(
+    [
+      '- ord: "Python"',
+      '  forklaring: Språket.',
+      '- ord: "modul"',
+      '  former: ["moduler"]',
+      '  ej: ["valfria? «modul»", "«modul» \\\\d"]',
+      '  forklaring: En samling funktioner.',
+      '- ord: "funktion"',
+      '  former: ["funktionen"]',
+      '  ej: ["«funktion(en)?» `?[A-ZÅÄÖ]{2}"]',
+      '  forklaring: En bit kod.',
+    ].join("\n"),
+    "o.yml",
+  );
+  const l = parse("Läs på python.org. Det får du se i modul 2, en valfri modul. I Excel finns funktionen `OM`. Nu en modul och en funktion.\n```python-exempel\nx\n```\n");
+  lankaOrd(l, ord);
+  const md = (l.block[0] as { markdown: string }).markdown;
+  assert.match(md, /^Läs på python\.org\./, "a domain name is left alone");
+  assert.match(md, /i modul 2, en valfri modul\./, "a course module is not a Python module");
+  assert.match(md, /funktionen `OM`\./, "an Excel function is not a Python function");
+  assert.match(md, /Nu en \[modul\]\(#\/ordlista\/modul\) och en \[funktion\]\(#\/ordlista\/funktion\)\./);
+  assert.throws(() => parseOrdlista('- ord: "x"\n  ej: ["utan markering"]\n  forklaring: y', "o.yml"), /markerar ordet/);
+});
+
 test("a word is linked once for all the lessons that share the set", () => {
   const delad = new Set<string>();
   const a = parse("Variabel.\n```python-exempel\nx\n```\n");
