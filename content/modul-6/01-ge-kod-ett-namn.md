@@ -21,7 +21,7 @@ halsa()
 En **funktion** är en bit kod som du har gett ett **namn**. Du skriver den en gång med `def`, och kör den sedan så många gånger du vill genom att skriva namnet med parenteser: `halsa()`. Det kallas att **anropa** funktionen.
 
 - `def halsa():` är **definitionen**. Den slutar med kolon, och raderna som hör till är indragna.
-- Definitionen **gör ingenting** i sig. Den bara berättar för Python vad namnet betyder. Koden körs först när du anropar funktionen.
+- Definitionen **gör ingenting** i sig. Den berättar bara för Python vilka rader som hör till namnet. Koden körs först när du anropar funktionen.
 - Funktionen du har använt hela tiden, `print(...)`, är också en funktion, som någon annan har skrivit åt dig.
 
 ```ruta

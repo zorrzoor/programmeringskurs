@@ -25,13 +25,13 @@ Din kod och dina framsteg sparas under ditt namn. Öppnar du kursen på en annan
 
 ## Fel är normala
 
-Alla som programmerar får fel, varje dag. Ett felmeddelande är inte ett underkännande: det är datorn som berättar vad den inte förstår, och oftast var. Kör koden nedan och läs vad som står.
+Alla som programmerar får fel, varje dag. Ett felmeddelande är inte ett underkännande: det är Python som berättar vad den inte kan följa, och oftast var. Kör koden nedan och läs vad som står.
 
 ```python-exempel
 print(Hej)
 ```
 
-Felet säger att Python inte känner till namnet `Hej`. Python tror att `Hej` är något du har skapat tidigare, men det är ju bara en text, och texter ska stå inom citattecken.
+Felet säger att Python inte känner till namnet `Hej`. Python letar efter något som heter `Hej`, som om det vore något du har skapat tidigare. Det är ju bara en text, och texter ska stå inom citattecken.
 
 ## Din tur: rätta felet
 
@@ -61,6 +61,6 @@ forklaring: "Felmeddelandet och ledtrådarna finns där för att hjälpa dig. At
 
 ## Det här lärde du dig
 
-- Varje lektion: prova, läs, förutsäg, gör själv.
+- Varje lektion: prova, läs, svara på en fråga, gör själv.
 - Kör, Kontrollera, Ledtråd, Facit och Börja om hjälper dig.
 - Ett felmeddelande är en hjälp, och det är normalt att få dem.

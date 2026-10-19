@@ -34,7 +34,7 @@ print(total / len(personer))
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  Det här liknar ett kalkylblad: en rad för varje post och en kolumn för varje nyckel. Skillnaden är att raderna går igenom i en loop, vilket också gör sådant möjligt som är svårt i Excel, till exempel att blanda olika regler.
+  Det här liknar ett kalkylblad: en rad för varje post och en kolumn för varje nyckel. Skillnaden är att du går igenom raderna med en loop, vilket också gör sådant möjligt som är svårt i Excel, till exempel att blanda olika regler.
 ```
 
 ```forutsag

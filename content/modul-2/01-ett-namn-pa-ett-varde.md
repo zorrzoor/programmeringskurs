@@ -12,7 +12,7 @@ pris = 20
 print(pris)
 ```
 
-Det som skrivs ut är `20`, inte ordet `pris`. Datorn tittade efter vad `pris` står för, och skrev ut det.
+Det som skrivs ut är `20`, inte ordet `pris`. Python hämtade värdet som `pris` står för och skrev ut det.
 
 ## Se vad som händer
 
@@ -20,7 +20,7 @@ Tryck på **Stegvis** under exemplet. Då körs koden en rad i taget. Pilen visa
 
 ## Vad är en variabel?
 
-Raden `pris = 20` **skapar en variabel**. En variabel är ett **namn på ett värde**. Efter raden kan du skriva `pris` där du vill ha värdet 20.
+Raden `pris = 20` **skapar en variabel**. En variabel är ett **namn på ett värde**. Efter raden kan du skriva `pris` var du vill använda värdet som variabeln `pris` har fått, här 20.
 
 - Namnet står till vänster, värdet till höger.
 - `=` betyder här **"spara i"**, inte "är lika med". Läs raden som "lägg 20 i pris".
@@ -85,4 +85,4 @@ facit: |
 
 - En variabel är ett namn på ett värde: `pris = 20`.
 - `=` betyder "spara i".
-- Du kan skriva namnet där du vill ha värdet.
+- Du kan skriva namnet var du vill använda värdet som variabeln har fått.

@@ -5,7 +5,7 @@ mal: "Efter den här lektionen kan du räkna med datum: skillnad i dagar, lägga
 
 ## Prova först
 
-Kör koden. Det är skillnad mellan datum, och ett datum en månad fram.
+Kör koden. Den räknar ut skillnaden mellan två datum, och ett datum 30 dagar fram.
 
 ```python-exempel
 from datetime import date, timedelta

@@ -25,7 +25,7 @@ I koden ovan finns tre delar:
 - Parenteserna `( )` säger vad kommandot ska arbeta med.
 - Texten står inom **citattecken**: `"Hej!"`.
 
-Kommandot `print` är ett engelskt ord, men Python är inte engelska. Det är ett språk med några hundra ord som du lär dig ett i taget. I den här kursen förklarar vi varje ord första gången det dyker upp.
+Kommandot `print` är ett engelskt ord, men Python är inte engelska. Det är ett eget språk med förhållandevis få ord, som du lär dig ett i taget. I den här kursen förklarar vi varje ord första gången det dyker upp.
 
 ```forutsag
 kod: |

@@ -5,7 +5,7 @@ mal: Efter den här lektionen har du övat SELECT, WHERE, ORDER BY, GROUP BY och
 
 ## Innan du börjar
 
-Samma butik och samma fem startrader som förut.
+Samma butik och samma sex startrader som förut.
 
 ```fil
 namn: butik.sql

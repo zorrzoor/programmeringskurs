@@ -22,7 +22,7 @@ print(medel([4, 8, 6, 10]))
 
 ## Små funktioner som hjälps åt
 
-Det mesta i programmering handlar om att dela upp ett stort problem i små delar, och ge varje del ett namn. Här löser `summa` en uppgift, och `medel` använder `summa` för sin.
+Det mesta i programmering handlar om att dela upp ett stort problem i små delar, och ge varje del ett namn. Här gör `summa` en sak, och `medel` använder `summa` för att göra sin.
 
 Fördelarna är tydliga:
 

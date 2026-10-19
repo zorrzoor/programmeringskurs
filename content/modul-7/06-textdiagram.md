@@ -43,7 +43,7 @@ for vara, n in antal.items():
 
 ## Att multiplicera text
 
-I modul 1 såg du att `"ha" * 3` blir `"hahaha"`. Då blir `"#" * 5` fem `#` på rad: en stapel. Sätt ett namn framför och du har en rad i ett diagram. Är talen stora kan du dela dem först: `"#" * (summa // 10)` ger ett `#` per tio kronor (`//` är heltalsdelning).
+Text kan multipliceras med ett tal: `"ha" * 3` blir `"hahaha"`. Då blir `"#" * 5` fem `#` på rad: en stapel. Sätt ett namn framför och du har en rad i ett diagram. Är talen stora kan du dela dem först: `"#" * (summa // 10)` ger ett `#` per tio kronor (`//` är heltalsdelning).
 
 Riktiga diagram med färger och axlar görs med särskilda bibliotek. De ingår inte i den här kursen, men principen är densamma: räkna ut talen först, och rita sedan.
 

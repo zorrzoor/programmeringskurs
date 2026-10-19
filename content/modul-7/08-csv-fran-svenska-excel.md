@@ -38,7 +38,7 @@ with open("lon.csv", encoding="utf-8") as fil:
 print(total)
 ```
 
-## Två skillnader
+## Skillnader att känna till
 
 I Sverige skrivs decimaltal med **komma** (`31500,50`), men ett komma skulle då förväxlas med kolumnavskiljaren. Därför sparar en svensk Excel CSV-filer med **semikolon** mellan kolumnerna. Du anpassar Python på två ställen:
 

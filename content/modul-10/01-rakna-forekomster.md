@@ -25,7 +25,7 @@ I modul 7 räknade du förekomster med ett uppslag och `.get(nyckel, 0) + 1`. De
 - Frågar du efter ett värde som inte finns får du `0`, inte ett fel: `rakning["fisk"]` är `0`.
 - `rakning.most_common(2)` är de två vanligaste, som en lista av par `(värde, antal)`, störst först. Utan siffra får du alla.
 
-Text delas i ord med `text.split()`, som du kan från modul 6.
+Text delas i ord med `text.split()`, som ger en lista med orden (mer om text i en senare lektion).
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel

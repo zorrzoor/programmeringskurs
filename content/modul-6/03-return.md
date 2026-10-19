@@ -18,7 +18,7 @@ print(dubbla(7) + 1)
 
 ## return är ett svar
 
-`return` skickar ett värde **tillbaka** till dit funktionen anropades. Det går att spara i en variabel, räkna vidare på, eller skriva ut: `dubbla(7) + 1` blir `15`.
+`return` skickar ett värde **tillbaka** till raden som anropade funktionen. Det går att spara i en variabel, räkna vidare på, eller skriva ut: `dubbla(7) + 1` blir `15`.
 
 **Skillnaden mot `print`:** `print` skriver bara ut något på skärmen, och det går inte att använda värdet efteråt. `return` ger ett värde som du kan fortsätta arbeta med. När en funktion har kört `return` är den klar: raderna efter körs inte.
 
