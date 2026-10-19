@@ -178,6 +178,14 @@ befintliga länkar) till `#/ordlista/<id>`. Du skriver alltså inga länkar för
 
 `content/fastnat.md` är texten på sidan "Jag har fastnat" (vanlig Markdown, utan rubrik: sidans rubrik sätts av appen).
 
+## Rubriker runt frågor och övningar
+
+Skriv **inte** rubriker som "Fråga", "Ett test", "Din tur" eller "Uppgifter" före ett `forutsag`- eller `ovning`-block: sidan
+sätter själv en rubrik, **Test** före frågor och **Övning** före övningar, och bygget tar bort de generiska rubrikerna om du
+ändå skrivit dem. Blocken har ingen egen rubrik. Flera frågor eller övningar i rad numreras 1, 2, 3 (en ensam har inget
+nummer). Har lektionstexten precis före en egen rubrik, till exempel `## Steg 2: Summan`, används den, och ingen extra
+rubrik läggs till.
+
 ## En lektions form
 
 Följ ordningen i [kapitel 5](koncept.md#5-så-fungerar-en-lektion): mål, prova, förklaring, förutsäg, gör själv, sammanfattning.

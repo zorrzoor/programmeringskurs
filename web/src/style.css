@@ -114,6 +114,8 @@ h1:focus { outline: none; }
 /* Lesson blocks */
 .block { margin: 1.75rem 0; padding: 1rem 0 0; border-top: 1px solid var(--border); }
 .block h3 { margin: 0 0 .5rem; font-size: 1.15rem; }
+.blockhuvud { display: flex; gap: .6rem; align-items: baseline; margin: 0 0 .4rem; }
+.blockhuvud .nr { font-weight: 700; font-size: 1.15rem; }
 .text h2, .text h3 { margin: 1.5rem 0 .5rem; }
 .ruta { background: var(--ruta-bg); border-left: 4px solid var(--accent); padding: .6rem 1rem; margin: 1.5rem 0; border-radius: .25rem; }
 .fil { margin: 1.5rem 0; }

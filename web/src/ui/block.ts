@@ -118,13 +118,21 @@ function exempel(b: Extract<Block, { typ: "exempel" }>, ctx: Kontext): HTMLEleme
     editor.set(b.kod);
     ut.rensa();
   });
-  rot.append(h("h3", {}, "Prova"), yta, h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, k.stegKnapp, borja), editorHjalp(), k.stegYta, ut.rot);
+  rot.append(yta, h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, k.stegKnapp, borja), editorHjalp(), k.stegYta, ut.rot);
   return rot;
 }
 
+/** The small head of a task: its number when there are several in a row, and the "klar" mark. Hidden when empty. */
+const blockhuvud = (klarMarke: HTMLElement, nr?: number) =>
+  h("div", { class: "blockhuvud", hidden: nr === undefined }, nr !== undefined ? h("span", { class: "nr" }, `${nr}.`) : null, klarMarke);
+const visaKlar = (klarMarke: HTMLElement) => {
+  klarMarke.hidden = false;
+  if (klarMarke.parentElement) klarMarke.parentElement.hidden = false;
+};
+
 const editorHjalp = () => h("p", { class: "hjalp" }, "Du kan ändra koden. Tryck Esc och sedan Tab för att lämna rutan med tangentbordet.");
 
-function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLElement {
+function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext, nr?: number): HTMLElement {
   const ut = skapaUtdata();
   const rot = h("section", { class: "block forutsag" });
   const feedback = h("div", { class: "meddelande", role: "status" });
@@ -151,7 +159,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
   const valt = () => radios.findIndex((r) => r.checked);
   const ratt = () => (b.alternativ.length > 0 ? valt() === b.ratt : normalisera(svarsfalt.value.trim(), true).join("\n") === normalisera(b.svar.trim(), true).join("\n"));
   const markeraKlar = (spara: boolean) => {
-    (klarMarke as HTMLElement).hidden = false;
+    visaKlar(klarMarke);
     if (b.forklaring) (forklaring as HTMLElement).hidden = false;
     if (spara) {
       ctx.spara(b.id, { klar: true });
@@ -179,7 +187,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
   });
   const kod = h("pre", { class: "kod" }, h("code", {}, b.kod));
   rot.append(
-    h("h3", {}, "Fråga ", klarMarke),
+    blockhuvud(klarMarke, nr),
     kod,
     fraga,
     h("div", { class: "knappar" }, svara),
@@ -191,7 +199,7 @@ function forutsag(b: Extract<Block, { typ: "forutsag" }>, ctx: Kontext): HTMLEle
   return rot;
 }
 
-function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement {
+function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext, nr?: number): HTMLElement {
   const ut = skapaUtdata();
   const rot = h("section", { class: "block ovning" });
   const klarMarke = h("span", { class: "klar-marke", hidden: true }, "✓ klar");
@@ -200,7 +208,7 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
   const editor = ctx.editor(yta, { kod: sparad?.kod || b.start, etikett: `Din kod för övningen: ${b.uppgift}`, onChange: (kod) => ctx.spara(b.id, { kod }) });
   const k = skapaKorning(ctx, b.stdin, ut, () => editor.get(), b.filer);
   const markeraKlar = (spara: boolean) => {
-    (klarMarke as HTMLElement).hidden = false;
+    visaKlar(klarMarke);
     if (spara) {
       ctx.spara(b.id, { kod: editor.get(), klar: true });
       ctx.klarNu();
@@ -263,7 +271,7 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
   });
 
   rot.append(
-    h("h3", {}, "Gör själv ", klarMarke),
+    blockhuvud(klarMarke, nr),
     h("p", { class: "uppgift" }, ...inline(b.uppgift)),
     ...(b.visaUtskrift && b.ratta.typ === "utdata" ? [h("p", { class: "hjalp" }, "Så här ska utskriften se ut:"), h("pre", { class: "kod forvantad" }, h("code", {}, b.ratta.forvantat))] : []),
     yta,
@@ -278,7 +286,7 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
   return rot;
 }
 
-export function renderBlock(b: Block, ctx: Kontext): HTMLElement {
+export function renderBlock(b: Block, ctx: Kontext, nr?: number): HTMLElement {
   switch (b.typ) {
     case "text": {
       const d = h("div", { class: "text" });
@@ -295,8 +303,8 @@ export function renderBlock(b: Block, ctx: Kontext): HTMLElement {
     case "exempel":
       return exempel(b, ctx);
     case "forutsag":
-      return forutsag(b, ctx);
+      return forutsag(b, ctx, nr);
     case "ovning":
-      return ovning(b, ctx);
+      return ovning(b, ctx, nr);
   }
 }
