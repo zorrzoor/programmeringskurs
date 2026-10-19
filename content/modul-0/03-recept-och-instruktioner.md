@@ -16,7 +16,7 @@ kod: |
 kor: false
 alternativ: ["A", "B", "C", "D"]
 ratt: 1
-forklaring: "Bara B är exakt: det finns inget att tolka eller gissa. \"Ungefär\", \"bäst\" och \"bra\" betyder olika saker för olika människor, så en dator kan inte följa dem."
+forklaring: "Bara B är exakt: det finns inget som kan förstås på olika sätt. \"Ungefär\", \"bäst\" och \"bra\" betyder olika saker för olika människor, så en dator kan inte följa dem."
 ```
 
 ## Exakt betyder exakt
@@ -69,6 +69,6 @@ text: |
 
 ## Det här lärde du dig
 
-- En instruktion måste vara exakt, utan gissning eller tolkning.
+- En instruktion måste vara exakt, eftersom datorn bara läser vad som står och inte kan förstås på olika sätt.
 - Datorn gör bara det som står, i den ordning det står. Rätt ordning är den som ger rätt resultat, och ett steg kan inte använda något som inte är uträknat än.
 - Stora problem delas upp i små, exakta steg: en sak per steg, i rätt ordning, och resultatet visas sist.
