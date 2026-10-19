@@ -77,12 +77,12 @@ describe("name picker", () => {
     click("Ta bort ett namn");
     (root.querySelector("#ta-bort-val") as HTMLSelectElement).value = "Bosse";
     type("#ta-bort-text", "fel");
-    click("Radera för alltid");
+    click("Radera");
     await settle();
     expect(root.querySelector(".message")?.textContent).toContain("stämmer inte");
     expect(api.people.size).toBe(2);
     type("#ta-bort-text", "bosse");
-    click("Radera för alltid");
+    click("Radera");
     await settle();
     await settle();
     expect([...api.people.values()].map((p) => p.namn)).toEqual(["Anna"]);
