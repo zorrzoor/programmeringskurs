@@ -4,11 +4,14 @@ import { ProgressSync } from "./sync.ts";
 import { startApp, type App } from "./ui/app.ts";
 import { skapaCodeMirror } from "./ui/editor.ts";
 import { showPicker } from "./ui/picker.ts";
+import { lasVisning, tillampaVisning } from "./visning.ts";
 import "./style.css";
 
 const LAST_NAME_KEY = "kurs.namn";
 const root = document.getElementById("app");
 if (!root) throw new Error("#app saknas");
+
+tillampaVisning(lasVisning());
 
 const api = new Api();
 const koerare = skapaKoerare();

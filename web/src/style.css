@@ -20,7 +20,7 @@
   color-scheme: light dark;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-tema="ljust"]) {
     --bg: #14171f;
     --fg: #eef0f6;
     --muted: #a9b0c3;
@@ -41,15 +41,41 @@
     --syn-funktion: #f0c27a;
   }
 }
+:root[data-tema="ljust"] { color-scheme: light; }
+:root[data-tema="morkt"] {
+  color-scheme: dark;
+  --bg: #14171f;
+  --fg: #eef0f6;
+  --muted: #a9b0c3;
+  --accent: #7db0ff;
+  --accent-fg: #0b1020;
+  --danger: #ff8d90;
+  --border: #3a4052;
+  --editor-bg: #1b1f2a;
+  --ok: #8fd9a8;
+  --ok-bg: #16301f;
+  --info-bg: #1a2640;
+  --fel-bg: #3a1c1c;
+  --ruta-bg: #232736;
+  --syn-nyckelord: #d6a3f5;
+  --syn-text: #9bdcae;
+  --syn-tal: #8fb8ff;
+  --syn-kommentar: #8d95aa;
+  --syn-funktion: #f0c27a;
+}
+:root[data-text="stor"] { font-size: 118%; }
+:root[data-text="storre"] { font-size: 140%; }
 * { box-sizing: border-box; }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
   font: 1.125rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow-wrap: break-word;
 }
 #app { max-width: 54rem; margin: 0 auto; padding: 1rem 1rem 3rem; }
-h1 { font-size: 1.75rem; margin: 0 0 .5rem; }
+h1 { font-size: clamp(1.45rem, 7vw, 1.75rem); margin: 0 0 .5rem; }
+h1, h2, h3, h4 { overflow-wrap: anywhere; }
 h2 { font-size: 1.35rem; margin: 1.5rem 0 .5rem; }
 label { display: block; margin: 1rem 0 .25rem; font-weight: 600; }
 input, select, button { font: inherit; }
@@ -93,7 +119,16 @@ h1:focus { outline: none; }
 .fil { margin: 1.5rem 0; }
 .fil figcaption { font-size: .9rem; font-weight: 600; margin-bottom: .25rem; }
 .fil pre { margin: 0; padding: .6rem 1rem; background: var(--ruta-bg); border-radius: .25rem; overflow-x: auto; }
-.meny { display: flex; gap: 1rem; flex-wrap: wrap; font-size: .95rem; }
+.meny { display: flex; gap: .25rem 1rem; flex-wrap: wrap; align-items: center; font-size: .95rem; }
+.meny a, .visning summary { display: inline-block; padding: .5rem .25rem; min-height: 2.75rem; line-height: 1.75rem; }
+.visning { position: relative; }
+.visning summary { cursor: pointer; color: var(--accent); text-decoration: underline; }
+.visning[open] > fieldset, .visning[open] > .visningsgrupp { background: var(--ruta-bg); }
+.visningsgrupp { border: 1px solid var(--border); border-radius: .5rem; margin: .25rem 0; padding: .4rem .75rem .6rem; }
+.visningsgrupp legend { font-weight: 600; padding: 0 .25rem; }
+.visningsgrupp .val { display: inline-flex; align-items: center; gap: .35rem; margin-right: 1rem; min-height: 2.5rem; }
+.visningsgrupp input { width: 1.25rem; height: 1.25rem; }
+.visningsgrupp label { cursor: pointer; }
 dl.ordlista dt { font-weight: 700; margin-top: 1rem; }
 dl.ordlista dd { margin: .1rem 0 0; }
 dl.ordlista .markerad { background: var(--ruta-bg); border-left: 4px solid var(--accent); padding-left: .6rem; }
