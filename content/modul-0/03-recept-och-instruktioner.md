@@ -27,7 +27,7 @@ När du säger åt en dator vad den ska göra måste du:
 - Säga **med vad** ("20 och 5"),
 - Och i **vilken ordning** det ska göras. Rätt ordning är den ordning som ger rätt resultat. Det finns ingen färdig "rätt" ordning: den beror på vad du vill uppnå.
 
-Datorn fyller aldrig i luckor åt dig. Det låter jobbigt, men det är också skönt: gör du som du skriver blir resultatet alltid detsamma.
+Datorn fyller aldrig i luckor åt dig. Det låter jobbigt, men det är också skönt: skriver du samma instruktioner blir resultatet alltid detsamma.
 
 ## Dela upp stora problem
 
@@ -69,6 +69,6 @@ text: |
 
 ## Det här lärde du dig
 
-- En instruktion måste vara exakt, eftersom datorn bara läser vad som står och inte kan förstås på olika sätt.
+- En instruktion måste vara exakt, eftersom datorn bara gör det som står. Den får inte gå att förstå på olika sätt.
 - Datorn gör bara det som står, i den ordning det står. Rätt ordning är den som ger rätt resultat, och ett steg kan inte använda något som inte är uträknat än.
 - Stora problem delas upp i små, exakta steg: en sak per steg, i rätt ordning, och resultatet visas sist.
