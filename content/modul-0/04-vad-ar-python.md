@@ -17,15 +17,15 @@ Du får ändra koden. Ändra texten mellan citattecknen till ditt namn, och kör
 
 ## Vad hände?
 
-Datorn förstår inte svenska och inte heller engelska. Den förstår bara ettor och nollor. **Python** är ett programmeringsspråk: ett sätt att skriva instruktioner som både du och datorn kan förstå. Python gör om det du skriver till något som datorn kan följa.
+Datorn kan inte läsa svenska eller engelska. Den kan bara följa mycket enkla instruktioner, lagrade som ettor och nollor. **Python** är ett programmeringsspråk: ett sätt att skriva instruktioner som du kan läsa och skriva, och som Python gör om till sådant som datorn kan följa.
 
 I koden ovan finns tre delar:
 
-- `print` är ett **kommando**. Det betyder "skriv ut", alltså "visa på skärmen".
-- Parenteserna `( )` säger vad kommandot ska arbeta med.
+- `print` är en **funktion**. Det betyder "skriv ut", alltså "visa på skärmen".
+- Parenteserna `( )` säger vad funktionen ska arbeta med.
 - Texten står inom **citattecken**: `"Hej!"`.
 
-Kommandot `print` är ett engelskt ord, men Python är inte engelska. Det är ett eget språk med förhållandevis få ord, som du lär dig ett i taget. I den här kursen förklarar vi varje ord första gången det dyker upp.
+Funktionen `print` har ett engelskt namn, men Python är inte engelska. Det är ett eget språk med förhållandevis få ord, som du lär dig ett i taget. I den här kursen förklarar vi varje ord första gången det dyker upp.
 
 ```forutsag
 kod: |

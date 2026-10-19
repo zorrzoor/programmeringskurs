@@ -56,7 +56,7 @@ start: |
   tal = [1, 2, 3]
 ratta: {utdata: "[1, 2, 3, 4]"}
 ledtradar:
-  - Det finns ett kommando för att lägga till sist i en lista.
+  - Det finns något färdigt för att lägga till sist i en lista.
   - Det heter append, och talet står inom parenteserna.
   - tal.append(4) och sedan print(tal).
 facit: |

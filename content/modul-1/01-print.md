@@ -16,7 +16,7 @@ Du kan också skriva ut en tom rad. Prova att lägga till `print()` mellan de tv
 
 ## Så fungerar print
 
-`print` är ett **kommando**: ett ord som får datorn att göra något. Det du vill skriva ut skriver du inom parenteserna.
+`print` är en **funktion**: ett ord som får datorn att göra något. Det du vill skriva ut skriver du inom parenteserna.
 
 - En text (programmerare säger **sträng**, på engelska *string*) står mellan citattecken: `"Hej!"`. Du kan använda dubbla `"` eller enkla `'`, bara du använder samma sort i början och slutet.
 - `print()` med tomma parenteser skriver ut en tom rad.
