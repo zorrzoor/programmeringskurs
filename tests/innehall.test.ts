@@ -227,3 +227,10 @@ test("an exercise whose task quotes its output gets the block", () => {
   const m = parse("```ovning\nid: t-ut2\nuppgift: \"Skriv ut `Hej`.\"\nratta: {utdata: \"Hej\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n");
   assert.equal("visaUtskrift" in (m.block[0] as object), false);
 });
+
+test("krav on an exercise is validated and kept", () => {
+  const ok = parse("```ovning\nid: t-krav\nuppgift: u\nkrav: [for, \"anropa:range\"]\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n");
+  assert.deepEqual((ok.block[0] as { krav?: string[] }).krav, ["for", "anropa:range"]);
+  fails("```ovning\nid: t-krav2\nuppgift: u\nkrav: [dansa]\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n", /"krav" ska vara/);
+  fails("```ovning\nid: t-krav3\nuppgift: u\nkrav: for\nratta: {utdata: \"1\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n", /"krav" ska vara/);
+});

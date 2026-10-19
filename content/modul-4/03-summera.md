@@ -47,6 +47,7 @@ forklaring: "Tre varv, och varje varv lägger på 10: 0, 10, 20, 30."
 ```ovning
 id: m4-summera-tio
 uppgift: "Summera talen från `1` till och med `10` i en loop, och skriv ut summan."
+krav: ["loop"]
 start: |
   # skriv din kod här
 ratta: {utdata: "55"}
@@ -64,6 +65,7 @@ facit: |
 ```ovning
 id: m4-summera-produkt
 uppgift: "Räkna ut `1 * 2 * 3 * 4 * 5` i en loop (variabeln ska börja på `1`, inte `0`), och skriv ut resultatet."
+krav: ["loop"]
 start: |
   # skriv din kod här
 ratta: {utdata: "120"}

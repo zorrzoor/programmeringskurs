@@ -54,6 +54,7 @@ forklaring: "Det största är 9 och det minsta är 1, och 9 - 1 är 8."
 ```ovning
 id: m6-fardiga-medel
 uppgift: "Skriv ut medelvärdet av listan `tal` med hjälp av de färdiga funktionerna `sum` och `len`."
+krav: ["anropa:sum", "anropa:len"]
 start: |
   tal = [4, 8, 6, 10]
 ratta: {utdata: "7.0"}
@@ -69,6 +70,7 @@ facit: |
 ```ovning
 id: m6-fardiga-kvadratrot
 uppgift: "Använd modulen `math` och skriv ut kvadratroten ur `25`."
+krav: ["import:math"]
 start: |
   # skriv din kod här
 ratta: {utdata: "5.0"}

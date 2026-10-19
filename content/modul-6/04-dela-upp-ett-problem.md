@@ -71,6 +71,7 @@ facit: |
 ```ovning
 id: m6-dela-antal-jamna
 uppgift: "Funktionen `ar_jamnt` finns redan. Skapa en funktion `antal_jamna(lista)` som returnerar hur många jämna tal det finns i listan, och använd `ar_jamnt` i den."
+krav: ["funktion", "anropa:ar_jamnt"]
 start: |
   def ar_jamnt(tal):
       return tal % 2 == 0

@@ -31,8 +31,7 @@ riktig nybörjare (#27), inte en ersättning: en modell kan missa det som bara e
 
 ## Förslag som kräver ett beslut eller mer arbete (egna ärenden)
 
-1. **Rättningen är för petig för små saker** (en saknad avslutande punkt, komma mot punkt, skiftläge) och säger inte alltid
-   exakt vad som skiljer. Samtidigt godkänns hårdkodad utskrift där uppgiften säger "med en uträkning".
+1. ~~**Rättningen är för petig**~~ åtgärdat med ett annat beslut: rättningen förblir sträng (ingen förlåtelse för punkt, komma eller skiftläge), men meddelandet säger exakt vad som skiljer, kontroller av *hur* uppgiften löstes (`krav`) har tillkommit, och fel i funktionsövningar förklaras på svenska.
 2. ~~**Två felmeddelanden ger fel råd:**~~ åtgärdat: `print(namn = "Anna")` föreslår nu `==`, och text plus tal nämner `int()` för svar från `input()`.
 3. **Förväntad utskrift ska visas i kodstil** i uppgiftstexten, så att en punkt i slutet av meningen inte förväxlas med utskriften.
 4. **Excelfällor där Excelvana leder fel:** `=` och `<>` mot `==` och `!=`, `^` mot `**`, var `{ }` finns på tangentbordet, hur man gör indrag.

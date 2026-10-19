@@ -40,6 +40,8 @@ export type Block =
       ratta: Ratta;
       /** The task already quotes the whole expected output: show it as a block, so that punctuation is unambiguous. */
       visaUtskrift?: boolean;
+      /** What the task asks for in the code itself ("for", "uträkning", "anropa:max" …), checked when rating. */
+      krav?: string[];
       ledtradar: [string, string, string];
       facit: string;
     }

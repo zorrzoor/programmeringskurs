@@ -60,6 +60,7 @@ facit: |
 ```ovning
 id: m4-range-jamna
 uppgift: "Skriv ut de jämna talen `2`, `4`, `6`, `8` och `10`, ett per rad, med hjälp av steget i `range`."
+krav: ["anropa:range"]
 start: |
   # skriv din kod här
 ratta: {utdata: "2\n4\n6\n8\n10"}

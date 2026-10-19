@@ -63,6 +63,7 @@ facit: |
 ```ovning
 id: m1-tal-rakna
 uppgift: "Skriv ut resultatet av `10 + 5` som ett tal, alltså utan citattecken runt uträkningen."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "15"}

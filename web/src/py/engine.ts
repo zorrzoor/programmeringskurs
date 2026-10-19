@@ -1,9 +1,9 @@
 // Runs learner code in Pyodide and checks exercises. Pyodide itself is passed in (a worker in the browser, the npm
 // package in Node tests), so everything here is the same in both places.
 import type { Filer, Ratta } from "../kurs-typer.ts";
-import { type PyFel } from "./felmeddelanden.ts";
+import { forklaraFel, type PyFel } from "./felmeddelanden.ts";
 import { PYTHON_KOD } from "./python-kod.ts";
-import { jamforFil, jamforUtdata, jamforVariabel } from "./rattning.ts";
+import { jamforFil, jamforUtdata, jamforVariabel, kravMeddelande } from "./rattning.ts";
 
 /** The part of Pyodide that the engine uses (so a test can pass a fake). */
 export interface PyodideLite {
@@ -20,6 +20,8 @@ export interface KorAlternativ {
   onUtdata?: (text: string) => void;
   /** The lesson's files, placed in the working directory before the run. */
   filer?: Filer;
+  /** What the task asks for in the code itself (docs/skriva-lektioner.md, `krav`), checked when rating. */
+  krav?: string[];
   /** Most characters a program may print. */
   grans?: number;
 }
@@ -50,6 +52,8 @@ export interface Kontroll {
   ok: boolean;
   /** What to tell the learner. Empty when everything was right. */
   meddelanden: string[];
+  /** Shown with "Rätt!" when something was accepted that does not look identical (e.g. upper and lower case). */
+  notering?: string;
   utdata: string;
   fel: PyFel | null;
 }
@@ -116,10 +120,21 @@ export class PyEngine {
           meddelanden.push(`Funktionen \`${ratta.namn}\` finns inte. Har du skrivit \`def ${ratta.namn}(...)\`?`);
           break;
         }
-        if (svar.fel) meddelanden.push(`\`${anrop}\` gav felet ${svar.fel.typ}: ${svar.fel.meddelande}.`);
+        if (svar.fel) {
+          const f = forklaraFel(svar.fel);
+          meddelanden.push(`\`${anrop}\` stoppades av ett fel. ${f.rubrik}: ${f.forklaring} ${f.tips}`);
+        }
         else if (!svar.lika) meddelanden.push(`\`${anrop}\` gav \`${svar.faktisk}\`, men det ska bli \`${JSON.stringify(t.svar)}\`.`);
       }
     }
-    return { ok: meddelanden.length === 0, meddelanden, utdata: k.utdata, fel: null };
+    if (alt.krav && alt.krav.length > 0) {
+      const saknas = JSON.parse(this.fn("_krav")(kod, JSON.stringify(alt.krav))) as string[];
+      meddelanden.push(...saknas.map(kravMeddelande));
+    }
+    let notering: string | undefined;
+    if (meddelanden.length === 0 && ratta.typ === "utdata" && ratta.ignoreraVersaler && jamforUtdata(k.utdata, ratta.forvantat, false).length > 0) {
+      notering = "Här spelade stora och små bokstäver ingen roll, så svaret räknades som rätt fast det inte ser likadant ut.";
+    }
+    return { ok: meddelanden.length === 0, meddelanden, utdata: k.utdata, fel: null, ...(notering ? { notering } : {}) };
   }
 }

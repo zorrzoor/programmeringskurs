@@ -10,6 +10,8 @@ export class ContentError extends Error {
 }
 
 const SPECIAL = new Set(["python-exempel", "forutsag", "ovning", "ruta", "fil"]);
+/** What an exercise can require of the code itself; see `_krav` in web/src/py/python-kod.ts. */
+const KRAV_RE = /^(uträkning|kommentar-först|kommentar|f-sträng|for|while|loop|and|or|funktion|(import|anropa|inte-anropa):[A-Za-z_][A-Za-z0-9_]*)$/u;
 const FILNAMN_RE = /^[A-Za-z0-9_][A-Za-z0-9_.-]{0,63}$/;
 const ID_RE = /^[a-z0-9][a-z0-9._-]{0,63}$/;
 const FENCE_RE = /^(`{3,}|~{3,})\s*([^\s`]*)\s*$/;
@@ -106,6 +108,9 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
   const hints = o.ledtradar;
   if (!Array.isArray(hints) || hints.length !== 3 || !hints.every((h) => typeof h === "string" && h.trim() !== "")) throw new ContentError(file, line, `ovning ${id}: "ledtradar" ska vara exakt tre texter (en knuff, en tydligare, nästan svaret)`);
   const uppgift = str(o, "uppgift", file, line, `ovning ${id}`);
+  if (o.krav !== undefined && (!Array.isArray(o.krav) || o.krav.length === 0 || !o.krav.every((k) => typeof k === "string" && KRAV_RE.test(k)))) {
+    throw new ContentError(file, line, `ovning ${id}: "krav" ska vara en lista med kända krav (uträkning, kommentar-först, kommentar, f-sträng, for, while, loop, and, or, funktion, import:<modul>, anropa:<namn>, inte-anropa:<namn>)`);
+  }
   const ratta = rattaOf(o.ratta, file, line);
   return {
     typ: "ovning",
@@ -117,6 +122,7 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
     ledtradar: hints as [string, string, string],
     facit: str(o, "facit", file, line, `ovning ${id}`).replace(/\n+$/, ""),
     ...(visaForvantadUtskrift(uppgift, ratta) ? { visaUtskrift: true } : {}),
+    ...(o.krav ? { krav: o.krav as string[] } : {}),
   };
 }
 

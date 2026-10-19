@@ -151,7 +151,7 @@ describe("kontrollera", () => {
     expect(e.kontrollera("def dubbla(x):\n    return x * 2", ratta).ok).toBe(true);
     expect(e.kontrollera("def dubbla(x):\n    return x + 2", ratta).meddelanden).toEqual(["`dubbla(0)` gav `2`, men det ska bli `0`."]);
     expect(e.kontrollera("x = 1", ratta).meddelanden[0]).toContain("`dubbla` finns inte");
-    expect(e.kontrollera("def dubbla(x):\n    return x / 0", ratta).meddelanden[0]).toContain("ZeroDivisionError");
+    expect(e.kontrollera("def dubbla(x):\n    return x / 0", ratta).meddelanden[0]).toContain("Division med noll");
   });
 });
 
@@ -188,5 +188,42 @@ describe("explanations that point the learner the right way", () => {
   test("text plus a number from input() suggests int(...)", () => {
     const fel = e.run('alder = "30"\nprint(alder + 1)').fel;
     expect(forklaraFel(fel as NonNullable<typeof fel>).tips).toContain("int(");
+  });
+});
+
+describe("rating stays strict but explains, and checks how the task was solved", () => {
+  const utdata = (forvantat: string, ignoreraVersaler = false): Ratta => ({ typ: "utdata", forvantat, ignoreraVersaler });
+  test("a missing full stop is not accepted, and the message says exactly that", () => {
+    const k = e.kontrollera('print("Klart")', utdata("Klart."));
+    expect(k.ok).toBe(false);
+    expect(k.meddelanden.join(" ")).toContain("saknas ett . sist");
+  });
+  test("upper and lower case is only accepted when the exercise says so, and then the learner is told", () => {
+    expect(e.kontrollera('print("hej")', utdata("Hej")).ok).toBe(false);
+    const k = e.kontrollera('print("hej")', utdata("Hej", true));
+    expect(k.ok).toBe(true);
+    expect(k.notering).toContain("stora och små bokstäver");
+    expect(e.kontrollera('print("Hej")', utdata("Hej", true)).notering).toBeUndefined();
+  });
+  test("krav: a calculation, a loop, a comment first, a call to a named function", () => {
+    const ok = (kod: string, krav: string[]) => e.kontrollera(kod, utdata("70"), { krav });
+    expect(ok("print(70)", ["uträkning"]).ok).toBe(false);
+    expect(ok("print(70)", ["uträkning"]).meddelanden.join(" ")).toContain("uträkning");
+    expect(ok("print(3 * 20 + 10)", ["uträkning"]).ok).toBe(true);
+    expect(ok("print(70)", ["kommentar-först"]).ok).toBe(false);
+    expect(ok("# 70\nprint(70)", ["kommentar-först"]).ok).toBe(true);
+    expect(ok("x = 0\nfor i in range(7):\n    x += 10\nprint(x)", ["for"]).ok).toBe(true);
+    expect(ok("print(70)", ["loop"]).ok).toBe(false);
+    expect(ok("print(70)", ["f-sträng"]).ok).toBe(false);
+    expect(ok('x = 70\nprint(f"{x}")', ["f-sträng"]).ok).toBe(true);
+    expect(ok("print(max([70]))", ["inte-anropa:max"]).ok).toBe(false);
+    expect(ok("import math\nprint(70)", ["import:math"]).ok).toBe(true);
+    expect(ok("print(70)", ["import:math"]).ok).toBe(false);
+    expect(ok("print(len([1]) + 69)", ["anropa:len", "uträkning"]).ok).toBe(true);
+    expect(ok("print(1 < 2 and 70)", ["and"]).ok).toBe(true);
+  });
+  test("a decimal with a comma gets a hint", () => {
+    const k = e.kontrollera("pris = 12,5", { typ: "variabler", forvantat: { pris: 12.5 } });
+    expect(k.meddelanden.join(" ")).toContain("punkt");
   });
 });

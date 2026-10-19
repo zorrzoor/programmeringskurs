@@ -46,6 +46,7 @@ forklaring: "Så länge n är större än 0 skrivs n ut och minskas med 4: 10, 6
 ```ovning
 id: m4-while-nedrakning
 uppgift: "Räkna ner från `5` till `1` med en while-loop (ett tal per rad), och skriv sedan ut `Start!`."
+krav: ["while"]
 start: |
   # skriv din kod här
 ratta: {utdata: "5\n4\n3\n2\n1\nStart!"}

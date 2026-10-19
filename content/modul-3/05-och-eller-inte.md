@@ -57,6 +57,7 @@ forklaring: "or räcker med att ett villkor stämmer. 7 är större än 5, så s
 ```ovning
 id: m3-och-lagom
 uppgift: "Variabeln `temp` finns redan. Skriv ut `Lagom` om `temp` är minst 10 och högst 20 (använd `and`), annars `Inte lagom`."
+krav: ["and"]
 start: |
   temp = 15
 ratta: {utdata: "Lagom"}
@@ -75,6 +76,7 @@ facit: |
 ```ovning
 id: m3-eller-helg
 uppgift: "Variabeln `dag` finns redan. Skriv ut `Helg` om `dag` är `lördag` eller `söndag` (använd `or`), annars `Vardag`."
+krav: ["or"]
 start: |
   dag = "lördag"
 ratta: {utdata: "Helg"}

@@ -45,6 +45,7 @@ forklaring: "range(4) ger i v채rdena 0, 1, 2 och 3: fyra varv, och r채kningen b�
 ```ovning
 id: m4-for-hej
 uppgift: "Skriv ut `Hej` fyra g책nger med en for-loop."
+krav: ["for"]
 start: |
   # skriv din kod h채r
 ratta: {utdata: "Hej\nHej\nHej\nHej"}
@@ -60,6 +61,7 @@ facit: |
 ```ovning
 id: m4-for-siffror
 uppgift: "Skriv ut talen `0`, `1`, `2`, `3` och `4`, ett per rad, med en for-loop."
+krav: ["for"]
 start: |
   # skriv din kod h채r
 ratta: {utdata: "0\n1\n2\n3\n4"}

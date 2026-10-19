@@ -95,6 +95,63 @@ def _funktion(namn, indata_json, svar_json):
         return json.dumps({"finns": True, "lika": False, "faktisk": "", "fel": _fel(e)})
     return json.dumps({"finns": True, "lika": bool(_lika(r, json.loads(svar_json))), "faktisk": repr(r), "fel": None})
 
+def _krav(kod, krav_json):
+    import ast, tokenize, io
+    tree = ast.parse(kod)
+    noder = list(ast.walk(tree))
+    def anrop(namn):
+        for n in noder:
+            if isinstance(n, ast.Call):
+                f = n.func
+                if (isinstance(f, ast.Name) and f.id == namn) or (isinstance(f, ast.Attribute) and f.attr == namn):
+                    return True
+        return False
+    def boolop(typ):
+        return any(isinstance(n, ast.BoolOp) and isinstance(n.op, typ) for n in noder)
+    def importerar(modul):
+        for n in noder:
+            if isinstance(n, ast.Import) and any(a.name.split(".")[0] == modul for a in n.names):
+                return True
+            if isinstance(n, ast.ImportFrom) and (n.module or "").split(".")[0] == modul:
+                return True
+        return False
+    def kommentarer():
+        return [t for t in tokenize.generate_tokens(io.StringIO(kod).readline) if t.type == tokenize.COMMENT]
+    saknas = []
+    for k in json.loads(krav_json):
+        if k == "uträkning":
+            ok = any(isinstance(n, ast.BinOp) for n in noder)
+        elif k == "kommentar-först":
+            rader = [r for r in kod.split("\\n") if r.strip()]
+            ok = bool(rader) and rader[0].strip().startswith("#")
+        elif k == "kommentar":
+            ok = len(kommentarer()) > 0
+        elif k == "f-sträng":
+            ok = any(isinstance(n, ast.JoinedStr) for n in noder)
+        elif k == "for":
+            ok = any(isinstance(n, ast.For) for n in noder)
+        elif k == "while":
+            ok = any(isinstance(n, ast.While) for n in noder)
+        elif k == "loop":
+            ok = any(isinstance(n, (ast.For, ast.While)) for n in noder)
+        elif k == "and":
+            ok = boolop(ast.And)
+        elif k == "or":
+            ok = boolop(ast.Or)
+        elif k == "funktion":
+            ok = any(isinstance(n, ast.FunctionDef) for n in noder)
+        elif k.startswith("import:"):
+            ok = importerar(k[7:])
+        elif k.startswith("anropa:"):
+            ok = anrop(k[7:])
+        elif k.startswith("inte-anropa:"):
+            ok = not anrop(k[12:])
+        else:
+            ok = True
+        if not ok:
+            saknas.append(k)
+    return json.dumps(saknas)
+
 class _ForMangaSteg(Exception):
     pass
 
