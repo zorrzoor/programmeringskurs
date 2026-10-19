@@ -307,3 +307,12 @@ describe("ordlistan och fastnat", () => {
     expect(rot.querySelector('a[href="#/ordlista"]')).not.toBeNull();
   });
 });
+
+describe("förväntad utskrift", () => {
+  test("an exercise with visaUtskrift shows the expected output as a block under the task", () => {
+    const b: Block = { ...(OVNING as Extract<Block, { typ: "ovning" }>), ratta: { typ: "utdata", forvantat: "Hej!\nJag lär mig Python.", ignoreraVersaler: false }, visaUtskrift: true };
+    const r = renderBlock(b, ctx());
+    expect(r.querySelector("pre.forvantad")?.textContent).toBe("Hej!\nJag lär mig Python.");
+    expect(renderBlock(OVNING, ctx()).querySelector("pre.forvantad")).toBeNull();
+  });
+});

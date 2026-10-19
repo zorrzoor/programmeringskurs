@@ -38,6 +38,8 @@ export type Block =
       stdin: string[];
       filer?: Filer;
       ratta: Ratta;
+      /** The task already quotes the whole expected output: show it as a block, so that punctuation is unambiguous. */
+      visaUtskrift?: boolean;
       ledtradar: [string, string, string];
       facit: string;
     }

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { byggKurs } from "../scripts/build-content.ts";
-import { ContentError, kontrolleraKurs, lankaOrd, ordId, parseLektion, parseModul, parseOrdlista, uppskattaMinuter } from "../scripts/lib/innehall.ts";
+import { ContentError, kontrolleraKurs, lankaOrd, ordId, parseLektion, parseModul, parseOrdlista, uppskattaMinuter, visaForvantadUtskrift } from "../scripts/lib/innehall.ts";
 
 const FM = "---\ntitel: Testlektion\nmal: Du kan något.\n---\n";
 const parse = (body: string) => parseLektion(FM + body, "f.md", 2, 3, "test");
@@ -209,4 +209,21 @@ test("the real glossary has at least 40 words and every link in the course leads
   assert.ok(kurs.ordlista.length >= 40, `${kurs.ordlista.length} ord`);
   assert.ok(kurs.fastnat.length > 100);
   kontrolleraKurs(kurs.moduler, kurs.ordlista);
+});
+
+test("the expected output is shown as a block only when the task already quotes it and it is easy to misread", () => {
+  const u = (forvantat: string) => ({ typ: "utdata" as const, forvantat, ignoreraVersaler: false });
+  assert.equal(visaForvantadUtskrift("Skriv ut `Kalle är 35 år.` med en f-sträng.", u("Kalle är 35 år.")), true);
+  assert.equal(visaForvantadUtskrift("Skriv `Ett` och `Två`.", u("Ett\nTvå")), true);
+  assert.equal(visaForvantadUtskrift("Skriv ut `Hej`.", u("Hej")), false, "a single word without punctuation needs no block");
+  assert.equal(visaForvantadUtskrift("Skriv ut vad `12 * 4 + 3` blir.", u("51")), false, "the answer is not quoted: nothing is given away");
+  assert.equal(visaForvantadUtskrift("Skriv ut `a` och sedan svaret.", u("a.\n42")), false);
+  assert.equal(visaForvantadUtskrift("Skriv ut `x`.", { typ: "variabler", forvantat: { x: 1 } }), false);
+});
+
+test("an exercise whose task quotes its output gets the block", () => {
+  const l = parse("```ovning\nid: t-ut\nuppgift: \"Skriv ut `Tack!`.\"\nratta: {utdata: \"Tack!\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n");
+  assert.equal((l.block[0] as { visaUtskrift?: boolean }).visaUtskrift, true);
+  const m = parse("```ovning\nid: t-ut2\nuppgift: \"Skriv ut `Hej`.\"\nratta: {utdata: \"Hej\"}\nledtradar: [a, b, c]\nfacit: print(1)\n```\n");
+  assert.equal("visaUtskrift" in (m.block[0] as object), false);
 });

@@ -20,11 +20,11 @@ describe("jamforUtdata", () => {
     expect(jamforUtdata("", "5", false)[0]).toContain("inte ut något");
   });
   test("a wrong line is pointed out", () => {
-    expect(jamforUtdata("5\n", "6", false)).toEqual(["På rad 1 av utskriften skrev du `5`, men vi ville ha `6`."]);
+    expect(jamforUtdata("5\n", "6", false)).toEqual(["På rad 1 av utskriften skrev du `5`, men vi ville ha `6`"]);
   });
   test("too many and too few lines", () => {
-    expect(jamforUtdata("1\n2\n3", "1\n2", false)).toEqual(["Du skrev ut 3 rader, men vi väntade oss 2.", "Du har en extra rad i slutet: `3`."]);
-    expect(jamforUtdata("1", "1\n2", false)).toEqual(["Du skrev ut 1 rad, men vi väntade oss 2.", "Det saknar en rad i slutet: vi ville ha `2`."]);
+    expect(jamforUtdata("1\n2\n3", "1\n2", false)).toEqual(["Du skrev ut 3 rader, men vi väntade oss 2.", "Du har en extra rad i slutet: `3`"]);
+    expect(jamforUtdata("1", "1\n2", false)).toEqual(["Du skrev ut 1 rad, men vi väntade oss 2.", "Det saknar en rad i slutet: vi ville ha `2`"]);
   });
   test("blank lines are shown in words", () => {
     expect(jamforUtdata("a\n\nb", "a\nb", false)[1]).toContain("(en tom rad)");
@@ -44,7 +44,7 @@ describe("jamforFil", () => {
     expect(jamforFil("ut.txt", { finns: true, text: "a\nb\n" }, "a\nb")).toEqual([]);
     expect(jamforFil("ut.txt", { finns: false, text: "" }, "a")[0]).toContain("finns inte");
     expect(jamforFil("ut.txt", { finns: true, text: "" }, "a")[0]).toContain("är tom");
-    expect(jamforFil("ut.txt", { finns: true, text: "a\nx\n" }, "a\nb")).toEqual(["På rad 2 i filen står `x`, men vi ville ha `b`."]);
+    expect(jamforFil("ut.txt", { finns: true, text: "a\nx\n" }, "a\nb")).toEqual(["På rad 2 i filen står `x`, men vi ville ha `b`"]);
     expect(jamforFil("ut.txt", { finns: true, text: "a\nb\nc\n" }, "a\nb")[1]).toContain("extra rad");
   });
 });
