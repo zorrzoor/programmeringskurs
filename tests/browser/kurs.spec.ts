@@ -49,7 +49,7 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await page.getByLabel("20", { exact: true }).check();
   await page.getByRole("button", { name: "Svara" }).first().click();
   await expect(page.getByText("Rätt!").first()).toBeVisible();
-  await page.getByLabel("Ingenting händer, datorn förstår inte vad som menas med störst").check();
+  await page.getByLabel("Datorn kan inte följa instruktionen: den säger inte vad störst betyder").check();
   await page.getByRole("button", { name: "Svara" }).nth(1).click();
   await expect(page.getByText("Du har gjort alla uppgifter i den här lektionen")).toBeVisible();
 
