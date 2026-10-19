@@ -27,7 +27,7 @@ Modulen `datetime` räknar med datum på riktigt, så att du slipper tänka på 
 - Två datum kan dras ifrån varandra: resultatet är en **tidsskillnad**, och `.days` är antalet dagar.
 - `timedelta(days=30)` är en tidsskillnad på 30 dagar som du kan lägga till ett datum.
 - `datum.year`, `datum.month` och `datum.day` ger delarna, och `datum.weekday()` ger veckodag som ett tal, där måndag är 0 och söndag 6.
-- `datum.strftime("%d/%m/%Y")` skriver ut ett datum som du vill: `%d` är dag, `%m` månad och `%Y` år. `datetime.strptime("24/12/2026", "%d/%m/%Y")` gör tvärtom, text till datum.
+- `datum.strftime("%d/%m/%Y")` skriver ut ett datum som du vill: `%d` är dag, `%m` månad och `%Y` år. Med `from datetime import datetime` gör `datetime.strptime("24/12/2026", "%d/%m/%Y")` tvärtom: text till ett datum med klockslag. `.date()` tar bort klockslaget.
 
 För dagens datum finns `date.today()`. Övningarna här använder fasta datum, så att rättningen alltid får samma svar.
 

@@ -24,7 +24,7 @@ Modulen `random` ger slumpmässiga värden: till tärningar, lotterier och fråg
 - `random.choice(lista)` är ett slumpmässigt element ur en lista.
 - `random.shuffle(lista)` blandar listan på plats.
 
-Datorn slumpar egentligen inte på riktigt: den räknar ut tal som ser slumpmässiga ut, utifrån ett startvärde. Med `random.seed(1)` bestämmer du startvärdet, och då blir **samma** tal slumpade varje gång. Det är så rättningen i kursen kan veta vad som ska skrivas ut. Utan `seed` blir det nya tal varje gång.
+Datorn slumpar egentligen inte på riktigt: den räknar ut tal som ser slumpmässiga ut, utifrån ett startvärde. Med `random.seed(1)` bestämmer du startvärdet, och då blir **samma** tal slumpade varje gång. Det är så rättningen i kursen kan veta vad som ska skrivas ut. Utan `seed` hämtar Python startvärdet från datorn (till exempel från klockan), så talen blir olika varje gång. Det är precis vad du vill med en tärning, ett lotteri eller en blandad frågesport, och därför väljer man `random`. Med `seed` väljer du själv att få samma tal igen, till exempel när du testar. Det motsäger inte att samma instruktioner ger samma resultat: startvärdet är en del av indatan, och utan `seed` är den olika varje gång.
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
