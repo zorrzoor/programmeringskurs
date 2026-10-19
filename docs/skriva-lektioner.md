@@ -106,6 +106,11 @@ facit: |
 
 `stdin: ["Anna", "7"]` ger svar på `input()` i en övning.
 
+Citerar uppgiftstexten hela den förväntade utskriften i kodstil (till exempel `Skriv ut \`Kalle är 35 år.\``), och utskriften
+är flera rader eller slutar med skiljetecken, visar sidan den dessutom som ett block under uppgiften ("Så här ska
+utskriften se ut"). Det sker automatiskt och ger aldrig bort svaret, eftersom det redan står i uppgiften. Skriv därför alltid
+exakt utskrift i kodstil, och undvik meningar som slutar med ett skiljetecken direkt efter den.
+
 **Varje facit måste klara sin egen rättning**, och `start` får inte klara den. Det kontrolleras i CI (se #9); ett facit som
 inte stämmer stoppar bygget.
 

@@ -105,15 +105,18 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
   if (!ID_RE.test(id)) throw new ContentError(file, line, `ovning: ogiltigt id "${id}" (små bokstäver, siffror, punkt, bindestreck)`);
   const hints = o.ledtradar;
   if (!Array.isArray(hints) || hints.length !== 3 || !hints.every((h) => typeof h === "string" && h.trim() !== "")) throw new ContentError(file, line, `ovning ${id}: "ledtradar" ska vara exakt tre texter (en knuff, en tydligare, nästan svaret)`);
+  const uppgift = str(o, "uppgift", file, line, `ovning ${id}`);
+  const ratta = rattaOf(o.ratta, file, line);
   return {
     typ: "ovning",
     id,
-    uppgift: str(o, "uppgift", file, line, `ovning ${id}`),
+    uppgift,
     start: typeof o.start === "string" ? o.start.replace(/\n+$/, "") : "",
     stdin: stdinOf(o, file, line, `ovning ${id}`),
-    ratta: rattaOf(o.ratta, file, line),
+    ratta,
     ledtradar: hints as [string, string, string],
     facit: str(o, "facit", file, line, `ovning ${id}`).replace(/\n+$/, ""),
+    ...(visaForvantadUtskrift(uppgift, ratta) ? { visaUtskrift: true } : {}),
   };
 }
 
@@ -190,6 +193,18 @@ export function parseLektion(text: string, file: string, modul: number, nr: numb
   lektion.minuter = typeof meta.tid === "number" ? meta.tid : uppskattaMinuter(lektion.block);
   if (!lektion.block.some((b) => b.typ !== "text")) throw new ContentError(file, end + 2, "lektionen har inget exempel, ingen förutsägelse och ingen övning");
   return lektion;
+}
+
+/**
+ * Whether the page shows the expected output as a block under the task. Only when the task text already quotes all of
+ * it (so nothing is given away) and it is multi-line or ends with punctuation, where a sentence's own full stop is
+ * easy to mistake for part of the output.
+ */
+export function visaForvantadUtskrift(uppgift: string, ratta: Ratta): boolean {
+  if (ratta.typ !== "utdata") return false;
+  const rader = ratta.forvantat.split("\n").map((r) => r.trimEnd()).filter((r) => r.trim() !== "");
+  if (rader.length === 0 || !rader.every((r) => uppgift.includes(`\`${r}\``))) return false;
+  return rader.length > 1 || /[.!?:]$/.test(rader[0] as string);
 }
 
 /** modul.yml of a module directory. */

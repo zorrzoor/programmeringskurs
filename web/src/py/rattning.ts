@@ -23,11 +23,11 @@ export function jamforUtdata(faktisk: string, forvantat: string, ignoreraVersale
     messages.push(`Du skrev ut ${a.length} ${a.length === 1 ? "rad" : "rader"}, men vi väntade oss ${f.length}.`);
   }
   if (forstaAvvikelse.i < a.length && forstaAvvikelse.i < f.length) {
-    messages.push(`På rad ${forstaAvvikelse.i + 1} av utskriften skrev du ${visa(a[forstaAvvikelse.i] as string)}, men vi ville ha ${visa(f[forstaAvvikelse.i] as string)}.`);
+    messages.push(`På rad ${forstaAvvikelse.i + 1} av utskriften skrev du ${visa(a[forstaAvvikelse.i] as string)}, men vi ville ha ${visa(f[forstaAvvikelse.i] as string)}`);
   } else if (a.length > f.length) {
-    messages.push(`Du har en extra rad i slutet: ${visa(a[f.length] as string)}.`);
+    messages.push(`Du har en extra rad i slutet: ${visa(a[f.length] as string)}`);
   } else {
-    messages.push(`Det saknar en rad i slutet: vi ville ha ${visa(f[a.length] as string)}.`);
+    messages.push(`Det saknar en rad i slutet: vi ville ha ${visa(f[a.length] as string)}`);
   }
   return messages;
 }
@@ -48,8 +48,8 @@ export function jamforFil(namn: string, svar: { finns: boolean; text: string }, 
   const messages: string[] = [];
   if (a.length !== f.length) messages.push(`Filen \`${namn}\` har ${a.length} ${a.length === 1 ? "rad" : "rader"}, men vi väntade oss ${f.length}.`);
   const i = a.findIndex((r, k) => r !== f[k]);
-  if (i >= 0 && i < f.length) messages.push(`På rad ${i + 1} i filen står ${visa(a[i] as string)}, men vi ville ha ${visa(f[i] as string)}.`);
-  else if (a.length > f.length) messages.push(`Filen har en extra rad i slutet: ${visa(a[f.length] as string)}.`);
-  else messages.push(`Filen saknar en rad i slutet: vi ville ha ${visa(f[a.length] as string)}.`);
+  if (i >= 0 && i < f.length) messages.push(`På rad ${i + 1} i filen står ${visa(a[i] as string)}, men vi ville ha ${visa(f[i] as string)}`);
+  else if (a.length > f.length) messages.push(`Filen har en extra rad i slutet: ${visa(a[f.length] as string)}`);
+  else messages.push(`Filen saknar en rad i slutet: vi ville ha ${visa(f[a.length] as string)}`);
   return messages;
 }

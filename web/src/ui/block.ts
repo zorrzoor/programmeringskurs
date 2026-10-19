@@ -265,6 +265,7 @@ function ovning(b: Extract<Block, { typ: "ovning" }>, ctx: Kontext): HTMLElement
   rot.append(
     h("h3", {}, "Gör själv ", klarMarke),
     h("p", { class: "uppgift" }, ...inline(b.uppgift)),
+    ...(b.visaUtskrift && b.ratta.typ === "utdata" ? [h("p", { class: "hjalp" }, "Så här ska utskriften se ut:"), h("pre", { class: "kod forvantad" }, h("code", {}, b.ratta.forvantat))] : []),
     yta,
     h("div", { class: "knappar" }, k.korKnapp, k.stoppKnapp, k.stegKnapp, kontrollera, hintKnapp, borja, facitKnapp),
     editorHjalp(),
