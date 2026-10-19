@@ -1,4 +1,9 @@
-# Tillgänglighet och utseende
+# Utseende och tillgänglighet
+
+**Omfattning (beslut i #90):** kursen behöver inte anpassas för blinda eller synskadade. Det som krävs är att man kan växla
+mellan ljust och mörkt, välja liten, mellan eller stor text, och använda kursen på telefon, surfplatta och dator. De
+automatiska kontrollerna för skärmläsare och tangentbord finns kvar eftersom de kostar lite och fångar riktiga fel, men
+de är inte ett krav som styr arbetet.
 
 ## Vad som är gjort
 
@@ -22,17 +27,11 @@
 3. Visningsvalen tillämpas (färg och textstorlek), och finns kvar efter omladdning.
 4. En hel övning går att göra med enbart tangentbordet: Tab till kodrutan, skriva, Esc, Tab till Kontrollera, Enter.
 
-## Manuell genomgång (görs av en människa)
+## Manuell kontroll (görs av en människa vid behov)
 
-Automatiska kontroller hittar inte allt. Gör den här genomgången en gång efter större ändringar, och skriv vad du hittar i ärendet.
+Gör den här kontrollen efter större ändringar i utseendet:
 
-1. **Skärmläsare på iPhone (VoiceOver):** slå på VoiceOver (Inställningar, Tillgänglighet), öppna kursen och gå igenom:
-   välj namn, öppna en lektion, svara på en fråga, kör ett exempel, gör en övning och läs upp ett felmeddelande. Hörs
-   rubriker, knappar, svar ("Rätt!") och fel? Går det att förstå vad man är på?
-2. **Tangentbord på dator:** använd bara Tab, Skift+Tab, Enter, mellanslag och Esc. Syns var du är hela tiden (fokusram)?
-   Kommer du ur varje kodruta? Går det att göra en hel lektion?
-3. **Zoom:** zooma webbläsaren till 200 % och 400 %. Går allt att läsa och använda utan att rulla sidledes?
-4. **Textstorlek och färger:** prova alla tre storlekar och alla tre färgval (Visning), på telefon och surfplatta. Är något
-   avklippt, överlappande eller svårt att läsa? Läs särskilt kodrutor, felrutor och ordlistan.
-5. **Surfplatta, liggande och stående.**
-6. **Ögonen:** är kontrasten bra i solljus (ljust läge) och på kvällen (mörkt läge)? Känns det lugnt, utan stress?
+1. **Telefon, surfplatta och dator:** öppna kursen på alla tre. Går det att läsa, trycka och skriva kod? Är något avklippt
+   eller överlappande, stående och liggande?
+2. **Textstorlek:** prova Normal, Stor och Större under Visning. Är kodrutor, felrutor och ordlistan fortfarande läsbara?
+3. **Färger:** prova Som enheten, Ljust och Mörkt. Är kontrasten bra på kvällen (mörkt) och i solljus (ljust)?
