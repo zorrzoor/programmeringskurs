@@ -92,7 +92,7 @@ export function showPicker(root: HTMLElement, { api, onPick }: PickerOptions): v
               void api.deleteName(select.value).then(() => render(), (err: unknown) => say(err instanceof ApiError ? err.message : "Något gick fel."));
             },
           },
-          "Radera för alltid",
+          "Radera",
         ),
         " ",
         h("button", { type: "button", onclick: () => void render() }, "Avbryt"),

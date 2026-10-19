@@ -124,6 +124,6 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await page.getByRole("button", { name: "Ta bort ett namn" }).click();
   await page.locator("#ta-bort-val").selectOption(namn);
   await page.locator("#ta-bort-text").fill(namn);
-  await page.getByRole("button", { name: "Radera för alltid" }).click();
+  await page.getByRole("button", { name: "Radera" }).click();
   await expect(page.getByRole("button", { name: namn, exact: true })).toHaveCount(0);
 });
