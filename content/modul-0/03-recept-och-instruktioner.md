@@ -36,14 +36,16 @@ Programmerare gör nästan alltid samma sak med ett stort problem: de delar upp 
 1. Räkna ut priset för varorna: 3 gånger 20.
 2. Lägg på frakten.
 
+Här är problemet i en mening: *räkna ut vad tre varor à 20 kr kostar med 10 kr i frakt, och visa svaret.* Ett bra recept delar upp det i små, exakta steg, i rätt ordning, och visar resultatet först när det finns.
+
 ```forutsag
 kod: |
-  Tre varor kostar 20 kr styck. Frakten är 10 kr.
-  Vad blir totalpriset?
+  Problem: räkna ut vad tre varor à 20 kr kostar
+  med 10 kr i frakt, och visa svaret.
 kor: false
-alternativ: ["70 kr", "230 kr", "90 kr", "260 kr"]
+alternativ: ["1. Räkna ut priset för varorna (3 gånger 20). 2. Lägg på frakten (10). 3. Visa resultatet.", "1. Visa resultatet. 2. Räkna ut priset för varorna. 3. Lägg på frakten.", "1. Lägg på frakten (10) till priset 20. 2. Multiplicera med 3. 3. Visa resultatet.", "1. Räkna ut totalpriset."]
 ratt: 0
-forklaring: "Först 3 × 20 = 60, sedan 60 + 10 = 70. Två små, exakta steg i rätt ordning."
+forklaring: "Det första receptet har små, exakta steg i rätt ordning och visar resultatet sist. I det andra visas svaret innan något är uträknat. I det tredje räknas frakten med tre gånger, eftersom den läggs på innan multiplikationen. Det fjärde är ett enda steg som inte säger hur: det är samma sak som problemet."
 ```
 
 ```ruta
@@ -56,4 +58,4 @@ text: |
 
 - En instruktion måste vara exakt, utan gissning eller tolkning.
 - Datorn gör bara det som står, i den ordning det står.
-- Stora problem delas upp i små, exakta steg.
+- Stora problem delas upp i små, exakta steg: en sak per steg, i rätt ordning, och resultatet visas sist.
