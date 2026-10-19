@@ -46,7 +46,7 @@ Kör koden. I vilken ordning kommer varorna?
 
 - `ORDER BY pris` sorterar stigande, och `ORDER BY pris DESC` fallande (descending).
 - `LIMIT 2` tar bara de två första raderna. Tillsammans med `ORDER BY` blir det de två billigaste eller dyraste.
-- Ordningen i frågan är fast: `SELECT`, `FROM`, `WHERE`, `ORDER BY`, `LIMIT`.
+- Ordningen i frågan är fast: `SELECT`, `FROM`, `WHERE`, `ORDER BY`, `LIMIT`. (`JOIN`, `GROUP BY` och `HAVING` kommer i nästa lektioner, och hör hemma mellan dem.)
 
 ```ruta
 rubrik: Du kanske känner igen det från databasprogram

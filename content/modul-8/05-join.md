@@ -69,10 +69,10 @@ kod: |
       for rad in db.execute(sql):
           print(*rad)
 
-  visa("SELECT varor.namn, SUM(ordrar.antal) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.namn")
+  visa("SELECT varor.namn, SUM(ordrar.antal) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.namn ORDER BY varor.namn")
 alternativ: ["bulle 4, kaffe 4, kaka 2, te 3, på varsin rad", "kaffe 4, te 3, bulle 4, kaka 2", "bulle 4, kaffe 3, kaka 2, te 2", "juice 0 och fyra till"]
 ratt: 0
-forklaring: "Ordrarna kopplas till varornas namn och grupperas per namn i bokstavsordning. Kaffe har 3 + 1 = 4, te 2 + 1 = 3, bulle 4 och kaka 2. Juice har ingen order och syns inte alls."
+forklaring: "Ordrarna kopplas till varornas namn och grupperas per namn. Med ORDER BY varor.namn kommer de i bokstavsordning. Kaffe har 3 + 1 = 4, te 2 + 1 = 3, bulle 4 och kaka 2. Juice har ingen order och syns inte alls."
 ```
 
 ## Din tur
@@ -92,8 +92,8 @@ start: |
 ratta: {utdata: "bulle 60\nkaffe 120\nkaka 40\nte 75"}
 ledtradar:
   - Koppla ordrar till varor, och gruppera på varans namn.
-  - Omsättningen per vara är SUM(ordrar.antal * varor.pris).
-  - visa("SELECT varor.namn, SUM(ordrar.antal * varor.pris) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.namn")
+  - Omsättningen per vara är SUM(ordrar.antal * varor.pris). Ordningen får du med ORDER BY varor.namn.
+  - visa("SELECT varor.namn, SUM(ordrar.antal * varor.pris) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.namn ORDER BY varor.namn")
 facit: |
   import sqlite3
 
@@ -104,12 +104,12 @@ facit: |
       for rad in db.execute(sql):
           print(*rad)
 
-  visa("SELECT varor.namn, SUM(ordrar.antal * varor.pris) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.namn")
+  visa("SELECT varor.namn, SUM(ordrar.antal * varor.pris) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.namn ORDER BY varor.namn")
 ```
 
 ```ovning
 id: m8-join-kategori
-uppgift: "Skriv ut hur många enheter som beställts per kategori, på formen `bakverk 6`."
+uppgift: "Skriv ut hur många enheter som beställts per kategori, på formen `bakverk 6`, i bokstavsordning."
 start: |
   import sqlite3
 
@@ -123,7 +123,7 @@ ratta: {utdata: "bakverk 6\ndryck 7"}
 ledtradar:
   - "Kategorin finns i varor, antalet i ordrar: du behöver en JOIN."
   - Gruppera på varor.kategori och summera ordrar.antal.
-  - visa("SELECT varor.kategori, SUM(ordrar.antal) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.kategori")
+  - visa("SELECT varor.kategori, SUM(ordrar.antal) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.kategori ORDER BY varor.kategori")
 facit: |
   import sqlite3
 
@@ -134,7 +134,7 @@ facit: |
       for rad in db.execute(sql):
           print(*rad)
 
-  visa("SELECT varor.kategori, SUM(ordrar.antal) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.kategori")
+  visa("SELECT varor.kategori, SUM(ordrar.antal) FROM ordrar JOIN varor ON ordrar.vara_id = varor.id GROUP BY varor.kategori ORDER BY varor.kategori")
 ```
 
 ```ovning
@@ -172,3 +172,4 @@ facit: |
 - `JOIN tabell ON a.kolumn = b.kolumn` kopplar ihop rader som hör ihop.
 - `tabell.kolumn` anger vilken tabell en kolumn kommer från.
 - Efter en JOIN fungerar `WHERE`, `GROUP BY` och `ORDER BY` som vanligt.
+- Hela ordningen i frågan är `SELECT`, `FROM`, `JOIN`, `WHERE`, `GROUP BY`, `HAVING`, `ORDER BY`, `LIMIT`.
