@@ -47,6 +47,8 @@ I Sverige skrivs decimaltal med **komma** (`31500,50`), men ett komma skulle då
 
 Ett tredje som kan hända: väljer du CSV UTF-8 i Excel läggs ett osynligt märke (BOM) först i filen, och då blir den första rubriken konstig. Öppna filen med `encoding="utf-8-sig"` i stället för `"utf-8"` så försvinner det.
 
+Och ett fjärde: filtypen **CSV (semikolonavgränsad)** sparas av en del Excel-versioner i en äldre teckenkodning, **Windows-1252**, i stället för UTF-8. Då blir å, ä och ö konstiga tecken, eller så får du felet `UnicodeDecodeError`. Öppna då filen med `encoding="cp1252"`. Prova `"utf-8"` först, och byt om det ser fel ut.
+
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
@@ -127,4 +129,4 @@ facit: |
 
 - Svensk Excel sparar CSV med semikolon mellan kolumnerna och komma som decimaltecken.
 - `csv.DictReader(fil, delimiter=";")` läser semikolon, och `.replace(",", ".")` ger ett tal som `float` förstår.
-- `encoding="utf-8-sig"` tar bort det osynliga märke (BOM) som Excel kan lägga först i filen.
+- `encoding="utf-8-sig"` tar bort det osynliga märke (BOM) som Excel kan lägga först i filen, och `encoding="cp1252"` läser filer som Excel sparat i Windows-1252.

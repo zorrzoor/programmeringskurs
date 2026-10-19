@@ -1,6 +1,6 @@
 ---
 titel: "Projekt: hushållsbudget"
-mal: "Efter den här lektionen har du byggt ett litet budgetprogram i fyra steg."
+mal: "Efter den här lektionen har du byggt ett litet budgetprogram i fem steg."
 tid: 60
 ---
 
@@ -120,6 +120,75 @@ facit: |
       if summor[k] > budget[k]:
           rad = rad + " ÖVER"
       print(rad)
+```
+
+## Steg 5: Sätt ihop allt
+
+Nu har du alla delarna. Det sista steget är att använda dem tillsammans i ett helt program: utgifterna går in, funktionerna gör jobbet, och rapporten kommer ut.
+
+```ovning
+id: m9-budget-hela
+uppgift: "Funktionerna `summa_per_kategori` och `over_budget` finns redan, och så `utgifter` och `budget`. Skriv ut rapporten från steg 4 (`hyra: 9000 av 9000`, med ` ÖVER` där summan är större än budgeten), men räkna ut summorna från `utgifter` med funktionen. Avsluta med en rad `Över budget: mat, nöje` med kategorierna som `over_budget` ger, åtskilda av komma."
+start: |
+  # funktionerna, utgifterna och budgeten finns redan
+  def summa_per_kategori(utgifter):
+      summor = {}
+      for u in utgifter:
+          k = u["kategori"]
+          summor[k] = summor.get(k, 0) + u["belopp"]
+      return summor
+
+  def over_budget(summor, budget):
+      lista = []
+      for k in summor:
+          if summor[k] > budget[k]:
+              lista.append(k)
+      return sorted(lista)
+
+  utgifter = [
+      {"kategori": "mat", "belopp": 2500},
+      {"kategori": "hyra", "belopp": 9000},
+      {"kategori": "mat", "belopp": 1200},
+      {"kategori": "nöje", "belopp": 800},
+      {"kategori": "transport", "belopp": 600},
+  ]
+  budget = {"mat": 3500, "hyra": 9000, "nöje": 500, "transport": 1000}
+ratta: {"utdata": "hyra: 9000 av 9000\nmat: 3700 av 3500 ÖVER\nnöje: 800 av 500 ÖVER\ntransport: 600 av 1000\nÖver budget: mat, nöje"}
+ledtradar:
+  - "Börja med summor = summa_per_kategori(utgifter). Sedan är det samma loop som i steg 4."
+  - "Sista raden: \", \".join(lista) sätter ihop kategorierna med komma emellan, och lista får du från over_budget(summor, budget)."
+  - "print(\"Över budget: \" + \", \".join(over_budget(summor, budget)))"
+facit: |
+  def summa_per_kategori(utgifter):
+      summor = {}
+      for u in utgifter:
+          k = u["kategori"]
+          summor[k] = summor.get(k, 0) + u["belopp"]
+      return summor
+
+  def over_budget(summor, budget):
+      lista = []
+      for k in summor:
+          if summor[k] > budget[k]:
+              lista.append(k)
+      return sorted(lista)
+
+  utgifter = [
+      {"kategori": "mat", "belopp": 2500},
+      {"kategori": "hyra", "belopp": 9000},
+      {"kategori": "mat", "belopp": 1200},
+      {"kategori": "nöje", "belopp": 800},
+      {"kategori": "transport", "belopp": 600},
+  ]
+  budget = {"mat": 3500, "hyra": 9000, "nöje": 500, "transport": 1000}
+
+  summor = summa_per_kategori(utgifter)
+  for k in sorted(summor):
+      rad = f"{k}: {summor[k]} av {budget[k]}"
+      if summor[k] > budget[k]:
+          rad = rad + " ÖVER"
+      print(rad)
+  print("Över budget: " + ", ".join(over_budget(summor, budget)))
 ```
 
 ## Förbättra själv
