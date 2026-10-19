@@ -22,16 +22,16 @@
   forklaring: "Det en variabel eller ett uttryck innehåller, till exempel talet 5 eller texten \"Anna\". På engelska: value."
 - ord: "tal"
   former: ["talet", "talen"]
-  forklaring: "En siffra eller ett nummer som man kan räkna med, till exempel 5 eller 3.14."
+  forklaring: "Ett värde som man kan räkna med, till exempel 5 eller 3.14. Skrivs utan citattecken. På engelska: number."
 - ord: "heltal"
   former: []
-  forklaring: "Ett tal utan decimaler, till exempel 7 eller -3. På engelska: integer, i Python skrivs typen `int`."
+  forklaring: "Ett tal utan decimaler, till exempel 7 eller -3. På engelska: integer, i Python skrivs typen int."
 - ord: "decimaltal"
   former: []
-  forklaring: "Ett tal med decimaler, till exempel 2.5. Skrivs med punkt, inte komma. På engelska: floating-point number, i Python skrivs typen `float`."
+  forklaring: "Ett tal med decimaler, till exempel 2.5. Skrivs med punkt, inte komma. På engelska: floating-point number, i Python skrivs typen float."
 - ord: "sträng"
   former: ["strängen", "strängar", "strängarna"]
-  forklaring: "Text i ett program, inom citattecken, till exempel \"Hej\". Programmerare säger sträng om en text. På engelska: string, i Python skrivs typen `str`."
+  forklaring: "Text i ett program, inom citattecken, till exempel \"Hej\". Programmerare säger sträng om en text. På engelska: string, i Python skrivs typen str."
 - ord: "f-sträng"
   former: ["f-strängen", "f-strängar"]
   forklaring: "En text med variabler inuti klamrar, som skrivs med ett f före citattecknet: f\"Hej {namn}\". På engelska: f-string."
@@ -47,9 +47,6 @@
 - ord: "felmeddelande"
   former: ["felmeddelandet", "felmeddelanden"]
   forklaring: "Ett meddelande från Python som berättar att något gick fel, och ofta var. Läs det noga, det hjälper. På engelska: error message."
-- ord: "syntaxfel"
-  former: ["syntaxfelet"]
-  forklaring: "Ett fel i hur koden är skriven, till exempel ett citattecken eller en parentes som saknas. Programmet kan inte ens börja köras. På engelska: syntax error."
 - ord: "indrag"
   former: ["indraget", "indragen"]
   forklaring: "Mellanrummet i början av en rad. Det visar vilka rader som hör ihop, till exempel under en if eller en loop. På engelska: indentation."
@@ -76,19 +73,25 @@
   forklaring: "Flera värden under ett namn, i en bestämd ordning, till exempel [3, 5, 7]. På engelska: list."
 - ord: "element"
   former: ["elementet", "elementen"]
-  forklaring: "Ett värde i en lista, eller en post i ett uppslag. På engelska: element, ibland item."
+  forklaring: "Ett värde i en lista eller en mängd. len(lista) ger antalet element. På engelska: element, ibland item."
 - ord: "index"
   former: ["indexet"]
   forklaring: "Platsen för ett element i en lista. Platserna räknas från 0, så första elementet har index 0."
 - ord: "uppslag"
-  former: ["uppslaget", "uppslagen"]
-  forklaring: "Värden som hittas med en nyckel i stället för ett nummer, till exempel {\"namn\": \"Anna\", \"alder\": 30}. På engelska: dictionary, i Python skrivs typen `dict`."
+  former: ["uppslaget", "uppslagen", "dict"]
+  forklaring: "Värden som hittas med en nyckel i stället för ett nummer, till exempel {\"namn\": \"Anna\", \"alder\": 30}. På engelska: dictionary, i Python skrivs typen dict."
 - ord: "nyckel"
   former: ["nyckeln", "nycklar", "nycklarna"]
   forklaring: "Namnet man slår upp ett värde med i ett uppslag, till exempel \"namn\". På engelska: key."
+- ord: "post"
+  former: ["posten", "poster", "posterna"]
+  forklaring: "En rad i en tabell, med alla uppgifter om en sak eller person. I Python är en post ofta ett uppslag i en lista. På engelska: record."
+- ord: "klamrar"
+  former: ["klamrarna", "klammerparenteser", "klammerparenteserna"]
+  forklaring: "Tecknen { och }, också kallade klammerparenteser. Används i f-strängar och i uppslag."
 - ord: "funktion"
   former: ["funktionen", "funktioner", "funktionerna"]
-  forklaring: "En bit kod med ett namn som kan köras många gånger. Skapas med def. På engelska: function."
+  forklaring: "En bit kod med ett namn som du kör (anropar) med parenteser, till exempel print(...) eller len(...). Egna funktioner skapas med def. På engelska: function."
 - ord: "parameter"
   former: ["parametern", "parametrar", "parametrarna"]
   forklaring: "Ett namn på ett värde som en funktion får, i definitionen: def halsa(namn)."
@@ -98,6 +101,9 @@
 - ord: "anropa"
   former: ["anropar", "anropet", "anrop", "anropas"]
   forklaring: "Att köra en funktion genom att skriva dess namn med parenteser. På engelska: call."
+- ord: "metod"
+  former: ["metoden", "metoder", "metoderna"]
+  forklaring: "En funktion som hör till ett värde och anropas med en punkt, till exempel text.upper() eller lista.append(x). På engelska: method."
 - ord: "returnera"
   former: ["returnerar", "return"]
   forklaring: "Att ge ett svar tillbaka från en funktion, så att anroparen kan använda det. På engelska: return."
@@ -110,9 +116,12 @@
 - ord: "fil"
   former: ["filen", "filer", "filerna"]
   forklaring: "Information som är sparad på en dator under ett namn, till exempel en textfil eller en CSV-fil. På engelska: file."
+- ord: "radbyte"
+  former: ["radbytet", "radbyten"]
+  forklaring: "Tecknet som avslutar en rad. I en text i Python skrivs det \\n. På engelska: newline."
 - ord: "CSV"
   former: ["CSV-fil", "CSV-filer", "CSV-filen"]
-  forklaring: "En tabell som textfil: en rad per rad i tabellen och komma mellan kolumnerna."
+  forklaring: "En tabell som textfil: en rad per rad i tabellen och komma (eller semikolon) mellan kolumnerna."
 - ord: "tabell"
   former: ["tabellen", "tabeller", "tabellerna"]
   forklaring: "Information ordnad i rader och kolumner, som i ett kalkylblad eller en databas. På engelska: table."
@@ -134,9 +143,6 @@
 - ord: "processor"
   former: ["processorn"]
   forklaring: "Den del av datorn som utför instruktionerna, en i taget och mycket snabbt. På engelska: processor, förkortat CPU."
-- ord: "algoritm"
-  former: ["algoritmen", "algoritmer"]
-  forklaring: "En beskrivning i steg av hur man löser ett problem, som ett recept. På engelska: algorithm."
 - ord: "felsökning"
   former: ["felsöka", "felsöker"]
   forklaring: "Att leta reda på varför ett program inte gör som det ska, och rätta det. På engelska: debugging."
