@@ -65,10 +65,10 @@ kod: |
       for rad in db.execute(sql):
           print(*rad)
 
-  visa("SELECT kategori, MAX(pris) FROM varor GROUP BY kategori")
+  visa("SELECT kategori, MAX(pris) FROM varor GROUP BY kategori ORDER BY kategori")
 alternativ: ["bakverk 20, dryck 35, på varsin rad", "dryck 35, bakverk 20", "bakverk 35, dryck 20", "juice 35"]
 ratt: 0
-forklaring: "Grupperna kommer i bokstavsordning: bakverk, dryck. Det högsta priset bland bakverken är 20 (kaka) och bland dryckerna 35 (juice)."
+forklaring: "Med ORDER BY kategori kommer grupperna i bokstavsordning: bakverk, dryck. Det högsta priset bland bakverken är 20 (kaka) och bland dryckerna 35 (juice)."
 ```
 
 ## Din tur
@@ -88,8 +88,8 @@ start: |
 ratta: {utdata: "bakverk 35\ndryck 90"}
 ledtradar:
   - Gruppera på kategori och använd en summeringsfunktion.
-  - SUM(pris) och GROUP BY kategori.
-  - visa("SELECT kategori, SUM(pris) FROM varor GROUP BY kategori")
+  - SUM(pris) och GROUP BY kategori. Ordningen får du med ORDER BY kategori.
+  - visa("SELECT kategori, SUM(pris) FROM varor GROUP BY kategori ORDER BY kategori")
 facit: |
   import sqlite3
 
@@ -100,12 +100,12 @@ facit: |
       for rad in db.execute(sql):
           print(*rad)
 
-  visa("SELECT kategori, SUM(pris) FROM varor GROUP BY kategori")
+  visa("SELECT kategori, SUM(pris) FROM varor GROUP BY kategori ORDER BY kategori")
 ```
 
 ```ovning
 id: m8-grupp-medel
-uppgift: "Skriv ut medelpriset per kategori, på formen `bakverk 17.5`."
+uppgift: "Skriv ut medelpriset per kategori, på formen `bakverk 17.5`, i bokstavsordning."
 start: |
   import sqlite3
 
@@ -119,7 +119,7 @@ ratta: {utdata: "bakverk 17.5\ndryck 30.0"}
 ledtradar:
   - Medelvärde heter AVG.
   - AVG(pris) och GROUP BY kategori.
-  - visa("SELECT kategori, AVG(pris) FROM varor GROUP BY kategori")
+  - visa("SELECT kategori, AVG(pris) FROM varor GROUP BY kategori ORDER BY kategori")
 facit: |
   import sqlite3
 
@@ -130,7 +130,7 @@ facit: |
       for rad in db.execute(sql):
           print(*rad)
 
-  visa("SELECT kategori, AVG(pris) FROM varor GROUP BY kategori")
+  visa("SELECT kategori, AVG(pris) FROM varor GROUP BY kategori ORDER BY kategori")
 ```
 
 ```ovning

@@ -46,7 +46,7 @@ Kör koden. Varje rad är en vara: id, namn, kategori och pris.
 
 `SELECT` anger **vilka kolumner** du vill ha, och `FROM` **vilken tabell**. Stjärnan `*` betyder alla kolumner. Du kan i stället räkna upp kolumner med komma emellan: `SELECT namn, pris FROM varor`. `SELECT DISTINCT kategori FROM varor` tar bort dubbletter.
 
-SQL-ord brukar skrivas med versaler, men Python bryr sig inte om det.
+SQL-ord brukar skrivas med versaler, men databasen gör ingen skillnad: `select` fungerar lika bra som `SELECT`.
 
 ```ruta
 rubrik: Du kanske känner igen det från databasprogram
@@ -68,7 +68,7 @@ kod: |
   visa("SELECT namn FROM varor")
 alternativ: ["kaffe, te, bulle, kaka, juice, på varsin rad", "dryck, dryck, bakverk, bakverk, dryck", "30, 25, 15, 20, 35", "Alla kolumner för varje vara"]
 ratt: 0
-forklaring: "SELECT namn ger bara kolumnen namn, en rad per vara i den ordning de ligger i tabellen."
+forklaring: "SELECT namn ger bara kolumnen namn, en rad per vara i den ordning de lades in. Utan ORDER BY lovar SQL ingen särskild ordning."
 ```
 
 ## Din tur
