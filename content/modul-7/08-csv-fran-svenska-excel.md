@@ -45,14 +45,14 @@ I Sverige skrivs decimaltal med **komma** (`31500,50`), men ett komma skulle då
 1. `csv.DictReader(fil, delimiter=";")` talar om att kolumnerna skiljs åt med semikolon.
 2. `rad["lon"].replace(",", ".")` byter decimalkomma mot decimalpunkt, och `float(...)` gör sedan om texten till ett tal. `float` godtar bara punkt som decimaltecken.
 
-Ett tredje som kan hända: väljer du CSV UTF-8 i Excel läggs ett osynligt märke (BOM) först i filen, och då blir den första rubriken konstig. Öppna filen med `encoding="utf-8-sig"` i stället för `"utf-8"` så försvinner det.
+En tredje sak: väljer du CSV UTF-8 i Excel läggs ett osynligt märke (BOM) först i filen. Då får den första rubriken ett osynligt tecken före sig, och `rad["namn"]` ger `KeyError` fast rubriken ser rätt ut. Öppna filen med `encoding="utf-8-sig"` i stället för `"utf-8"` så försvinner det.
 
-Och ett fjärde: filtypen **CSV (semikolonavgränsad)** sparas av en del Excel-versioner i en äldre teckenkodning, **Windows-1252**, i stället för UTF-8. Då blir å, ä och ö konstiga tecken, eller så får du felet `UnicodeDecodeError`. Öppna då filen med `encoding="cp1252"`. Prova `"utf-8"` först, och byt om det ser fel ut.
+En fjärde sak: en del filtyper för CSV sparas av Excel i en äldre teckenkodning, **Windows-1252**, i stället för UTF-8. Vad filtypen heter i menyn varierar med Excels version och språk. Då blir å, ä och ö konstiga tecken, eller så får du felet `UnicodeDecodeError`. Öppna då filen med `encoding="cp1252"`. Prova `"utf-8"` först, och byt om det ser fel ut.
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
 text: |
-  Det är de regionala inställningarna i Excel som styr: en engelsk Excel sparar komma mellan kolumnerna och punkt som decimaltecken, en svensk semikolon och decimalkomma. Därför ser samma tabell olika ut som textfil beroende på var den sparades.
+  Det är språk- och regioninställningarna som styr vilka tecken Excel använder: en svensk Excel sparar normalt semikolon mellan kolumnerna och decimalkomma, en engelsk komma mellan kolumnerna och decimalpunkt. Därför ser samma tabell olika ut som textfil beroende på var den sparades.
 ```
 
 ## Fråga

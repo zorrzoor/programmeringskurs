@@ -18,14 +18,14 @@ print(re.findall(r"\d+", text))
 
 ## Reguljära uttryck
 
-Ett **reguljärt uttryck** (regex) är ett mönster som beskriver hur text ska se ut, i stället för exakt vilken text. Modulen `re` söker med mönster. Skriv mönstret som `r"..."` (ett **rått** textvärde) så att snedstrecken tas som de står.
+Ett **reguljärt uttryck** (regex) är ett mönster som beskriver hur text ska se ut, i stället för exakt vilken text. Modulen `re` söker med mönster. Skriv mönstret som `r"..."` (ett **rått** textvärde) så att bakstrecken (`\`) tas som de står.
 
 Byggstenarna du behöver:
 
 - `\d` är en siffra, `\D` är något som **inte** är en siffra, `\w` är en bokstav eller siffra, och `\s` är ett mellanslag eller liknande.
 - `+` efter något betyder "ett eller flera": `\d+` är ett helt tal.
 - `{4}` betyder exakt fyra: `\d{4}` är fyra siffror.
-- Alla andra tecken betyder sig själva: `-` är ett bindestreck och `@` ett snabel-a. Punkt skrivs `\.`.
+- De flesta andra tecken betyder sig själva: `-` är ett bindestreck och `@` ett snabel-a. Några tecken har en särskild betydelse. Punkt betyder till exempel *vilket tecken som helst*, så en riktig punkt skrivs `\.`.
 
 Funktionerna:
 
@@ -139,4 +139,4 @@ facit: |
 
 - Ett reguljärt uttryck beskriver ett mönster: `\d` är en siffra, `\w` en bokstav eller siffra, `+` betyder "ett eller flera".
 - `re.findall` hittar alla träffar, `re.search` den första, och `re.sub` byter ut träffar.
-- Skriv mönstret som `r"..."` så att snedstreck tas som de står.
+- Skriv mönstret som `r"..."` så att bakstreck tas som de står.
