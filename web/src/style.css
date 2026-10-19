@@ -63,6 +63,7 @@
   --syn-kommentar: #8d95aa;
   --syn-funktion: #f0c27a;
 }
+:root[data-text="liten"] { font-size: 88%; }
 :root[data-text="stor"] { font-size: 118%; }
 :root[data-text="storre"] { font-size: 140%; }
 * { box-sizing: border-box; }

@@ -37,7 +37,7 @@ for (const farg of ["light", "dark"] as const) {
     const ctx = await browser.newContext({ colorScheme: farg, locale: "sv-SE" });
     const page = await ctx.newPage();
     await logIn(page);
-    for (const text of ["normal", "storre"] as const) {
+    for (const text of ["liten", "normal", "storre"] as const) {
       await page.evaluate((t) => { document.documentElement.dataset.text = t; }, text);
       for (const [vad, hash] of SIDOR) {
         await page.evaluate((h) => { location.hash = h; }, hash);
@@ -92,6 +92,11 @@ test("the display settings are applied, remembered and respected", async ({ page
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-text", "storre");
   await expect(page.locator("html")).toHaveAttribute("data-tema", "morkt");
+  await page.locator("summary", { hasText: "Visning" }).click();
+  await page.getByLabel("Liten", { exact: true }).check();
+  await expect(page.locator("html")).toHaveAttribute("data-text", "liten");
+  const liten = await page.evaluate(() => getComputedStyle(document.documentElement).fontSize);
+  expect(parseFloat(liten)).toBeLessThan(15);
 });
 
 test("a whole exercise can be done with the keyboard alone", async ({ page }) => {
