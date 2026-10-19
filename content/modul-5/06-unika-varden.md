@@ -21,6 +21,7 @@ En **mängd** (`set`) är som en lista där varje värde bara kan finnas en gån
 - `len(mangd)` ger antalet olika värden.
 - En mängd har **ingen bestämd ordning**. Vill du ha en ordnad lista gör du `sorted(mangd)`.
 - `x in mangd` kollar om ett värde finns, och är snabbt även i stora mängder.
+- `x not in mangd` är tvärtom: det är sant om värdet inte finns. `set()` ger en tom mängd.
 - `mangd.add(x)` lägger till ett värde, men bara om det inte redan finns.
 
 ```ruta
