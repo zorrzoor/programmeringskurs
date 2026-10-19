@@ -23,7 +23,7 @@ else:
 
 `elif` är "annars om". Python provar villkoren **uppifrån och ned**. Det första som är sant körs, och sedan hoppar Python över resten. `else` sist fångar allt som inte passade.
 
-Därför spelar **ordningen** roll: lägg det mest specifika (högsta betyget) först.
+Därför spelar **ordningen** roll: lägg det snävaste villkoret först: med `>=` det högsta talet, med `<` det lägsta.
 
 ```ruta
 rubrik: Du kanske känner igen det från Excel
@@ -54,7 +54,7 @@ kod: |
   elif poang >= 90:
       print("Mycket bra")
 svar: "Godkänd"
-forklaring: "95 är minst 50, så det första villkoret stämmer och Python slutar leta. Mycket bra nås aldrig. Lägg det högsta först."
+forklaring: "95 är minst 50, så det första villkoret stämmer och Python slutar leta. Mycket bra nås aldrig. Lägg det snävaste villkoret först."
 ```
 
 ## Din tur

@@ -26,7 +26,7 @@ ratt: 2
 forklaring: "4 * 3 = 12, 12 - 2 = 10 och 10 * 2 = 20. Ordningen avgör: om dubblingen hade kommit före avdraget hade svaret blivit ett annat."
 ```
 
-En dator gör precis det här, fast med miljarder rader i sekunden. Den läser en instruktion, utför den och går vidare till nästa.
+En dator gör precis det här, fast med miljarder enkla instruktioner i sekunden. Den läser en instruktion, utför den och går vidare till nästa. Ett program på 100 rader blir i själva verket många hundra enkla instruktioner till processorn.
 
 ## Vad en dator faktiskt gör
 

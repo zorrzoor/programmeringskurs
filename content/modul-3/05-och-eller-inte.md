@@ -63,7 +63,7 @@ start: |
 ratta: {utdata: "Lagom"}
 ledtradar:
   - Du behöver två jämförelser som båda ska stämma.
-  - Binda ihop dem med and i samma if-rad.
+  - Bind ihop dem med and i samma if-rad.
   - "if temp >= 10 and temp <= 20: Lagom, annars (else) Inte lagom."
 facit: |
   temp = 15
@@ -82,7 +82,7 @@ start: |
 ratta: {utdata: "Helg"}
 ledtradar:
   - Du behöver två jämförelser där minst en ska stämma.
-  - Binda ihop dem med or.
+  - Bind ihop dem med or.
   - "if dag == \"lördag\" or dag == \"söndag\": Helg, annars Vardag."
 facit: |
   dag = "lördag"
