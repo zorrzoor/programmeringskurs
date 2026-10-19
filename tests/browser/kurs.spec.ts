@@ -29,9 +29,14 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await expect(page.getByText(`Välkommen, ${namn}.`)).toBeVisible();
   await expect(page.getByText("Älskar dig!")).toBeVisible();
   expect(await page.locator("img.ikon").evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
-  await expect(page.locator('link[rel="icon"][type="image/svg+xml"]')).toHaveAttribute("href", "/ikon.svg");
-  for (const sti of ["/ikon-180.png", "/ikon-192.png", "/ikon-512.png"]) expect((await page.request.get(sti)).headers()["content-type"]).toBe("image/png");
-  await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveAttribute("href", "/ikon-180.png");
+  // The icons have a content hash in their names (a changed icon gets a new address, an unchanged one is cached for long)
+  for (const [valj, typ] of [['link[rel="icon"][type="image/svg+xml"]', "image/svg+xml"], ['link[rel="icon"][type="image/png"]', "image/png"], ['link[rel="apple-touch-icon"]', "image/png"]] as const) {
+    const href = await page.locator(valj).getAttribute("href");
+    expect(href).toMatch(/\/ikon[^/]*-[A-Za-z0-9_-]{8}\.(svg|png)$/);
+    const svar = await page.request.get(href as string);
+    expect(svar.headers()["content-type"]).toBe(typ);
+    expect(svar.headers()["cache-control"]).toContain("immutable");
+  }
   await expect(page.getByRole("heading", { name: "Så använder du kursen" })).toBeVisible();
 
   // The page is cross-origin isolated (needed for input() in the worker)
