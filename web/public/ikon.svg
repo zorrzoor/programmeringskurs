@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kyckling som hackar på ett tangentbord">
   <rect width="64" height="64" rx="12" fill="#0b1020"/>
-  <path d="M12 52 Q14 35 32 35 Q50 35 52 52 Z" fill="#2b3350"/>
-  <circle cx="32" cy="26" r="17" fill="#2b3350"/>
+  <path d="M12 52 Q14 35 32 35 Q50 35 52 52 Z" fill="#7d89a8"/>
+  <circle cx="32" cy="26" r="17" fill="#7d89a8"/>
   <circle cx="32" cy="27" r="13" fill="#ffd54a"/>
   <g fill="#e53935"><circle cx="28" cy="13" r="3"/><circle cx="32" cy="11" r="3"/><circle cx="36" cy="13" r="3"/></g>
   <g fill="#fff" stroke="#111" stroke-width="1.5"><circle cx="26.5" cy="26" r="4.2"/><circle cx="37.5" cy="26" r="4.2"/></g>
