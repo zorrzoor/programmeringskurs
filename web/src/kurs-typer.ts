@@ -74,6 +74,8 @@ export interface Ord {
   /** Other spellings that link here (the definite form, the plural …). */
   former: string[];
   forklaring: string;
+  /** Patterns (with the mention marked « ») where the word has another meaning and must not be linked. */
+  ej?: string[];
 }
 
 export interface Kurs {

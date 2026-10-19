@@ -52,6 +52,7 @@
   forklaring: "Mellanrummet i början av en rad. Det visar vilka rader som hör ihop, till exempel under en if eller en loop. På engelska: indentation."
 - ord: "uttryck"
   former: ["uttrycket", "uttryck"]
+  ej: ["reguljära? «uttryck»", "reguljärt «uttryck»"]
   forklaring: "Något som kan räknas ut till ett värde, till exempel 2 + 3 eller pris * antal. På engelska: expression."
 - ord: "operator"
   former: ["operatorn", "operatorer"]
@@ -70,6 +71,7 @@
   forklaring: "En omgång i en loop. En loop som körs tre gånger har tre varv. På engelska: iteration."
 - ord: "lista"
   former: ["listan", "listor", "listorna"]
+  ej: ["«lista» med (exakta )?(instruktioner|steg)"]
   forklaring: "Flera värden under ett namn, i en bestämd ordning, till exempel [3, 5, 7]. På engelska: list."
 - ord: "element"
   former: ["elementet", "elementen"]
@@ -91,6 +93,7 @@
   forklaring: "Tecknen { och }, också kallade klammerparenteser. Används i f-strängar och i uppslag."
 - ord: "funktion"
   former: ["funktionen", "funktioner", "funktionerna"]
+  ej: ["«funktion(en|erna)?» `?[A-ZÅÄÖ]{2}", "Excel-?«funktion(en|erna)?»"]
   forklaring: "En bit kod med ett namn som du kör (anropar) med parenteser, till exempel print(...) eller len(...). Egna funktioner skapas med def. På engelska: function."
 - ord: "parameter"
   former: ["parametern", "parametrar", "parametrarna"]
@@ -109,6 +112,7 @@
   forklaring: "Att ge ett svar tillbaka från en funktion, så att anroparen kan använda det. På engelska: return."
 - ord: "modul"
   former: ["modulen", "moduler", "modulerna"]
+  ej: ["valfria? «modul»", "«modul» \\d", "tidigare «moduler»", "i «modulen» behövs"]
   forklaring: "En färdig samling funktioner som du hämtar med import, till exempel math. På engelska: module."
 - ord: "import"
   former: []

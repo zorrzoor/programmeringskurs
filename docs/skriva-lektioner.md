@@ -176,6 +176,18 @@ Bygget länkar **första förekomsten av varje ord i en modul** i löpande text 
 befintliga länkar) till `#/ordlista/<id>`. Du skriver alltså inga länkar för hand. Länkar du själv skriver till
 `#/lektion/<id>` eller `#/ordlista/<id>` kontrolleras av bygget, och en trasig länk stoppar det.
 
+Bygget vet inte vilken betydelse ett ord har, så ett ord kan länkas där det betyder något annat. Länken hoppar över ett
+domännamn som `python.org`, och ett ord kan få `ej`: mönster (reguljära uttryck) där ordet **inte** ska länkas. Ordet
+markeras med `«` och `»`, och mönstret ser 40 tecken åt varje håll, även kod:
+
+````yaml
+- ord: modul
+  former: [modulen, moduler]
+  ej: ["valfria? «modul»", "«modul» \\d"]   # kursmodul ("modul 5", "en valfri modul"), inte Python-modul
+````
+
+Då länkas nästa förekomst i stället, där ordet har ordlistans betydelse. Skriv hellre om meningen om det blir enklare.
+
 `content/fastnat.md` är texten på sidan "Jag har fastnat" (vanlig Markdown, utan rubrik: sidans rubrik sätts av appen).
 
 ## Rubriker runt frågor och övningar

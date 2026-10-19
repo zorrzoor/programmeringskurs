@@ -16,7 +16,7 @@ Det som skrivs ut är `20`, inte ordet `pris`. Python hämtade värdet som `pris
 
 ## Se vad som händer
 
-Tryck på **Stegvis** under exemplet. Då körs koden en rad i taget. Pilen visar vilken rad som körs härnäst, och tabellen visar vilka variabler som finns och vad de har för värde. Tryck på **Nästa** och titta på när `pris` dyker upp.
+Tryck på **Stegvis** under exemplet. Då körs koden en rad i taget. Pilen visar vilken rad som körs härnäst, och rutan **Variabler just nu** visar vilka variabler som finns och vad de har för värde. Tryck på **Nästa** och titta på när `pris` dyker upp.
 
 ## Vad är en variabel?
 

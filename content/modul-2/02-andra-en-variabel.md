@@ -17,7 +17,7 @@ Resultatet är `25`, inte `20`. Hur kunde priset ändras?
 
 ## Se vad som händer
 
-Tryck på **Stegvis** under exemplet och gå fram med **Nästa**. Titta i tabellen: efter rad 1 är `pris` 20, och efter rad 2 är det 25. Det gamla värdet försvinner när det nya läggs dit, och det är precis det som den här lektionen handlar om.
+Tryck på **Stegvis** under exemplet och gå fram med **Nästa**. Titta i rutan **Variabler just nu**: efter rad 1 är `pris` 20, och efter rad 2 är det 25. Det gamla värdet försvinner när det nya läggs dit, och det är precis det som den här lektionen handlar om.
 
 ## Raden som ser ut som en ekvation
 
