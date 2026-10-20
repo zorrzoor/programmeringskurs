@@ -25,7 +25,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Bot PRs (release-please, Dependabot) have no issue to close.
       - name: PR description must close an issue
-        if: ${{ !startsWith(github.head_ref, 'release-please--') && !startsWith(github.head_ref, 'dependabot/') }}
+        if: ${{ !startsWith(github.head_ref, 'release-please--') && !startsWith(github.head_ref, 'dependabot/') && !startsWith(github.head_ref, 'renovate/') }}
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
