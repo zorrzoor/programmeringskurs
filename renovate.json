@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["github>zorrzoor/ee//renovate/default"],
+  "description": "Monthly, grouped; every PR runs the full CI (tests, browser tests, image smoke test) and is merged by hand.",
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "groupName": "npm"
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "groupName": "base-images"
+    }
+  ]
+}
