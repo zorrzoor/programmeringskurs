@@ -11,7 +11,9 @@ permissions:
 
 concurrency:
   group: pr-${{ github.ref }}
-  cancel-in-progress: true
+  # Not cancelled: Renovate edits its PR right after opening it, and a cancelled run counts as a failed check, so the PR
+  # would not be merged automatically. The check takes seconds.
+  cancel-in-progress: false
 
 jobs:
   pr:
