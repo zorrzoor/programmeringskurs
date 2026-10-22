@@ -4,6 +4,12 @@
   "description": "Monthly, grouped; every PR runs the full CI (tests, browser tests, image smoke test) and is merged by hand.",
   "packageRules": [
     {
+      "description": "TypeScript major is chosen by hand (versionsregeln): 7.0 came out 2026-08-20, less than six months ago. Revisit around 2027-02",
+      "matchPackageNames": ["typescript"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
       "matchManagers": ["npm"],
       "groupName": "npm"
     },
