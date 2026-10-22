@@ -10,7 +10,7 @@ Interaktiv nybörjarkurs i programmering och Python för webbläsaren. Läs READ
 - Merga aldrig innan `gh pr checks <nr>` är helt grön. Använd `gh pr merge --squash`.
 - Efter merge: `git switch main && git pull --prune` och radera lokal gren.
 - Nya delar ska komma med tester i CI i samma PR. Alla övningar ska ha ett facit som klarar sin egen rättning.
-- Actions låses till commit-SHA med versionskommentar (`uses: x@<sha> # vX.Y.Z`); runners explicit (`ubuntu-24.04`).
+- Actions låses till commit-SHA med versionskommentar (`uses: x@<sha> # vX.Y.Z`); runners explicit (`ubuntu-26.04`).
 
 ## Konventioner
 
