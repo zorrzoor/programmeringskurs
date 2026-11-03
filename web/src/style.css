@@ -206,3 +206,7 @@ table.variabler th, table.variabler td { text-align: left; padding: .2rem .5rem;
 table.variabler tr.andrad { background: var(--ok-bg); }
 .andringsmarke { color: var(--ok); font-size: .9rem; white-space: nowrap; }
 .stegstatus { font-weight: 600; margin: .5rem 0; }
+
+/* Public instance: warnings on the start page and the one-time access code. */
+.varning { border: 2px solid var(--border); border-left-width: .5rem; border-radius: .5rem; padding: .25rem 1rem; margin: 1rem 0; }
+.kodruta { font-size: 1.6rem; letter-spacing: .08em; padding: .75rem 1rem; border: 2px dashed var(--border); border-radius: .5rem; display: inline-block; user-select: all; }

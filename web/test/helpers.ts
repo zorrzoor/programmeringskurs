@@ -6,6 +6,10 @@ export class FakeApi extends Api {
   people = new Map<string, Progress>();
   offline = false;
   calls: string[] = [];
+  /** Behaves like the public instance: a code per name, a search instead of the whole list. */
+  publik = false;
+  codes = new Map<string, string>();
+  private current: string | null = null;
 
   constructor(names: string[] = []) {
     super(() => Promise.reject(new Error("FakeApi does not use fetch")));
@@ -17,20 +21,38 @@ export class FakeApi extends Api {
     if (this.offline) throw new ApiError(0, "nat", "Det går inte att nå servern just nu.");
   }
 
+  override setCode(code: string | null): void {
+    this.current = code;
+  }
+
+  private check(name: string): void {
+    if (this.publik && this.codes.get(name.toLowerCase()) !== this.current?.toUpperCase().replaceAll("-", "")) throw new ApiError(403, "fel-kod", "Koden stämmer inte.");
+  }
+
   override async listNames(): Promise<string[]> {
     this.guard("listNames");
     return [...this.people.values()].map((p) => p.namn);
   }
 
-  override async createName(name: string): Promise<string> {
+  override async searchNames(query = ""): Promise<{ namn: string[]; totalt?: number }> {
+    this.guard(`searchNames ${query}`);
+    const all = [...this.people.values()].map((p) => p.namn).filter((n) => n.toLowerCase().includes(query.toLowerCase()));
+    return { namn: all.slice(0, 50), totalt: all.length };
+  }
+
+  override async createName(name: string): Promise<{ namn: string; kod?: string }> {
     this.guard("createName");
     if (this.people.has(name.toLowerCase())) throw new ApiError(409, "namnet-finns", "Namnet finns redan.");
     this.people.set(name.toLowerCase(), { namn: name, senast: null, ovningar: {} });
-    return name;
+    if (!this.publik) return { namn: name };
+    const kod = "ABCD-EFGH-JKMN";
+    this.codes.set(name.toLowerCase(), kod.replaceAll("-", ""));
+    return { namn: name, kod };
   }
 
   override async getProgress(name: string): Promise<Progress> {
     this.guard("getProgress");
+    if (this.people.has(name.toLowerCase())) this.check(name);
     const p = this.people.get(name.toLowerCase());
     if (!p) throw new ApiError(404, "okant-namn", "Det namnet finns inte.");
     return structuredClone(p);
@@ -54,6 +76,7 @@ export class FakeApi extends Api {
 
   override async deleteName(name: string): Promise<void> {
     this.guard("deleteName");
+    if (this.people.has(name.toLowerCase())) this.check(name);
     this.people.delete(name.toLowerCase());
   }
 }

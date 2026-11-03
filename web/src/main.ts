@@ -1,5 +1,6 @@
 import { Api } from "./api.ts";
-import { loadConfig } from "./config.ts";
+import { config, loadConfig } from "./config.ts";
+import { glomKod, hamtaKod, sparaKod } from "./koder.ts";
 import { skapaKoerare } from "./py/koerare.ts";
 import { ProgressSync } from "./sync.ts";
 import { startApp, type App } from "./ui/app.ts";
@@ -41,12 +42,21 @@ function choose(): void {
   sync = undefined;
   app = undefined;
   remember(null);
+  api.setCode(null);
   history.replaceState(null, "", location.pathname);
-  showPicker(root as HTMLElement, { api, onPick: (name) => void start(name) });
+  showPicker(root as HTMLElement, {
+    api,
+    onPick: (name, code) => {
+      if (code !== undefined) sparaKod(name, code);
+      void start(name);
+    },
+  });
 }
 
 async function start(name: string): Promise<void> {
   remember(name);
+  // The public instance: this device's code for the name (the picker saved it). Without it the server refuses and we start over.
+  api.setCode(config().lage === "publik" ? hamtaKod(name) : null);
   const s = new ProgressSync(api, name, { onStatus: (st) => app?.setStatus(st) });
   try {
     await s.load();
@@ -55,7 +65,8 @@ async function start(name: string): Promise<void> {
     app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, choose);
     app.setStatus(s.status);
   } catch {
-    // The name was removed on another device, or the server answered with an error: start over.
+    // The name was removed on another device, the code no longer fits, or the server answered with an error: start over.
+    if (config().lage === "publik") glomKod(name);
     choose();
   }
 }

@@ -1,15 +1,20 @@
 // "Vem är du?": choose an existing name, add a new one, or remove one (start over). No password: whoever
 // can open the page can open every name (docs/koncept.md §4.5).
 import { Api, ApiError } from "../api.ts";
+import { config } from "../config.ts";
 import { cleanName, NAME_HELP } from "../names.ts";
 import { clear, h } from "./dom.ts";
+import { showPublicPicker } from "./picker-publik.ts";
 
 export interface PickerOptions {
   api: Api;
-  onPick: (name: string) => void;
+  /** `code` only in the public instance (the access code of the name). */
+  onPick: (name: string, code?: string) => void;
 }
 
-export function showPicker(root: HTMLElement, { api, onPick }: PickerOptions): void {
+export function showPicker(root: HTMLElement, options: PickerOptions): void {
+  if (config().lage === "publik") return showPublicPicker(root, options);
+  const { api, onPick } = options;
   const message = h("p", { role: "alert", class: "message" });
   const say = (text: string) => {
     message.textContent = text;
@@ -59,7 +64,7 @@ export function showPicker(root: HTMLElement, { api, onPick }: PickerOptions): v
     const name = cleanName(raw);
     if (name === null) return say(NAME_HELP);
     try {
-      onPick(await api.createName(name));
+      onPick((await api.createName(name)).namn);
     } catch (err) {
       // The name exists already (any spelling of the capitals): just continue as that person.
       if (err instanceof ApiError && err.code === "namnet-finns") return say("Det namnet finns redan. Välj det i listan om det är du.");
