@@ -27,7 +27,7 @@ test("the whole course flow in one browser", async ({ page, browser }) => {
   await page.getByRole("button", { name: "Börja" }).click();
   await expect(page.getByRole("heading", { name: "Programmeringskurs", level: 1 })).toBeVisible();
   await expect(page.getByText(`Välkommen, ${namn}.`)).toBeVisible();
-  await expect(page.getByText("Älskar dig!")).toBeVisible();
+  await expect(page.getByText("Älskar dig!")).toHaveCount(0);
   expect(await page.locator("img.ikon").evaluate((i: HTMLImageElement) => i.complete && i.naturalWidth > 0)).toBe(true);
   // The icons have a content hash in their names (a changed icon gets a new address, an unchanged one is cached for long)
   for (const [valj, typ] of [['link[rel="icon"][type="image/svg+xml"]', "image/svg+xml"], ['link[rel="icon"][type="image/png"]', "image/png"], ['link[rel="apple-touch-icon"]', "image/png"]] as const) {
