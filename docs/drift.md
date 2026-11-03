@@ -1,6 +1,6 @@
 # Drift och återställning
 
-Kursen körs som en pod i k3s-klustret (`deploy/`, plattformssidan i `k3s_hosting` under `tenants/nuc/programmeringskurs`).
+Kursen körs som en pod i k3s-klustret (`deploy/`, plattformssidan i `k3s_hosting` under `tenants/nuc/programmeringskurs`; den publika instansen är `programmeringskurs-publik`, se koncept.md kapitel 11).
 Allt framsteg ligger i en SQLite-fil, `/data/kurs.db`, på en volym (`kurs-data`, storage class `local-path-sata`).
 
 ## Säkerhetskopia

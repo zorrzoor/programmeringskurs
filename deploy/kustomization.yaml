@@ -1,19 +1,7 @@
-# Manifests for the cluster. CI publishes this directory as the OCI artifact
-# ghcr.io/zorrzoor/programmeringskurs-manifests (sha-<7> and main); the platform (k3s_hosting) applies it in
-# the namespace programmeringskurs. Contract: k3s_hosting docs/tenants.md.
+# Entry point for the private instance (kurs.feuerliden.se): the platform's tenant `programmeringskurs` applies the artifact's
+# root. The public instance (kursen.feuerliden.se) uses path ./overlays/publik in its tenant. CI publishes this whole
+# directory as ONE OCI artifact (ghcr.io/zorrzoor/programmeringskurs-manifests, sha-<7> and main) pinned to the image.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-labels:
-  - pairs:
-      app.kubernetes.io/part-of: programmeringskurs
 resources:
-  - certificate.yaml
-  - pvc.yaml
-  - deployment.yaml
-  - service.yaml
-  - serverstransport.yaml
-  - ingress.yaml
-images:
-  # CI pins the published artifact to the image it just pushed (sha-<7>).
-  - name: ghcr.io/zorrzoor/programmeringskurs
-    newTag: latest
+  - overlays/privat

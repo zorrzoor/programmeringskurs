@@ -451,6 +451,15 @@ nätverksregler (inget in utom från Traefik) och backup.
   inget lösenord och ligger därför bakom Cloudflare Access, på samma sätt som vattenkoll: man anger sin e-postadress,
   får en engångskod och kommer in om adressen finns i listan över tillåtna. Fungerar på alla enheter och utanför hemmet.
   Namnen i appen är alltså ingen säkerhet; den som tagit sig förbi Access kan öppna alla namn.
+- **Två instanser av samma app** ([#164](https://github.com/zorrzoor/programmeringskurs/issues/164)): `kurs.feuerliden.se` (privat,
+  bakom Access) och `kursen.feuerliden.se` (publik, **utan** Access) kommer från samma repo och image. `deploy/base/` är det
+  gemensamma, `deploy/overlays/privat` och `deploy/overlays/publik` skiljer sig i värdnamn och miljövariabler. CI publicerar
+  `deploy/` som *en* OCI-artefakt; tenanten `programmeringskurs` läser rotens `kustomization.yaml` (= privat) och
+  `programmeringskurs-publik` använder sökvägen `./overlays/publik`. Instansen styrs av miljövariablerna `KURS_LAGE`
+  (`privat`/`publik`, standard privat; i privat visas hälsningen på startsidan), `MAX_NAMES` (standard 50, publik 2000) och
+  `WRITES_PER_MINUTE` (standard 300, publik 1500). Publik instans: 5 Gi volym och 256 Mi minne. Den saknar Access och skyddar
+  därför namnen med en kod per namn ([#163](https://github.com/zorrzoor/programmeringskurs/issues/163)); rensning av databasen
+  vid månadsbyte är inte gjord ([#165](https://github.com/zorrzoor/programmeringskurs/issues/165)).
 - **Drift:** en pod, liten (≈ 50 MB minne), en volym för databasen (`local-path-sata`), hälsokontroll, loggar till
   stdout. Pod Security `restricted`, skrivskyddat rotfilsystem.
 - **Utveckling lokalt:** `make dev` startar servern och sidan i containrar, utan klustret.
