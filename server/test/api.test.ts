@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { after, before, describe, test } from "node:test";
 import { createHandler } from "../app.ts";
 import { readConfig, type Config } from "../config.ts";
+import { DatabaseSync } from "node:sqlite";
 import { Store } from "../db.ts";
 
 let dir: string;
@@ -298,8 +299,17 @@ describe("instance mode", () => {
   });
 
   test("readConfig: defaults, values and invalid input", () => {
-    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300 });
-    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500" }), { lage: "publik", maxNames: 2000, writesPerMinute: 1500 });
+    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false });
+    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1" }), {
+      lage: "publik",
+      maxNames: 2000,
+      writesPerMinute: 1500,
+      newNamesPerIpPerDay: 15,
+      newNamesPerHour: 200,
+      unusedNameHours: 24,
+      namesClosed: true,
+    });
+    assert.throws(() => readConfig({ NEW_NAMES_PER_HOUR: "-1" }), /NEW_NAMES_PER_HOUR/);
     assert.throws(() => readConfig({ KURS_LAGE: "offentlig" }), /KURS_LAGE/);
     assert.throws(() => readConfig({ MAX_NAMES: "0" }), /MAX_NAMES/);
     assert.throws(() => readConfig({ WRITES_PER_MINUTE: "många" }), /WRITES_PER_MINUTE/);
@@ -377,5 +387,85 @@ describe("public instance: a code per name", () => {
     const r = await call("POST", "/api/namn", { namn: "Privat Pia" });
     assert.deepEqual(r.body, { namn: "Privat Pia" });
     assert.equal((await call("GET", "/api/namn/Privat%20Pia/framsteg")).status, 200);
+  });
+});
+
+describe("abuse protection for new names", () => {
+  const post = (url: string, namn: string, ip?: string) =>
+    fetch(`${url}/api/namn`, { method: "POST", headers: ip ? { "cf-connecting-ip": ip } : {}, body: JSON.stringify({ namn }) });
+  const limited = async (config: Partial<Config>) => {
+    logs = [];
+    const s = start(":memory:", 10_000, { lage: "publik", maxNames: 2000, ...config });
+    return { s, url: await listen(s) };
+  };
+
+  test("a limit per client and day: others are not affected, and it passes after a day", async () => {
+    const { s, url } = await limited({ newNamesPerIpPerDay: 2 });
+    assert.deepEqual([await post(url, "A1", "1.1.1.1"), await post(url, "A2", "1.1.1.1")].map((r) => r.status), [201, 201]);
+    const third = await post(url, "A3", "1.1.1.1");
+    assert.deepEqual([third.status, (await third.json()).fel], [429, "for-manga-nya-namn"]);
+    assert.equal((await post(url, "B1", "2.2.2.2")).status, 201);
+    clock += 24 * 3600_000 + 1;
+    assert.equal((await post(url, "A3", "1.1.1.1")).status, 201);
+    s.close();
+  });
+
+  test("a refused name is not counted, and the refusal is logged without any address", async () => {
+    const { s, url } = await limited({ newNamesPerIpPerDay: 1 });
+    assert.equal((await post(url, "C1", "3.3.3.3")).status, 201);
+    assert.equal((await post(url, "C1", "3.3.3.3")).status, 429); // limit first
+    const log = logs.join("\n");
+    assert.match(log, /"handelse":"namngrans","orsak":"ip"/);
+    assert.ok(!log.includes("3.3.3.3"));
+    s.close();
+  });
+
+  test("a total per hour, all clients together", async () => {
+    const { s, url } = await limited({ newNamesPerHour: 3 });
+    const codes = [];
+    for (let i = 0; i < 4; i++) codes.push((await post(url, `H${i}`, `9.9.9.${i}`)).status);
+    assert.deepEqual(codes, [201, 201, 201, 429]);
+    assert.match(logs.join("\n"), /"orsak":"timme"/);
+    clock += 3600_000 + 1;
+    assert.equal((await post(url, "H9", "9.9.9.9")).status, 201);
+    s.close();
+  });
+
+  test("the owner can close new names", async () => {
+    const { s, url } = await limited({ namesClosed: true });
+    const r = await post(url, "Stängd");
+    assert.deepEqual([r.status, (await r.json()).fel], [503, "namn-stangda"]);
+    s.close();
+  });
+
+  test("without limits (the private instance) nothing is refused", async () => {
+    const { s, url } = await limited({ lage: "privat" });
+    for (let i = 0; i < 20; i++) assert.equal((await post(url, `P${i}`, "4.4.4.4")).status, 201);
+    s.close();
+  });
+
+  test("names nobody used are removed after a while; names with work or a visited lesson stay", () => {
+    const store = new Store(":memory:");
+    for (const n of ["Tom", "Arbetat", "Besökt", "Ny"]) store.addName(n, 100, null, 1_000);
+    store.addName("Sen", 100, null, 9_000);
+    store.saveExercise("Arbetat", "o1", { kod: "x", tid: 1 });
+    store.saveLastLesson("Besökt", "l1");
+    assert.equal(store.removeUnused(5_000), 2); // Tom, Ny
+    assert.deepEqual(store.names().sort(), ["Arbetat", "Besökt", "Sen"]);
+    assert.equal(store.removeUnused(5_000), 0);
+    store.close();
+  });
+
+  test("names made before created_at existed get a grace period", () => {
+    const dir2 = mkdtempSync(join(tmpdir(), "kurs-mig-"));
+    const path = join(dir2, "old.db");
+    const old = new DatabaseSync(path);
+    old.exec("CREATE TABLE people (id INTEGER PRIMARY KEY, name TEXT NOT NULL, key TEXT NOT NULL UNIQUE, last_lesson TEXT); INSERT INTO people (name, key) VALUES ('Gammal', 'gammal');");
+    old.close();
+    const store = new Store(path);
+    assert.equal(store.removeUnused(Date.now() - 3600_000), 0); // made "now" by the migration, not an hour ago
+    assert.deepEqual(store.names(), ["Gammal"]);
+    store.close();
+    rmSync(dir2, { recursive: true, force: true });
   });
 });

@@ -2,6 +2,7 @@
 // No dependencies. Requests are logged as one JSON line without names (they are personal).
 import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
+import { createHash, randomBytes } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
 import { DEFAULT_MAX_NAMES, DEFAULT_WRITES_PER_MINUTE, type Config } from "./config.ts";
@@ -89,12 +90,60 @@ function decodeSegment(segment: string): string {
 
 export function createHandler(opts: Options): (req: IncomingMessage, res: ServerResponse) => void {
   const { store, webDir } = opts;
-  const config: Config = { lage: "privat", maxNames: DEFAULT_MAX_NAMES, writesPerMinute: DEFAULT_WRITES_PER_MINUTE, ...opts.config };
+  const config: Config = {
+    lage: "privat",
+    maxNames: DEFAULT_MAX_NAMES,
+    writesPerMinute: DEFAULT_WRITES_PER_MINUTE,
+    newNamesPerIpPerDay: 0,
+    newNamesPerHour: 0,
+    unusedNameHours: 0,
+    namesClosed: false,
+    ...opts.config,
+  };
   const limit = opts.writesPerMinute ?? config.writesPerMinute;
   const now = opts.now ?? Date.now;
   const log = opts.log ?? ((line: string) => console.log(line));
   let windowStart = now();
   let writes = 0;
+
+  // Limits on new names (public instance). Only in memory, reset by a restart. The address is never stored or logged: it is
+  // hashed with a salt that exists only in this process. CF-Connecting-IP is set by Cloudflare (all traffic comes through the
+  // tunnel); anyone who reaches Traefik directly could fake it, which the hourly total still covers.
+  const salt = randomBytes(16);
+  const DAY = 24 * 3600_000;
+  const HOUR = 3600_000;
+  const perClient = new Map<string, number[]>();
+  let created: number[] = [];
+  const recent = (times: number[], span: number) => times.filter((t) => now() - t < span);
+  const clientKey = (req: IncomingMessage): string => {
+    const header = req.headers["cf-connecting-ip"];
+    const address = (Array.isArray(header) ? header[0] : header) ?? req.socket.remoteAddress ?? "";
+    return createHash("sha256").update(salt).update(address).digest("base64url").slice(0, 16);
+  };
+  const refuse = (reason: string): void => log(JSON.stringify({ level: "warn", handelse: "namngrans", orsak: reason }));
+  function checkNewName(req: IncomingMessage): string {
+    if (config.namesClosed) {
+      refuse("stangt");
+      throw new HttpError(503, "namn-stangda", "Det går inte att skapa nya namn just nu. Försök igen senare.");
+    }
+    const key = clientKey(req);
+    created = recent(created, HOUR);
+    const mine = recent(perClient.get(key) ?? [], DAY);
+    if (config.newNamesPerHour > 0 && created.length >= config.newNamesPerHour) {
+      refuse("timme");
+      throw new HttpError(429, "for-manga-nya-namn", "Många nya namn skapas just nu. Försök igen om en stund.");
+    }
+    if (config.newNamesPerIpPerDay > 0 && mine.length >= config.newNamesPerIpPerDay) {
+      refuse("ip");
+      throw new HttpError(429, "for-manga-nya-namn", "Du har skapat många namn i dag. Försök igen i morgon, eller använd ett av dina befintliga namn.");
+    }
+    return key;
+  }
+  function countNewName(key: string): void {
+    created.push(now());
+    perClient.set(key, [...recent(perClient.get(key) ?? [], DAY), now()]);
+    if (perClient.size > 20_000) for (const [k, v] of perClient) if (recent(v, DAY).length === 0) perClient.delete(k);
+  }
 
   function json(res: ServerResponse, status: number, body?: unknown): void {
     const data = body === undefined ? "" : JSON.stringify(body);
@@ -141,10 +190,12 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
         const name = cleanName((await readJson(req)).namn);
         if (name === null) throw bad("ogiltigt-namn", "Namnet ska vara 1–30 tecken: bokstäver, siffror, mellanslag och bindestreck.");
         // The public instance has no Access in front: a code per name, shown once, only its hash is kept.
+        const key = checkNewName(req);
         const code = config.lage === "publik" ? newCode() : null;
-        const result = store.addName(name, config.maxNames, code === null ? null : hashCode(cleanAccessCode(code) as string));
+        const result = store.addName(name, config.maxNames, code === null ? null : hashCode(cleanAccessCode(code) as string), now());
         if (result === "exists") throw new HttpError(409, "namnet-finns", "Namnet finns redan.");
         if (result === "full") throw new HttpError(409, "for-manga-namn", "Det finns redan för många namn. Ta bort ett först.");
+        countNewName(key);
         json(res, 201, code === null ? { namn: name } : { namn: name, kod: code });
         return "POST /api/namn";
       }

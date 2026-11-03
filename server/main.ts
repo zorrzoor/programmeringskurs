@@ -29,6 +29,20 @@ if (backupDir) {
   setInterval(backup, 24 * 3600 * 1000).unref();
 }
 
+// Names nobody used (no saved exercise, no lesson visited) only take a place: remove them after a while.
+if (config.unusedNameHours > 0) {
+  const clean = () => {
+    try {
+      const removed = store.removeUnused(Date.now() - config.unusedNameHours * 3600_000);
+      if (removed > 0) log(`${removed} oanvända namn borttagna`);
+    } catch (err) {
+      log(`rensningen av oanvända namn misslyckades: ${String(err)}`, "error");
+    }
+  };
+  clean();
+  setInterval(clean, 3600 * 1000).unref();
+}
+
 const certFile = process.env.TLS_CERT_FILE;
 const keyFile = process.env.TLS_KEY_FILE;
 const readTls = () => ({ cert: readFileSync(certFile ?? ""), key: readFileSync(keyFile ?? "") });
