@@ -305,3 +305,77 @@ describe("instance mode", () => {
     assert.throws(() => readConfig({ WRITES_PER_MINUTE: "många" }), /WRITES_PER_MINUTE/);
   });
 });
+
+describe("public instance: a code per name", () => {
+  let s: Server;
+  let url: string;
+  const req = (method: string, path: string, body?: unknown, kod?: string) =>
+    fetch(url + path, { method, headers: kod === undefined ? {} : { "x-kod": kod }, body: body === undefined ? undefined : JSON.stringify(body) });
+
+  before(async () => {
+    s = start(":memory:", 300, { lage: "publik", maxNames: 2000 });
+    url = await listen(s);
+  });
+  after(() => s.close());
+
+  test("creating a name returns a code once; it opens the name", async () => {
+    const r = await req("POST", "/api/namn", { namn: "Nora" });
+    const { namn, kod } = await r.json();
+    assert.deepEqual([r.status, namn], [201, "Nora"]);
+    assert.match(kod, /^[A-HJKMNP-Z2-9]{4}-[A-HJKMNP-Z2-9]{4}-[A-HJKMNP-Z2-9]{4}$/);
+    assert.equal((await req("GET", "/api/namn/Nora/framsteg", undefined, kod)).status, 200);
+    // lower case and without hyphens is the same code
+    assert.equal((await req("GET", "/api/namn/Nora/framsteg", undefined, kod.toLowerCase().replaceAll("-", ""))).status, 200);
+  });
+
+  test("without the code, or with a wrong one, nothing can be read, written or removed", async () => {
+    const { kod } = await (await req("POST", "/api/namn", { namn: "Olof" })).json();
+    const wrong = kod.startsWith("A") ? "BBBB-BBBB-BBBB" : "AAAA-AAAA-AAAA";
+    for (const k of [undefined, "", "skräp", wrong]) {
+      for (const [m, p, b] of [
+        ["GET", "/api/namn/Olof/framsteg", undefined],
+        ["PUT", "/api/namn/Olof/ovningar/o1", { kod: "x", tid: 1 }],
+        ["PUT", "/api/namn/Olof/senast", { lektion: "l1" }],
+        ["DELETE", "/api/namn/Olof", undefined],
+      ] as const) {
+        const r = await req(m, p, b, k);
+        assert.deepEqual([r.status, (await r.json()).fel], [403, "fel-kod"], `${m} ${p} with ${String(k)}`);
+      }
+    }
+    // the name is still there, with the right code
+    assert.equal((await req("GET", "/api/namn/Olof/framsteg", undefined, kod)).status, 200);
+    assert.equal((await req("DELETE", "/api/namn/Olof", undefined, kod)).status, 204);
+    assert.equal((await req("GET", "/api/namn/Olof/framsteg", undefined, kod)).status, 404);
+  });
+
+  test("another person's code does not open this name", async () => {
+    const a = await (await req("POST", "/api/namn", { namn: "Qasim" })).json();
+    const b = await (await req("POST", "/api/namn", { namn: "Rut" })).json();
+    assert.equal((await req("GET", "/api/namn/Qasim/framsteg", undefined, b.kod)).status, 403);
+    assert.equal((await req("GET", "/api/namn/Qasim/framsteg", undefined, a.kod)).status, 200);
+  });
+
+  test("the list is a search with a limited number of hits", async () => {
+    for (let i = 0; i < 60; i++) await req("POST", "/api/namn", { namn: `Sökbar ${String(i).padStart(2, "0")}` });
+    const all = await (await req("GET", "/api/namn?q=sökbar")).json();
+    assert.deepEqual([all.namn.length, all.totalt, all.namn[0]], [50, 60, "Sökbar 00"]);
+    const one = await (await req("GET", "/api/namn?q=SÖKBAR%2059")).json();
+    assert.deepEqual(one, { namn: ["Sökbar 59"], totalt: 1 });
+    assert.deepEqual(await (await req("GET", "/api/namn?q=%25")).json(), { namn: [], totalt: 0 }); // % is not a wildcard
+    assert.ok((await (await req("GET", "/api/namn")).json()).namn.length <= 50);
+  });
+
+  test("a name without a code (made before codes existed) cannot be opened", async () => {
+    const store = new Store(":memory:");
+    store.addName("Gammal");
+    assert.equal(store.checkCode("Gammal", "AAAAAAAAAAAA"), "denied");
+    assert.equal(store.checkCode("Finns inte", "AAAAAAAAAAAA"), "unknown");
+    store.close();
+  });
+
+  test("the private instance is unchanged: no code, whole list", async () => {
+    const r = await call("POST", "/api/namn", { namn: "Privat Pia" });
+    assert.deepEqual(r.body, { namn: "Privat Pia" });
+    assert.equal((await call("GET", "/api/namn/Privat%20Pia/framsteg")).status, 200);
+  });
+});

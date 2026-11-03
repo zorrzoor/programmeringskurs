@@ -3,7 +3,7 @@ import { mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
 import { DEFAULT_MAX_NAMES } from "./config.ts";
-import { nameKey } from "./validate.ts";
+import { hashCode, nameKey, sameHash } from "./validate.ts";
 
 export interface Exercise {
   kod: string;
@@ -41,6 +41,9 @@ export class Store {
         PRIMARY KEY (person_id, exercise_id)
       );
     `);
+    // The public instance protects a name with a code (only its hash is stored). Added to databases made before it existed.
+    const columns = this.db.prepare("PRAGMA table_info(people)").all().map((r) => String(r.name));
+    if (!columns.includes("code_hash")) this.db.exec("ALTER TABLE people ADD COLUMN code_hash TEXT");
   }
 
   close(): void {
@@ -65,12 +68,28 @@ export class Store {
     return this.db.prepare("SELECT name FROM people ORDER BY key").all().map((r) => String(r.name));
   }
 
+  /** Names containing `query` (any capitals), at most `limit`, and how many match in all. */
+  searchNames(query: string, limit: number): { namn: string[]; totalt: number } {
+    const pattern = `%${nameKey(query).replace(/[\\%_]/g, (c) => `\\${c}`)}%`;
+    const totalt = Number(this.db.prepare("SELECT count(*) AS n FROM people WHERE key LIKE ? ESCAPE '\\'").get(pattern)?.n);
+    const rows = this.db.prepare("SELECT name FROM people WHERE key LIKE ? ESCAPE '\\' ORDER BY key LIMIT ?").all(pattern, limit);
+    return { namn: rows.map((r) => String(r.name)), totalt };
+  }
+
+  /** "ok", "unknown" (no such name) or "denied" (wrong code, or the name has none). */
+  checkCode(name: string, code: string | null): "ok" | "unknown" | "denied" {
+    const row = this.db.prepare("SELECT code_hash FROM people WHERE key = ?").get(nameKey(name));
+    if (!row) return "unknown";
+    if (code === null || row.code_hash === null || row.code_hash === undefined) return "denied";
+    return sameHash(String(row.code_hash), hashCode(code)) ? "ok" : "denied";
+  }
+
   /** "created", "exists" or "full". */
-  addName(name: string, maxNames = DEFAULT_MAX_NAMES): "created" | "exists" | "full" {
+  addName(name: string, maxNames = DEFAULT_MAX_NAMES, codeHash: string | null = null): "created" | "exists" | "full" {
     const count = Number(this.db.prepare("SELECT count(*) AS n FROM people").get()?.n);
     if (this.personId(name) !== null) return "exists";
     if (count >= maxNames) return "full";
-    this.db.prepare("INSERT INTO people (name, key) VALUES (?, ?)").run(name, nameKey(name));
+    this.db.prepare("INSERT INTO people (name, key, code_hash) VALUES (?, ?, ?)").run(name, nameKey(name), codeHash);
     return "created";
   }
 

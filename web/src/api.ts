@@ -31,17 +31,26 @@ type FetchFn = (input: string, init?: RequestInit) => Promise<Response>;
 
 export class Api {
   private readonly fetchFn: FetchFn;
+  /** The access code of the chosen name (public instance); sent with every call about that name. */
+  private code: string | null = null;
 
   constructor(fetchFn: FetchFn = (input, init) => fetch(input, init)) {
     this.fetchFn = fetchFn;
   }
 
+  setCode(code: string | null): void {
+    this.code = code;
+  }
+
   private async call<T>(method: string, path: string, body?: unknown): Promise<T> {
     let res: Response;
+    const headers: Record<string, string> = {};
+    if (body !== undefined) headers["content-type"] = "application/json";
+    if (this.code !== null && path.startsWith("/api/namn/")) headers["x-kod"] = this.code;
     try {
       res = await this.fetchFn(path, {
         method,
-        headers: body === undefined ? undefined : { "content-type": "application/json" },
+        headers: Object.keys(headers).length > 0 ? headers : undefined,
         body: body === undefined ? undefined : JSON.stringify(body),
       });
     } catch {
@@ -62,12 +71,18 @@ export class Api {
     return this.call("GET", "/api/config");
   }
 
-  async listNames(): Promise<string[]> {
-    return (await this.call<{ namn: string[] }>("GET", "/api/namn")).namn;
+  /** The private instance lists every name; the public one searches (`query`) and returns a limited number of hits. */
+  async listNames(query = ""): Promise<string[]> {
+    return (await this.searchNames(query)).namn;
   }
 
-  async createName(name: string): Promise<string> {
-    return (await this.call<{ namn: string }>("POST", "/api/namn", { namn: name })).namn;
+  searchNames(query = ""): Promise<{ namn: string[]; totalt?: number }> {
+    return this.call("GET", query === "" ? "/api/namn" : `/api/namn?q=${encodeURIComponent(query)}`);
+  }
+
+  /** Creates the name. The public instance also returns its access code (shown once). */
+  createName(name: string): Promise<{ namn: string; kod?: string }> {
+    return this.call("POST", "/api/namn", { namn: name });
   }
 
   getProgress(name: string): Promise<Progress> {

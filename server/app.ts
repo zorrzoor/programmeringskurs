@@ -6,7 +6,7 @@ import type { IncomingMessage, ServerResponse } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
 import { DEFAULT_MAX_NAMES, DEFAULT_WRITES_PER_MINUTE, type Config } from "./config.ts";
 import type { Store } from "./db.ts";
-import { cleanCode, cleanId, cleanName, cleanTime, MAX_BODY_BYTES } from "./validate.ts";
+import { cleanAccessCode, cleanCode, cleanId, cleanName, cleanTime, hashCode, MAX_BODY_BYTES, newCode } from "./validate.ts";
 
 const TYPES: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -130,16 +130,22 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
 
     if (path.length === 3) {
       if (method === "GET") {
-        json(res, 200, { namn: store.names() });
+        if (config.lage === "publik") {
+          // Thousands of names: search, and never the whole list.
+          const q = new URL(req.url ?? "/", "http://localhost").searchParams.get("q") ?? "";
+          json(res, 200, store.searchNames(q.slice(0, 60), 50));
+        } else json(res, 200, { namn: store.names() });
         return "GET /api/namn";
       }
       if (method === "POST") {
         const name = cleanName((await readJson(req)).namn);
         if (name === null) throw bad("ogiltigt-namn", "Namnet ska vara 1–30 tecken: bokstäver, siffror, mellanslag och bindestreck.");
-        const result = store.addName(name, config.maxNames);
+        // The public instance has no Access in front: a code per name, shown once, only its hash is kept.
+        const code = config.lage === "publik" ? newCode() : null;
+        const result = store.addName(name, config.maxNames, code === null ? null : hashCode(cleanAccessCode(code) as string));
         if (result === "exists") throw new HttpError(409, "namnet-finns", "Namnet finns redan.");
         if (result === "full") throw new HttpError(409, "for-manga-namn", "Det finns redan för många namn. Ta bort ett först.");
-        json(res, 201, { namn: name });
+        json(res, 201, code === null ? { namn: name } : { namn: name, kod: code });
         return "POST /api/namn";
       }
       throw new HttpError(405, "metod", "Metoden stöds inte.");
@@ -148,6 +154,13 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     const name = cleanName(decodeSegment(rawName ?? ""));
     if (name === null) throw bad("ogiltigt-namn", "Namnet är inte giltigt.");
     const notFound = new HttpError(404, "okant-namn", "Det namnet finns inte.");
+    if (config.lage === "publik") {
+      const header = req.headers["x-kod"];
+      const given = cleanAccessCode(Array.isArray(header) ? header[0] : header);
+      const access = store.checkCode(name, given);
+      if (access === "unknown") throw notFound;
+      if (access === "denied") throw new HttpError(403, "fel-kod", "Koden stämmer inte.");
+    }
 
     if (path.length === 4) {
       if (method !== "DELETE") throw new HttpError(405, "metod", "Metoden stöds inte.");
