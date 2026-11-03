@@ -458,7 +458,7 @@ nätverksregler (inget in utom från Traefik) och backup.
   `programmeringskurs-publik` använder sökvägen `./overlays/publik`. Instansen styrs av miljövariablerna `KURS_LAGE`
   (`privat`/`publik`, standard privat; i privat visas hälsningen på startsidan), `MAX_NAMES` (standard 50, publik 2000) och
   `WRITES_PER_MINUTE` (standard 300, publik 1500). Publik instans: 5 Gi volym och 256 Mi minne. Den saknar Access och skyddar
-  därför namnen med en kod per namn ([#163](https://github.com/zorrzoor/programmeringskurs/issues/163)); rensning av databasen
+  därför namnen med en kod per namn ([#163](https://github.com/zorrzoor/programmeringskurs/issues/163)): koden (12 tecken, ca 59 bitar) skapas av servern och visas en gång, bara dess SHA-256 sparas, och den krävs (header `x-kod`) för att öppna, spara och radera namnet. Förlorad kod går inte att återställa och inga e-postadresser används. Namnlistan är en sökning med högst 50 träffar. Startsidan varnar för att namn syns för alla och att framsteg kan rensas vid månadsbyte; rensning av databasen
   vid månadsbyte är inte gjord ([#165](https://github.com/zorrzoor/programmeringskurs/issues/165)).
 - **Drift:** en pod, liten (≈ 50 MB minne), en volym för databasen (`local-path-sata`), hälsokontroll, loggar till
   stdout. Pod Security `restricted`, skrivskyddat rotfilsystem.
