@@ -17,6 +17,17 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/env/-
         value: {name: WRITES_PER_MINUTE, value: "1500"}
+      # Abuse protection (programmeringskurs#173): per client and day, per hour in total, and names nobody used.
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: NEW_NAMES_PER_IP_PER_DAY, value: "15"}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: NEW_NAMES_PER_HOUR, value: "200"}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: UNUSED_NAME_HOURS, value: "24"}
+      # To stop new names at once: add NAMES_CLOSED = "1" here (or kubectl set env deploy/kurs NAMES_CLOSED=1).
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/memory
         value: 256Mi

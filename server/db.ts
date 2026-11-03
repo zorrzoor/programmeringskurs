@@ -44,6 +44,11 @@ export class Store {
     // The public instance protects a name with a code (only its hash is stored). Added to databases made before it existed.
     const columns = this.db.prepare("PRAGMA table_info(people)").all().map((r) => String(r.name));
     if (!columns.includes("code_hash")) this.db.exec("ALTER TABLE people ADD COLUMN code_hash TEXT");
+    // When the name was made, for removing names nobody used. Older names get a full grace period from now.
+    if (!columns.includes("created_at")) {
+      this.db.exec("ALTER TABLE people ADD COLUMN created_at INTEGER");
+      this.db.prepare("UPDATE people SET created_at = ?").run(Date.now());
+    }
   }
 
   close(): void {
@@ -85,12 +90,26 @@ export class Store {
   }
 
   /** "created", "exists" or "full". */
-  addName(name: string, maxNames = DEFAULT_MAX_NAMES, codeHash: string | null = null): "created" | "exists" | "full" {
+  addName(name: string, maxNames = DEFAULT_MAX_NAMES, codeHash: string | null = null, now = Date.now()): "created" | "exists" | "full" {
     const count = Number(this.db.prepare("SELECT count(*) AS n FROM people").get()?.n);
     if (this.personId(name) !== null) return "exists";
     if (count >= maxNames) return "full";
-    this.db.prepare("INSERT INTO people (name, key, code_hash) VALUES (?, ?, ?)").run(name, nameKey(name), codeHash);
+    this.db.prepare("INSERT INTO people (name, key, code_hash, created_at) VALUES (?, ?, ?, ?)").run(name, nameKey(name), codeHash, now);
     return "created";
+  }
+
+  /**
+   * Removes names made before `cutoff` (ms) that have no saved exercise and no visited lesson: nobody used them, they only
+   * take a place. Returns how many were removed.
+   */
+  removeUnused(cutoff: number): number {
+    const result = this.db
+      .prepare(
+        `DELETE FROM people WHERE created_at < ? AND last_lesson IS NULL
+         AND NOT EXISTS (SELECT 1 FROM exercises WHERE exercises.person_id = people.id)`,
+      )
+      .run(cutoff);
+    return Number(result.changes);
   }
 
   /** Removes the name and all its progress. False when there was no such name. */
