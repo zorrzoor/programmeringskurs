@@ -13,6 +13,7 @@ skriv i ärendet i stället för att gissa.
 Alla steg för att öppna kursen är gjorda (2026-10-18): pull-secret (A), plattformssidan mergad (C) och värdnamnet skapat
 med `make tf-apply` (D). Steg B (fler e-postadresser) återstår bara när fler ska in.
 
+- **Publik instans (utan inloggning):** https://kursen.feuerliden.se, samma kurs men utan Cloudflare Access. Varje namn har en kod som visas en gång; förlorad kod går inte att återställa. Se docs/koncept.md kapitel 11. Databasen rensas inte av sig själv ännu (#165).
 - **Adress:** https://kurs.feuerliden.se. Du loggar in med din e-postadress (engångskod), välj eller skriv ett namn, och
   börja med **Modul 0**. Din adress finns redan i Access-listan.
 - **Lägga till din fru:** lägg hennes e-postadress i `TF_VAR_access_emails`, steg B nedan (k3s_hosting#323). Tills dess kan hon
