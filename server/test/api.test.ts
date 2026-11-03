@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, before, describe, test } from "node:test";
 import { createHandler } from "../app.ts";
+import { readConfig, type Config } from "../config.ts";
 import { Store } from "../db.ts";
 
 let dir: string;
@@ -13,9 +14,9 @@ let base: string;
 let clock = 1_000_000;
 let logs: string[] = [];
 
-function start(dbPath: string, writesPerMinute = 300): Server {
+function start(dbPath: string, writesPerMinute = 300, config?: Partial<Config>): Server {
   const store = new Store(dbPath);
-  const s = createServer(createHandler({ store, webDir: join(dir, "web"), writesPerMinute, now: () => clock, log: (l) => logs.push(l) }));
+  const s = createServer(createHandler({ store, config, webDir: join(dir, "web"), writesPerMinute, now: () => clock, log: (l) => logs.push(l) }));
   s.on("close", () => store.close());
   return s;
 }
@@ -162,6 +163,14 @@ describe("limits", () => {
     s.close();
   });
 
+  test("the name limit is configurable", async () => {
+    const s = start(":memory:", 300, { maxNames: 2 });
+    const url = await listen(s);
+    const post = (n: string) => fetch(`${url}/api/namn`, { method: "POST", body: JSON.stringify({ namn: n }) }).then((r) => r.status);
+    assert.deepEqual([await post("A"), await post("B"), await post("C")], [201, 201, 409]);
+    s.close();
+  });
+
   test("writes are rate limited per minute, reads are not", async () => {
     const s = start(":memory:", 3);
     const url = await listen(s);
@@ -271,5 +280,28 @@ describe("static files and headers", () => {
     assert.equal(logs.length, 2);
     assert.ok(logs.every((l) => !l.includes("Hemlig")), logs.join("\n"));
     assert.deepEqual(JSON.parse(logs[1] ?? "{}").rutt, "GET /api/namn/:namn/framsteg");
+  });
+});
+
+describe("instance mode", () => {
+  test("/api/config tells the client the mode (private by default)", async () => {
+    const r = await call("GET", "/api/config");
+    assert.deepEqual([r.status, r.body], [200, { lage: "privat", maxNamn: 50 }]);
+    assert.equal((await call("POST", "/api/config", {})).status, 405);
+  });
+
+  test("a public instance says so, with its own name limit", async () => {
+    const s = start(":memory:", 300, { lage: "publik", maxNames: 2000 });
+    const url = await listen(s);
+    assert.deepEqual(await (await fetch(`${url}/api/config`)).json(), { lage: "publik", maxNamn: 2000 });
+    s.close();
+  });
+
+  test("readConfig: defaults, values and invalid input", () => {
+    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300 });
+    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500" }), { lage: "publik", maxNames: 2000, writesPerMinute: 1500 });
+    assert.throws(() => readConfig({ KURS_LAGE: "offentlig" }), /KURS_LAGE/);
+    assert.throws(() => readConfig({ MAX_NAMES: "0" }), /MAX_NAMES/);
+    assert.throws(() => readConfig({ WRITES_PER_MINUTE: "många" }), /WRITES_PER_MINUTE/);
   });
 });

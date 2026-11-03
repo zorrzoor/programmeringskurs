@@ -1,7 +1,6 @@
 // Validation of everything that comes from a client: names, ids, code, bodies.
 // A name is what a person types ("Anna", "Åsa-Lena"): letters, digits, spaces and hyphens.
 
-export const MAX_NAMES = 50;
 export const MAX_NAME_LENGTH = 30;
 export const MAX_CODE_BYTES = 20 * 1024;
 export const MAX_BODY_BYTES = 64 * 1024;

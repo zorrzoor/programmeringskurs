@@ -4,6 +4,7 @@ import { createReadStream } from "node:fs";
 import { stat } from "node:fs/promises";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
+import { DEFAULT_MAX_NAMES, DEFAULT_WRITES_PER_MINUTE, type Config } from "./config.ts";
 import type { Store } from "./db.ts";
 import { cleanCode, cleanId, cleanName, cleanTime, MAX_BODY_BYTES } from "./validate.ts";
 
@@ -40,7 +41,9 @@ const SECURITY_HEADERS = {
 export interface Options {
   store: Store;
   webDir: string;
-  /** Writes per minute, all clients together (there is one pod behind one proxy address). */
+  /** Mode and limits of this instance. Defaults: the private mode with the original limits. */
+  config?: Partial<Config>;
+  /** Writes per minute, all clients together (there is one pod behind one proxy address). Overrides config. */
   writesPerMinute?: number;
   log?: (line: string) => void;
   now?: () => number;
@@ -86,7 +89,8 @@ function decodeSegment(segment: string): string {
 
 export function createHandler(opts: Options): (req: IncomingMessage, res: ServerResponse) => void {
   const { store, webDir } = opts;
-  const limit = opts.writesPerMinute ?? 300;
+  const config: Config = { lage: "privat", maxNames: DEFAULT_MAX_NAMES, writesPerMinute: DEFAULT_WRITES_PER_MINUTE, ...opts.config };
+  const limit = opts.writesPerMinute ?? config.writesPerMinute;
   const now = opts.now ?? Date.now;
   const log = opts.log ?? ((line: string) => console.log(line));
   let windowStart = now();
@@ -117,6 +121,11 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
       json(res, 200, { ok: true });
       return "/api/halsa";
     }
+    if (resource === "config" && path.length === 3) {
+      if (method !== "GET") throw new HttpError(405, "metod", "Metoden stöds inte.");
+      json(res, 200, { lage: config.lage, maxNamn: config.maxNames });
+      return "GET /api/config";
+    }
     if (resource !== "namn") throw new HttpError(404, "saknas", "Sidan finns inte.");
 
     if (path.length === 3) {
@@ -127,7 +136,7 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
       if (method === "POST") {
         const name = cleanName((await readJson(req)).namn);
         if (name === null) throw bad("ogiltigt-namn", "Namnet ska vara 1–30 tecken: bokstäver, siffror, mellanslag och bindestreck.");
-        const result = store.addName(name);
+        const result = store.addName(name, config.maxNames);
         if (result === "exists") throw new HttpError(409, "namnet-finns", "Namnet finns redan.");
         if (result === "full") throw new HttpError(409, "for-manga-namn", "Det finns redan för många namn. Ta bort ett först.");
         json(res, 201, { namn: name });

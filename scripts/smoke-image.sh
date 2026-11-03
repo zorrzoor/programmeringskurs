@@ -28,6 +28,7 @@ url=http://127.0.0.1:$port
 
 start
 curl -fs "$url/" | grep -q "Programmeringskurs"
+curl -fs "$url/api/config" | grep -q '"lage":"privat"'
 [[ $(curl -s -o /dev/null -w '%{http_code}' -X POST -d '{"namn":"Rök"}' "$url/api/namn") == 201 ]]
 curl -fs -X PUT -d '{"kod":"print(1)","klar":true,"tid":1}' "$url/api/namn/R%C3%B6k/ovningar/o1" >/dev/null
 $RUNTIME rm -f $NAME >/dev/null

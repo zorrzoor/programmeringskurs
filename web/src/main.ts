@@ -1,4 +1,5 @@
 import { Api } from "./api.ts";
+import { loadConfig } from "./config.ts";
 import { skapaKoerare } from "./py/koerare.ts";
 import { ProgressSync } from "./sync.ts";
 import { startApp, type App } from "./ui/app.ts";
@@ -60,6 +61,8 @@ async function start(name: string): Promise<void> {
 }
 
 window.addEventListener("online", () => void sync?.flush());
-const last = remembered();
-if (last) void start(last);
-else choose();
+void loadConfig(api).then(() => {
+  const last = remembered();
+  if (last) void start(last);
+  else choose();
+});

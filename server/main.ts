@@ -5,12 +5,14 @@ import { readFileSync } from "node:fs";
 import { createServer as createHttpServer } from "node:http";
 import { createServer as createHttpsServer, Server as HttpsServer } from "node:https";
 import { createHandler } from "./app.ts";
+import { readConfig } from "./config.ts";
 import { Store } from "./db.ts";
 
 const log = (meddelande: string, level = "info") => console.log(JSON.stringify({ level, meddelande }));
 const port = Number(process.env.PORT ?? 8080);
 const store = new Store(process.env.DATABASE_PATH ?? "./data/kurs.db");
-const handler = createHandler({ store, webDir: process.env.WEB_DIR ?? "./web/dist" });
+const config = readConfig(process.env);
+const handler = createHandler({ store, config, webDir: process.env.WEB_DIR ?? "./web/dist" });
 
 // A consistent copy of the database every day (and at start), the newest 7 kept, next to the database on
 // the volume: protects against mistakes such as a removed name, not against loss of the disk itself.
@@ -47,7 +49,7 @@ if (server instanceof HttpsServer) {
   ).unref();
 }
 
-server.listen(port, "0.0.0.0", () => log(`lyssnar på ${port}${certFile ? " (TLS)" : ""}`));
+server.listen(port, "0.0.0.0", () => log(`lyssnar på ${port}${certFile ? " (TLS)" : ""}, läge ${config.lage}`));
 
 // Kubernetes sends SIGTERM: finish running requests, then close the database cleanly.
 for (const signal of ["SIGTERM", "SIGINT"] as const) {

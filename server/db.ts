@@ -2,7 +2,8 @@
 import { mkdirSync, readdirSync, rmSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { DatabaseSync } from "node:sqlite";
-import { MAX_NAMES, nameKey } from "./validate.ts";
+import { DEFAULT_MAX_NAMES } from "./config.ts";
+import { nameKey } from "./validate.ts";
 
 export interface Exercise {
   kod: string;
@@ -65,10 +66,10 @@ export class Store {
   }
 
   /** "created", "exists" or "full". */
-  addName(name: string): "created" | "exists" | "full" {
+  addName(name: string, maxNames = DEFAULT_MAX_NAMES): "created" | "exists" | "full" {
     const count = Number(this.db.prepare("SELECT count(*) AS n FROM people").get()?.n);
     if (this.personId(name) !== null) return "exists";
-    if (count >= MAX_NAMES) return "full";
+    if (count >= maxNames) return "full";
     this.db.prepare("INSERT INTO people (name, key) VALUES (?, ?)").run(name, nameKey(name));
     return "created";
   }

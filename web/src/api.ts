@@ -58,6 +58,10 @@ export class Api {
     return data as T;
   }
 
+  getConfig(): Promise<{ lage: "privat" | "publik"; maxNamn: number }> {
+    return this.call("GET", "/api/config");
+  }
+
   async listNames(): Promise<string[]> {
     return (await this.call<{ namn: string[] }>("GET", "/api/namn")).namn;
   }
