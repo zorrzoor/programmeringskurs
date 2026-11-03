@@ -1,0 +1,22 @@
+# The public instance: NO Cloudflare Access in front (decided in k3s_hosting#432). The app protects names itself
+# (a code per name) and limits names and writes.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kurs
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: kursen.feuerliden.se
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kurs
+                port:
+                  name: https

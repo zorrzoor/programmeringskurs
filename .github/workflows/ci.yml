@@ -84,8 +84,8 @@ jobs:
         run: |
           tag="sha-${GITHUB_SHA::7}"
           artifact="oci://ghcr.io/${GITHUB_REPOSITORY,,}-manifests"
-          sed -i "s/^    newTag: .*/    newTag: ${tag}/" deploy/kustomization.yaml
-          grep -q "newTag: ${tag}" deploy/kustomization.yaml
+          sed -i "s/^    newTag: .*/    newTag: ${tag}/" deploy/base/kustomization.yaml
+          grep -q "newTag: ${tag}" deploy/base/kustomization.yaml
           flux push artifact "${artifact}:${tag}" --path=deploy \
             --source="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
             --revision="${GITHUB_REF_NAME}@sha1:${GITHUB_SHA}" \

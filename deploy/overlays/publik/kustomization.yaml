@@ -1,0 +1,44 @@
+# The public instance (kursen.feuerliden.se), tenant programmeringskurs-publik in k3s_hosting. Same image as the private one.
+# The namespace is part of three names (internal certificate, ServersTransport, Service annotation): patched below.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+  - ingress.yaml
+patches:
+  - target: {kind: Deployment, name: kurs}
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: KURS_LAGE, value: publik}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: MAX_NAMES, value: "2000"}
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: WRITES_PER_MINUTE, value: "1500"}
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 256Mi
+  - target: {kind: PersistentVolumeClaim, name: kurs-data}
+    patch: |-
+      - op: replace
+        path: /spec/resources/requests/storage
+        value: 5Gi
+  - target: {kind: Certificate, name: kurs-tls}
+    patch: |-
+      - op: replace
+        path: /spec/dnsNames
+        value:
+          - kurs.programmeringskurs-publik.svc
+          - kurs.programmeringskurs-publik.svc.cluster.local
+  - target: {kind: ServersTransport, name: kurs}
+    patch: |-
+      - op: replace
+        path: /spec/serverName
+        value: kurs.programmeringskurs-publik.svc
+  - target: {kind: Service, name: kurs}
+    patch: |-
+      - op: replace
+        path: /metadata/annotations/traefik.ingress.kubernetes.io~1service.serverstransport
+        value: programmeringskurs-publik-kurs@kubernetescrd
