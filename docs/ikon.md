@@ -20,3 +20,5 @@ podman run --rm --userns=keep-id --user "$(id -u):$(id -g)" -e HOME=/tmp -v "$PW
 ```
 
 Kopiera sedan PNG-filerna till `web/src/assets/`. Filerna får en innehållshash i namnet när sidan byggs (Vite), så en ändrad ikon får ny adress och hamnar inte i webbläsarens cache (Cloudflare cachar statiska filer i fyra timmar).
+
+**Licens:** ikonen ingår inte i repots licenser. Alla rättigheter är förbehållna, se [LICENSE-ICON.md](../LICENSE-ICON.md).

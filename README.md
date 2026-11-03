@@ -12,3 +12,9 @@ Arbetet följs i ärendena, med [#1](https://github.com/zorrzoor/programmeringsk
 - `docs/koncept.md`: koncept, pedagogik, kursplan, teknik och arbetsplan.
 - `docs/manuellt.md`: vad som behövs från ägaren (beslut, åtgärder i klustret och GitHub).
 - `CONTRIBUTING.md` och `CLAUDE.md`: arbetssätt.
+
+## Licens
+
+Koden är under [Apache-2.0](LICENSE), kursinnehållet och dokumentationen under [CC BY-SA 4.0](LICENSE-CONTENT). **Ikonen
+(kycklingen som hackar) ingår inte** och har alla rättigheter förbehållna, se [LICENSE-ICON.md](LICENSE-ICON.md). Översikt i
+[LICENSES.md](LICENSES.md).
