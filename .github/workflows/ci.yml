@@ -1,14 +1,13 @@
 name: CI
 
-# Actions minutes are scarce: documentation-only PRs skip CI (lessons under content/ are Markdown but are tested and published) (the PR checks live in pr.yml). Everything runs
+# CI runs for every change: the ruleset on main requires the check job, so a PR that skipped it could never be merged
+# (the repo is public, so there is no minutes quota to save; the PR checks live in pr.yml). Everything runs
 # in containers via make, the same way as locally. On main the image and the manifests are published, the
 # way the platform expects a tenant (k3s_hosting docs/tenants.md): image sha-<7>, manifests as an OCI artifact.
 on:
   pull_request:
-    paths-ignore: ["docs/**", "*.md"]
   push:
     branches: [main]
-    paths-ignore: ["docs/**", "*.md"]
 
 permissions:
   contents: read
