@@ -2,7 +2,7 @@
 
 Interaktiv nybörjarkurs i programmering och Python för webbläsaren. Läs README.md, docs/koncept.md och CONTRIBUTING.md.
 
-## Arbetsflöde (obligatoriskt, ingen serverside-enforcement finns)
+## Arbetsflöde (obligatoriskt; rulesetet `main` på GitHub kräver PR och grön `check` + `pr`, resten är rutin)
 
 - Jobba alltid mot ett ärende. Skapa ett om det saknas.
 - Pusha aldrig till `main`. Gren: `<typ>/<ärendenr>-<beskrivning>`.
