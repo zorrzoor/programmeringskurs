@@ -46,6 +46,24 @@ describe("public name picker", () => {
     expect(root.textContent).toContain("Framsteg kan rensas vid månadsbyte");
   });
 
+  test("asks for a username, not a real name", async () => {
+    await start();
+    expect(root.textContent).toContain("inte ditt riktiga namn");
+  });
+
+  test("has a privacy text that names Cloudflare, the browser storage and how to get in touch", async () => {
+    await start();
+    click("Integritet och personuppgifter");
+    expect(root.querySelector("h1")?.textContent).toBe("Integritet och personuppgifter");
+    expect(root.textContent).toContain("Cloudflare");
+    expect(root.textContent).toContain("kurs.koder");
+    expect(root.textContent).toContain("Sidan använder inga cookies");
+    const links = [...root.querySelectorAll("a")].map((a) => a.getAttribute("href"));
+    expect(links).toContain("https://github.com/zorrzoor/programmeringskurs/issues/new");
+    click("← Tillbaka");
+    expect(root.textContent).toContain("Vem är du?");
+  });
+
   test("searches instead of listing everything", async () => {
     await start();
     expect([...root.querySelectorAll("button.name")].map((b) => b.textContent)).toEqual(["Anna", "Bosse"]);

@@ -56,3 +56,19 @@ test("a name with a code: shown once, remembered on the device, required elsewhe
   await expect(p2.getByRole("heading", { name: "Vem är du?" })).toBeVisible();
   await other.close();
 });
+
+test("the privacy text is reachable before and after choosing a name, and has no accessibility violations", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Integritet och personuppgifter" }).click();
+  await expect(page.getByRole("heading", { name: "Integritet och personuppgifter", level: 1 })).toBeVisible();
+  await expect(page.getByText("Cloudflare", { exact: false }).first()).toBeVisible();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+  await page.getByRole("button", { name: "← Tillbaka" }).click();
+
+  await page.locator("#nytt-namn").fill(`Integ${Date.now().toString(36)}`);
+  await page.getByRole("button", { name: "Skapa" }).click();
+  await page.getByRole("button", { name: "Jag har sparat koden" }).click();
+  await page.getByRole("link", { name: "Integritet" }).click();
+  await expect(page.getByRole("heading", { name: "Integritet och personuppgifter", level: 1 })).toBeVisible();
+  expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+});

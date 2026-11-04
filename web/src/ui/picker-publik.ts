@@ -4,6 +4,7 @@ import { Api, ApiError } from "../api.ts";
 import { glomKod, hamtaKod, sparaKod } from "../koder.ts";
 import { cleanName, NAME_HELP } from "../names.ts";
 import { clear, h } from "./dom.ts";
+import { integritetsText } from "./integritet.ts";
 import type { PickerOptions } from "./picker.ts";
 
 const say = (el: HTMLElement, text: string) => {
@@ -22,7 +23,7 @@ export function showPublicPicker(root: HTMLElement, { api, onPick }: PickerOptio
     h(
       "div",
       { class: "varning", role: "note" },
-      h("p", {}, h("strong", {}, "Namnen syns för alla. "), "Alla som besöker sidan kan se listan med namn. Välj gärna ett smeknamn i stället för ditt riktiga namn."),
+      h("p", {}, h("strong", {}, "Namnen syns för alla. "), "Alla som besöker sidan kan se listan med namn. Välj ett användarnamn som du hittar på, inte ditt riktiga namn."),
       h("p", {}, h("strong", {}, "Framsteg kan rensas vid månadsbyte. "), "Räkna inte med att det du gör här finns kvar för alltid."),
     );
 
@@ -77,7 +78,7 @@ export function showPublicPicker(root: HTMLElement, { api, onPick }: PickerOptio
       h("h2", {}, "Vem är du?"),
       warnings(),
       h("h3", {}, "Jag har redan ett namn"),
-      h("label", { for: "sok-namn" }, "Sök ditt namn:"),
+      h("label", { for: "sok-namn" }, "Sök ditt användarnamn:"),
       search,
       results,
       more,
@@ -90,17 +91,23 @@ export function showPublicPicker(root: HTMLElement, { api, onPick }: PickerOptio
             void create(nameInput.value, message);
           },
         },
-        h("label", { for: "nytt-namn" }, "Skriv ett namn:"),
+        h("label", { for: "nytt-namn" }, "Välj ett användarnamn (inte ditt riktiga namn):"),
         nameInput,
         h("button", { type: "submit" }, "Skapa"),
         h("p", { id: "namnhjalp", class: "help" }, NAME_HELP),
       ),
       message,
-      h("p", {}, h("button", { type: "button", class: "link", onclick: confirmRemove }, "Ta bort ett namn")),
+      h("p", {}, h("button", { type: "button", class: "link", onclick: confirmRemove }, "Ta bort ett namn"), " · ", h("button", { type: "button", class: "link", onclick: privacy }, "Integritet och personuppgifter")),
     );
     asMain();
     void find();
     search.focus();
+  }
+
+  function privacy(): void {
+    clear(root);
+    root.append(h("h1", {}, "Integritet och personuppgifter"), ...integritetsText(), h("p", {}, h("button", { type: "button", onclick: render }, "← Tillbaka")));
+    asMain();
   }
 
   function choose(name: string): void {
