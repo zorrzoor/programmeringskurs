@@ -11,6 +11,7 @@ Arbetet följs i ärendena, med [#1](https://github.com/zorrzoor/programmeringsk
 
 - `docs/koncept.md`: koncept, pedagogik, kursplan, teknik och arbetsplan.
 - `docs/manuellt.md`: vad som behövs från ägaren (beslut, åtgärder i klustret och GitHub).
+- `docs/egen-instans.md`: köra en egen instans (container, Kubernetes, Flux, Cloudflare Tunnel).
 - `CONTRIBUTING.md` och `CLAUDE.md`: arbetssätt.
 
 ## Licens
