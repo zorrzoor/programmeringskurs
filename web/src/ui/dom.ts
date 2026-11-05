@@ -19,3 +19,13 @@ export function h<K extends keyof HTMLElementTagNameMap>(
 export function clear(el: Element): void {
   while (el.firstChild) el.removeChild(el.firstChild);
 }
+
+/**
+ * Text with `code` marked by backticks (as in the error explanations) as DOM nodes: the marked parts become <code>.
+ * An odd number of backticks means they are not markers, and the text is left as it is.
+ */
+export function kodtext(text: string): Child[] {
+  const parts = text.split("`");
+  if (parts.length % 2 === 0) return [text];
+  return parts.map((part, i) => (i % 2 === 1 ? h("code", {}, part) : part)).filter((part) => part !== "");
+}
