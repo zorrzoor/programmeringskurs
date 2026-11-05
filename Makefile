@@ -45,9 +45,9 @@ typecheck: deps ## TypeScript type check
 lint: typecheck test ## Type check, tests and the repo checks
 	scripts/check-repo.sh
 
-# The shared EE (zorrzoor/ee) has kubectl and kubeconform. Until its package is readable from here, build it
-# locally from the ee repo (make ee) and use EE_IMAGE=localhost/ee:latest.
-EE_IMAGE ?= localhost/ee:latest
+# The shared EE (zorrzoor/ee) has kubectl and kubeconform. Its package is public (pulled without a login), so a clone
+# can run `make validate` without the ee repo, which is private. Override with EE_IMAGE=localhost/ee:latest for a local build.
+EE_IMAGE ?= ghcr.io/zorrzoor/ee:1.6
 
 .PHONY: validate
 validate: ## Validate deploy/ (kustomize + kubeconform) in the shared EE
