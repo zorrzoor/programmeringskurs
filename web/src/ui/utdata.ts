@@ -1,7 +1,7 @@
 // The output panel under an editor: the program's output as it comes, an input box while the program waits for
 // input(), and errors explained in Swedish (with Python's own text kept below, to be recognised later).
 import { forklaraFel, type PyFel } from "../py/felmeddelanden.ts";
-import { h } from "./dom.ts";
+import { h, kodtext } from "./dom.ts";
 
 export interface Utdata {
   rot: HTMLElement;
@@ -39,8 +39,8 @@ export function skapaUtdata(): Utdata {
           h("p", { class: "fel-rubrik" }, "Programmet stoppades. Det är helt normalt, och felet berättar vad du ska titta på."),
           h("h4", {}, f.rubrik),
           fel.rad ? h("p", {}, `Rad ${fel.rad}${rad !== undefined ? ": " : ""}`, rad !== undefined ? h("code", {}, rad.trim() || "(tom rad)") : null) : null,
-          h("p", {}, f.forklaring),
-          f.tips ? h("p", { class: "tips" }, f.tips) : null,
+          h("p", {}, ...kodtext(f.forklaring)),
+          f.tips ? h("p", { class: "tips" }, ...kodtext(f.tips)) : null,
           h("p", { class: "pythons-text" }, "Pythons egen text: ", h("code", {}, `${fel.typ}${fel.meddelande ? `: ${fel.meddelande}` : ""}`)),
         ),
       );

@@ -3,7 +3,7 @@
 // just changed is marked "ändrades", and the current step is announced for screen readers.
 import type { StegResultat } from "../py/engine.ts";
 import { forklaraFel } from "../py/felmeddelanden.ts";
-import { h } from "./dom.ts";
+import { h, kodtext } from "./dom.ts";
 
 export interface Stegvisare {
   rot: HTMLElement;
@@ -85,7 +85,7 @@ export function skapaStegvisare(kod: string, res: StegResultat, onStang: () => v
       if (res.avbruten) slut.append(h("p", {}, `Programmet har fler än ${steg.length - 1} steg, så vi visar de första. Har du en loop som aldrig tar slut?`));
       if (res.fel) {
         const f = forklaraFel(res.fel);
-        slut.append(h("div", { class: "fel-ruta", role: "alert" }, h("h4", {}, f.rubrik), h("p", {}, f.forklaring), f.tips ? h("p", { class: "tips" }, f.tips) : null, h("p", { class: "pythons-text" }, "Pythons egen text: ", h("code", {}, `${res.fel.typ}${res.fel.meddelande ? `: ${res.fel.meddelande}` : ""}`))));
+        slut.append(h("div", { class: "fel-ruta", role: "alert" }, h("h4", {}, f.rubrik), h("p", {}, ...kodtext(f.forklaring)), f.tips ? h("p", { class: "tips" }, ...kodtext(f.tips)) : null, h("p", { class: "pythons-text" }, "Pythons egen text: ", h("code", {}, `${res.fel.typ}${res.fel.meddelande ? `: ${res.fel.meddelande}` : ""}`))));
       }
     }
   }
