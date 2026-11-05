@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>zorrzoor/ee//renovate/default"],
-  "description": "Monthly, grouped; every PR runs the full CI (tests, browser tests, image smoke test) and is merged by hand.",
+  "description": "Weekly (Mondays, from the shared preset), grouped; security fixes at any time; every PR runs the full CI (tests, browser tests, image smoke test) and is merged by hand.",
   "packageRules": [
     {
       "description": "TypeScript major is chosen by hand (versionsregeln): 7.0 came out 2026-08-20, less than six months ago. Revisit around 2027-02",
