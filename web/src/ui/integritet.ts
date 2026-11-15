@@ -4,7 +4,7 @@ import { h } from "./dom.ts";
 
 export const KONTAKT_URL = "https://github.com/zorrzoor/programmeringskurs/issues/new";
 const CLOUDFLARE_URL = "https://www.cloudflare.com/privacypolicy/";
-export const SENAST_ANDRAD = "2026-11-04";
+export const SENAST_ANDRAD = "2026-11-15";
 
 /** The text itself, to be put on a page of its own (in the app or before a name is chosen). */
 export function integritetsText(): HTMLElement[] {
@@ -22,6 +22,7 @@ export function integritetsText(): HTMLElement[] {
       h("li", {}, "En avhuggen version (hash) av din åtkomstkod. Själva koden sparas inte, och därför går den inte att få tillbaka om du tappar den."),
     ),
     h("p", {}, "Inga mejladresser, ingen statistik och inga IP-adresser sparas i databasen. Namn som skapats men aldrig använts tas bort efter ett dygn. Framsteg kan rensas vid månadsbyte."),
+    h("p", {}, "En kopia av hela databasen görs en gång per dygn och sparas i sju dygn, på samma server. Kopiorna används bara för att kunna återställa om något går fel."),
     h("h2", {}, "IP-adresser och missbruksskydd"),
     h("p", {}, "För att hindra att en besökare skapar tusentals namn räknar servern hur många namn varje besökare skapar. Den räknar med en hash av IP-adressen och ett slumpmässigt salt som bara finns i minnet. Hashen försvinner när servern startar om och skrivs aldrig till databasen eller loggen. Serverns egna loggrader innehåller bara metod, adress, svarskod och svarstid, inga IP-adresser och inga namn."),
     h("h2", {}, "Cloudflare"),
@@ -37,10 +38,11 @@ export function integritetsText(): HTMLElement[] {
       h("li", {}, h("code", {}, "kurs-visning"), ": tema och textstorlek."),
     ),
     h("p", {}, "Allt detta behövs för att kursen ska fungera som du har begärt, och inget används för spårning. Därför frågar vi inte om samtycke. Du kan rensa posterna när som helst i webbläsarens inställningar, men då måste du skriva in dina koder igen."),
+    h("p", {}, "Använder du en dator som andra också använder (i skolan, på biblioteket eller hemma): välj ", h("em", {}, "Glöm mig på den här enheten"), " högst upp när du är klar. Då tas koden för namnet bort från datorn, och nästa person kan inte öppna ditt namn utan den."),
     h("h2", {}, "Var uppgifterna finns och vem som ansvarar"),
     h("p", {}, "Servern är en privat dator hemma hos den som driver kursen, inte hos ett molnföretag. Kursen drivs av en privatperson (GitHub-kontot ", lank("https://github.com/zorrzoor", "zorrzoor"), ") som är personuppgiftsansvarig för uppgifterna ovan."),
     h("h2", {}, "Radera och rätta"),
-    h("p", {}, "Du kan själv radera ditt användarnamn och alla framsteg med din kod: välj ", h("em", {}, "Ta bort ett namn"), " där du väljer namn. Det går inte att ångra. Utan koden kan ingen veta att namnet är ditt, så ingen annan kan radera eller lämna ut det åt dig."),
+    h("p", {}, "Du kan själv radera ditt användarnamn och alla framsteg med din kod: välj ", h("em", {}, "Ta bort ett namn"), " där du väljer namn. Det går inte att ångra. Namnet och framstegen finns sedan kvar i dygnskopiorna i upp till sju dygn, och försvinner när de kopiorna tas bort. Utan koden kan ingen veta att namnet är ditt, så ingen annan kan radera eller lämna ut det åt dig."),
     h("h2", {}, "Barn"),
     h("p", {}, "Är du under 13 år: be en vuxen hjälpa dig, och använd ett påhittat användarnamn."),
     h("h2", {}, "Frågor och kontakt"),
