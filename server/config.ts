@@ -18,12 +18,20 @@ export interface Config {
   maxExercisesPerName: number;
   /** Size of the database in bytes above which nothing new is stored (#195): the volume also holds 7 daily copies. */
   maxDbBytes: number;
+  /** HTTP(S) port. */
+  port: number;
+  /** Directory for the daily copies of the database; "" = no copies. */
+  backupDir: string;
+  /** How many daily copies to keep (at least 1, #200: 0 or an invalid value used to remove them all). */
+  backupKeep: number;
 }
 
 export const DEFAULT_MAX_NAMES = 50;
 export const DEFAULT_WRITES_PER_MINUTE = 300;
 export const DEFAULT_MAX_EXERCISES_PER_NAME = 500;
 export const DEFAULT_MAX_DB_MB = 256;
+export const DEFAULT_PORT = 8080;
+export const DEFAULT_BACKUP_KEEP = 7;
 
 function positiveInt(raw: string | undefined, fallback: number, name: string): number {
   if (raw === undefined || raw === "") return fallback;
@@ -36,6 +44,12 @@ function nonNegativeInt(raw: string | undefined, name: string): number {
   if (raw === undefined || raw === "") return 0;
   const value = Number(raw);
   if (!Number.isSafeInteger(value) || value < 0) throw new Error(`${name} must be a non-negative integer, got "${raw}"`);
+  return value;
+}
+
+function port(raw: string | undefined): number {
+  const value = positiveInt(raw, DEFAULT_PORT, "PORT");
+  if (value > 65535) throw new Error(`PORT must be at most 65535, got "${raw}"`);
   return value;
 }
 
@@ -53,5 +67,8 @@ export function readConfig(env: Record<string, string | undefined>): Config {
     namesClosed: env.NAMES_CLOSED === "1" || env.NAMES_CLOSED === "true",
     maxExercisesPerName: positiveInt(env.MAX_EXERCISES_PER_NAME, DEFAULT_MAX_EXERCISES_PER_NAME, "MAX_EXERCISES_PER_NAME"),
     maxDbBytes: positiveInt(env.MAX_DB_MB, DEFAULT_MAX_DB_MB, "MAX_DB_MB") * 1024 * 1024,
+    port: port(env.PORT),
+    backupDir: env.BACKUP_DIR ?? "",
+    backupKeep: positiveInt(env.BACKUP_KEEP, DEFAULT_BACKUP_KEEP, "BACKUP_KEEP"),
   };
 }

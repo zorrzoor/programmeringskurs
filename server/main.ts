@@ -9,18 +9,19 @@ import { readConfig } from "./config.ts";
 import { Store } from "./db.ts";
 
 const log = (meddelande: string, level = "info") => console.log(JSON.stringify({ level, meddelande }));
-const port = Number(process.env.PORT ?? 8080);
-const store = new Store(process.env.DATABASE_PATH ?? "./data/kurs.db");
+// Every setting is read and checked first (#200): an invalid value stops the server instead of running with it.
 const config = readConfig(process.env);
+const port = config.port;
+const store = new Store(process.env.DATABASE_PATH ?? "./data/kurs.db");
 const handler = createHandler({ store, config, webDir: process.env.WEB_DIR ?? "./web/dist" });
 
 // A consistent copy of the database every day (and at start), the newest 7 kept, next to the database on
 // the volume: protects against mistakes such as a removed name, not against loss of the disk itself.
-const backupDir = process.env.BACKUP_DIR ?? "";
+const backupDir = config.backupDir;
 if (backupDir) {
   const backup = () => {
     try {
-      store.backup(backupDir, new Date().toISOString().slice(0, 10), Number(process.env.BACKUP_KEEP ?? 7));
+      store.backup(backupDir, new Date().toISOString().slice(0, 10), config.backupKeep);
     } catch (err) {
       log(`säkerhetskopian misslyckades: ${String(err)}`, "error");
     }

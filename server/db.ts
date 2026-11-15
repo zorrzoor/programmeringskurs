@@ -60,6 +60,8 @@ export class Store {
    * the server is running) and keeps only the newest `keep` copies. Returns the file written.
    */
   backup(dir: string, stamp: string, keep: number): string {
+    // keep < 1 (or NaN) would remove every copy, the one just written too (#200).
+    if (!Number.isSafeInteger(keep) || keep < 1) throw new Error(`backup: keep must be a positive integer, got ${keep}`);
     mkdirSync(dir, { recursive: true });
     const file = join(dir, `kurs-${stamp}.db`);
     rmSync(file, { force: true });
