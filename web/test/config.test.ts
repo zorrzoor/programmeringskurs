@@ -23,11 +23,10 @@ describe("instance mode", () => {
     expect(show()).toContain("Välkommen, Anna.");
   });
 
-  test("loadConfig reads the server's mode and falls back to private when it cannot be reached", async () => {
-    await loadConfig(new Api(() => Promise.resolve(new Response(JSON.stringify({ lage: "publik", maxNamn: 2000 }), { headers: { "content-type": "application/json" } }))));
-    expect(config()).toEqual({ lage: "publik", maxNamn: 2000 });
-    setConfig({});
-    await loadConfig(new Api(() => Promise.reject(new Error("offline"))));
-    expect(config().lage).toBe("privat");
+  test("loadConfig reads the server's mode, and says when it could not (#190)", async () => {
+    const ok = await loadConfig(new Api(() => Promise.resolve(new Response(JSON.stringify({ lage: "publik", maxNamn: 2000 }), { headers: { "content-type": "application/json" } }))));
+    expect([ok, config()]).toEqual([true, { lage: "publik", maxNamn: 2000 }]);
+    expect(await loadConfig(new Api(() => Promise.reject(new Error("offline"))))).toBe(false);
+    expect(await loadConfig(new Api(() => Promise.resolve(new Response("", { status: 503 }))))).toBe(false);
   });
 });
