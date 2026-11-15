@@ -5,7 +5,15 @@ import { stat } from "node:fs/promises";
 import { createHash, randomBytes } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
-import { DEFAULT_MAX_DB_MB, DEFAULT_MAX_EXERCISES_PER_NAME, DEFAULT_MAX_NAMES, DEFAULT_WRITES_PER_MINUTE, type Config } from "./config.ts";
+import {
+  DEFAULT_BACKUP_KEEP,
+  DEFAULT_MAX_DB_MB,
+  DEFAULT_MAX_EXERCISES_PER_NAME,
+  DEFAULT_MAX_NAMES,
+  DEFAULT_PORT,
+  DEFAULT_WRITES_PER_MINUTE,
+  type Config,
+} from "./config.ts";
 import type { Store } from "./db.ts";
 import { cleanAccessCode, cleanCode, cleanId, cleanName, cleanTime, hashCode, MAX_BODY_BYTES, newCode } from "./validate.ts";
 
@@ -100,6 +108,9 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     namesClosed: false,
     maxExercisesPerName: DEFAULT_MAX_EXERCISES_PER_NAME,
     maxDbBytes: DEFAULT_MAX_DB_MB * 1024 * 1024,
+    port: DEFAULT_PORT,
+    backupDir: "",
+    backupKeep: DEFAULT_BACKUP_KEEP,
     ...opts.config,
   };
   const limit = opts.writesPerMinute ?? config.writesPerMinute;

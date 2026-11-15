@@ -253,6 +253,9 @@ describe("backup", () => {
     copy.close();
     store.backup(backups, "2026-10-04", 3); // same day again: replaced, not an error
     assert.equal(readdirSync(backups).length, 3);
+    // #200: keep < 1 or NaN would remove every copy, the new one too; refused, and nothing is removed.
+    for (const keep of [0, Number.NaN, -1]) assert.throws(() => store.backup(backups, "2026-10-05", keep), /keep/);
+    assert.equal(readdirSync(backups).length, 3);
     store.close();
   });
 });
@@ -337,8 +340,8 @@ describe("instance mode", () => {
   });
 
   test("readConfig: defaults, values and invalid input", () => {
-    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false, maxExercisesPerName: 500, maxDbBytes: 256 * 1024 * 1024 });
-    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1", MAX_EXERCISES_PER_NAME: "300", MAX_DB_MB: "64" }), {
+    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false, maxExercisesPerName: 500, maxDbBytes: 256 * 1024 * 1024, port: 8080, backupDir: "", backupKeep: 7 });
+    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1", MAX_EXERCISES_PER_NAME: "300", MAX_DB_MB: "64", PORT: "8443", BACKUP_DIR: "/data/backup", BACKUP_KEEP: "3" }), {
       lage: "publik",
       maxNames: 2000,
       writesPerMinute: 1500,
@@ -348,6 +351,9 @@ describe("instance mode", () => {
       namesClosed: true,
       maxExercisesPerName: 300,
       maxDbBytes: 64 * 1024 * 1024,
+      port: 8443,
+      backupDir: "/data/backup",
+      backupKeep: 3,
     });
     assert.throws(() => readConfig({ NEW_NAMES_PER_HOUR: "-1" }), /NEW_NAMES_PER_HOUR/);
     assert.throws(() => readConfig({ KURS_LAGE: "offentlig" }), /KURS_LAGE/);
@@ -355,6 +361,12 @@ describe("instance mode", () => {
     assert.throws(() => readConfig({ WRITES_PER_MINUTE: "många" }), /WRITES_PER_MINUTE/);
     assert.throws(() => readConfig({ MAX_EXERCISES_PER_NAME: "0" }), /MAX_EXERCISES_PER_NAME/);
     assert.throws(() => readConfig({ MAX_DB_MB: "" + "abc" }), /MAX_DB_MB/);
+    // #200: an empty or misspelt BACKUP_KEEP used to remove every copy; an empty value now means the default.
+    assert.equal(readConfig({ BACKUP_KEEP: "" }).backupKeep, 7);
+    assert.throws(() => readConfig({ BACKUP_KEEP: "0" }), /BACKUP_KEEP/);
+    assert.throws(() => readConfig({ BACKUP_KEEP: "sju" }), /BACKUP_KEEP/);
+    assert.throws(() => readConfig({ PORT: "70000" }), /PORT/);
+    assert.throws(() => readConfig({ PORT: "http" }), /PORT/);
   });
 });
 

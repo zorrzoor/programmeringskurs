@@ -32,6 +32,10 @@ podman run -d --name kurs -p 8080:8080 -v kurs-data:/data programmeringskurs:dev
 
 ### Inställningar (miljövariabler)
 
+Alla kontrolleras när servern startar. Ett ogiltigt värde, till exempel `BACKUP_KEEP=0` eller en port som inte är ett tal,
+stoppar servern med ett felmeddelande i stället för att den kör med något ingen menat (#200). Ett tomt värde betyder
+standardvärdet.
+
 | Variabel | Betyder |
 |---|---|
 | `KURS_LAGE` | `privat` (standard, för dig och dina nära) eller `publik` (kod per namn, sökbar namnlista, varningar) |
@@ -42,6 +46,7 @@ podman run -d --name kurs -p 8080:8080 -v kurs-data:/data programmeringskurs:dev
 | `NEW_NAMES_PER_IP_PER_DAY`, `NEW_NAMES_PER_HOUR`, `UNUSED_NAME_HOURS` | Skydd mot massskapade namn i publikt läge (av om de saknas) |
 | `NAMES_CLOSED=1` | Stänger nyskapande av namn direkt |
 | `DATABASE_PATH`, `BACKUP_DIR`, `PORT` | Var databasen och dygnskopiorna ligger, och vilken port |
+| `BACKUP_KEEP` | Hur många dygnskopior som sparas (standard 7, minst 1) |
 
 Exakta regler och standardvärden står i `server/config.ts`, förklaringen i [koncept.md](koncept.md) kapitel 11.
 
