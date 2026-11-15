@@ -10,11 +10,14 @@ export interface PickerOptions {
   api: Api;
   /** `code` only in the public instance (the access code of the name). */
   onPick: (name: string, code?: string) => void;
+  /** Shown above the picker, e.g. why the learner was sent back here (#194). */
+  notice?: string;
 }
 
 export function showPicker(root: HTMLElement, options: PickerOptions): void {
   if (config().lage === "publik") return showPublicPicker(root, options);
   const { api, onPick } = options;
+  let notice = options.notice; // shown once, not again when the list is drawn anew
   const message = h("p", { role: "alert", class: "message" });
   const say = (text: string) => {
     message.textContent = text;
@@ -24,6 +27,8 @@ export function showPicker(root: HTMLElement, options: PickerOptions): void {
     clear(root);
     say("");
     root.append(h("h1", {}, "Programmeringskurs"), h("h2", {}, "Vem är du?"));
+    if (notice) root.append(h("p", { class: "message", role: "alert" }, notice));
+    notice = undefined;
     let names: string[];
     try {
       names = await api.listNames();

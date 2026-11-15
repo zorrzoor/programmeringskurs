@@ -19,6 +19,8 @@ const STATUS_TEXT: Record<SaveStatus, string> = {
   sparas: "Sparas …",
   offline: "Sparas när du är online igen",
   fel: "Kunde inte spara. Försöker igen strax.",
+  avvisad: "En övning kunde inte sparas.",
+  "namn-borta": "Det går inte att spara under det här namnet längre.",
 };
 
 export interface App {
@@ -72,7 +74,8 @@ export function startApp(rot: HTMLElement, namn: string, sync: ProgressSync, bas
   visa();
   return {
     setStatus: (s) => {
-      status.textContent = STATUS_TEXT[s];
+      // A refused exercise says why (e.g. "Koden är för lång (högst 20 kB).", #194).
+      status.textContent = s === "avvisad" && sync.refused ? `${STATUS_TEXT[s]} ${sync.refused}` : STATUS_TEXT[s];
     },
     stang: () => window.removeEventListener("hashchange", visa),
   };
