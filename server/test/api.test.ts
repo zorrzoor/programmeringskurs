@@ -154,6 +154,29 @@ describe("progress", () => {
   });
 });
 
+describe("client clocks (#196)", () => {
+  test("a save from a device with its clock in the future does not lock the exercise", async () => {
+    await call("POST", "/api/namn", { namn: "Klocka" });
+    const future = clock + 365 * 24 * 3600_000;
+    const wrong = await call("PUT", "/api/namn/Klocka/ovningar/o1", { kod: "från framtiden", tid: future });
+    assert.equal(wrong.body.tid, clock, "a time in the future is stored as the server's now");
+    clock += 1_000;
+    const right = await call("PUT", "/api/namn/Klocka/ovningar/o1", { kod: "rätt klocka", tid: clock });
+    assert.deepEqual([right.status, right.body.kod, right.body.tid], [200, "rätt klocka", clock]);
+  });
+
+  test("an exercise locked before the fix (a stored time in the future) takes the next save", () => {
+    const store = new Store(":memory:");
+    store.addName("Gammal");
+    store.saveExercise("Gammal", "o1", { kod: "låst", tid: 9_000_000 }, 9_000_000); // stored as the old code did
+    const saved = store.saveExercise("Gammal", "o1", { kod: "ny", tid: 1_500 }, 2_000);
+    assert.deepEqual(saved, { kod: "ny", klar: false, tid: 1_500 });
+    // An older save (offline queue) still loses to what is stored.
+    assert.equal(store.saveExercise("Gammal", "o1", { kod: "äldre", tid: 1_000 }, 3_000)?.kod, "ny");
+    store.close();
+  });
+});
+
 describe("limits", () => {
   test("at most 50 names", async () => {
     const s = start(":memory:");

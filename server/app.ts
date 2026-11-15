@@ -271,7 +271,7 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
       }
       const grows = stats.codeBytes === null || (kod !== undefined && Buffer.byteLength(kod) > stats.codeBytes);
       if (grows) checkSpace();
-      const saved = store.saveExercise(name, id, { kod, klar: body.klar as boolean | undefined, tid });
+      const saved = store.saveExercise(name, id, { kod, klar: body.klar as boolean | undefined, tid }, now());
       if (!saved) throw notFound;
       json(res, 200, saved);
       return "PUT /api/namn/:namn/ovningar/:id";
