@@ -5,7 +5,7 @@ import { stat } from "node:fs/promises";
 import { createHash, randomBytes } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
-import { DEFAULT_MAX_NAMES, DEFAULT_WRITES_PER_MINUTE, type Config } from "./config.ts";
+import { DEFAULT_MAX_DB_MB, DEFAULT_MAX_EXERCISES_PER_NAME, DEFAULT_MAX_NAMES, DEFAULT_WRITES_PER_MINUTE, type Config } from "./config.ts";
 import type { Store } from "./db.ts";
 import { cleanAccessCode, cleanCode, cleanId, cleanName, cleanTime, hashCode, MAX_BODY_BYTES, newCode } from "./validate.ts";
 
@@ -98,6 +98,8 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     newNamesPerHour: 0,
     unusedNameHours: 0,
     namesClosed: false,
+    maxExercisesPerName: DEFAULT_MAX_EXERCISES_PER_NAME,
+    maxDbBytes: DEFAULT_MAX_DB_MB * 1024 * 1024,
     ...opts.config,
   };
   const limit = opts.writesPerMinute ?? config.writesPerMinute;
@@ -119,6 +121,21 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     const header = req.headers["cf-connecting-ip"];
     const address = (Array.isArray(header) ? header[0] : header) ?? req.socket.remoteAddress ?? "";
     return createHash("sha256").update(salt).update(address).digest("base64url").slice(0, 16);
+  };
+  // Database size (#195): a warning in the log at 80 % of the limit (once until it drops below again), and new data refused at
+  // the limit. 507 is a server-side condition: the client keeps the work and tries again later.
+  let sizeWarned = false;
+  const checkSpace = (): void => {
+    const size = store.sizeBytes();
+    if (size >= config.maxDbBytes * 0.8 && !sizeWarned) {
+      sizeWarned = true;
+      log(JSON.stringify({ level: "warn", handelse: "databasstorlek", byte: size, grans: config.maxDbBytes }));
+    } else if (size < config.maxDbBytes * 0.8) {
+      sizeWarned = false;
+    }
+    if (size >= config.maxDbBytes) {
+      throw new HttpError(507, "fullt", "Servern har inte plats för mer just nu. Det du skrivit finns kvar i webbläsaren.");
+    }
   };
   const refuse = (reason: string): void => log(JSON.stringify({ level: "warn", handelse: "namngrans", orsak: reason }));
   function checkNewName(req: IncomingMessage): string {
@@ -234,6 +251,15 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
       const kod = body.kod === undefined ? undefined : cleanCode(body.kod);
       if (kod === null) throw bad("ogiltig-kod", "Koden är för lång (högst 20 kB).");
       if (body.klar !== undefined && typeof body.klar !== "boolean") throw bad("ogiltigt-klar", "klar ska vara sant eller falskt.");
+      // Storage limits (#195): a new exercise or longer code is refused when the name has too many exercises or the
+      // database is full. What is already stored can still be updated, and shortened code is always accepted.
+      const stats = store.exerciseStats(name, id);
+      if (!stats) throw notFound;
+      if (stats.codeBytes === null && stats.count >= config.maxExercisesPerName) {
+        throw new HttpError(409, "for-manga-ovningar", `Namnet har redan ${stats.count} sparade övningar, mer än kursen har.`);
+      }
+      const grows = stats.codeBytes === null || (kod !== undefined && Buffer.byteLength(kod) > stats.codeBytes);
+      if (grows) checkSpace();
       const saved = store.saveExercise(name, id, { kod, klar: body.klar as boolean | undefined, tid });
       if (!saved) throw notFound;
       json(res, 200, saved);

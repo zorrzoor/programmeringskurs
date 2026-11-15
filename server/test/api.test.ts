@@ -184,6 +184,44 @@ describe("limits", () => {
   });
 });
 
+describe("storage limits (#195)", () => {
+  const put = (url: string, name: string, id: string, kod: string, tid = 1) =>
+    fetch(`${url}/api/namn/${name}/ovningar/${id}`, { method: "PUT", body: JSON.stringify({ kod, tid }) })
+      .then(async (r) => [r.status, r.status === 200 ? "ok" : (await r.json()).fel]);
+
+  test("a name can save at most maxExercisesPerName exercises; existing ones can still be updated", async () => {
+    const s = start(":memory:", 300, { maxExercisesPerName: 2 });
+    const url = await listen(s);
+    await fetch(`${url}/api/namn`, { method: "POST", body: JSON.stringify({ namn: "Ida" }) });
+    assert.deepEqual(await put(url, "Ida", "o1", "a"), [200, "ok"]);
+    assert.deepEqual(await put(url, "Ida", "o2", "b"), [200, "ok"]);
+    assert.deepEqual(await put(url, "Ida", "o3", "c"), [409, "for-manga-ovningar"]);
+    assert.deepEqual(await put(url, "Ida", "o2", "b uppdaterad", 2), [200, "ok"]);
+    s.close();
+  });
+
+  test("a full database refuses new data but takes updates that do not grow, and warns in the log first", async () => {
+    const dir2 = mkdtempSync(join(tmpdir(), "kurs-full-"));
+    const path = join(dir2, "kurs.db");
+    const a = start(path);
+    const urlA = await listen(a);
+    await fetch(`${urlA}/api/namn`, { method: "POST", body: JSON.stringify({ namn: "Jon" }) });
+    assert.deepEqual(await put(urlA, "Jon", "o1", "x".repeat(100)), [200, "ok"]);
+    await new Promise<void>((resolve) => a.close(() => resolve()));
+
+    logs = [];
+    const b = start(path, 300, { maxDbBytes: 1 });
+    const urlB = await listen(b);
+    assert.deepEqual(await put(urlB, "Jon", "o2", "ny"), [507, "fullt"]);
+    assert.deepEqual(await put(urlB, "Jon", "o1", "x".repeat(200), 2), [507, "fullt"]);
+    assert.deepEqual(await put(urlB, "Jon", "o1", "kortare", 3), [200, "ok"]);
+    const warnings = logs.filter((l) => l.includes('"databasstorlek"'));
+    assert.equal(warnings.length, 1, "one warning, not one per refused write");
+    await new Promise<void>((resolve) => b.close(() => resolve()));
+    rmSync(dir2, { recursive: true, force: true });
+  });
+});
+
 describe("persistence", () => {
   test("data survives a restart", async () => {
     const file = join(dir, "data", "kurs.db");
@@ -299,8 +337,8 @@ describe("instance mode", () => {
   });
 
   test("readConfig: defaults, values and invalid input", () => {
-    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false });
-    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1" }), {
+    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false, maxExercisesPerName: 500, maxDbBytes: 256 * 1024 * 1024 });
+    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1", MAX_EXERCISES_PER_NAME: "300", MAX_DB_MB: "64" }), {
       lage: "publik",
       maxNames: 2000,
       writesPerMinute: 1500,
@@ -308,11 +346,15 @@ describe("instance mode", () => {
       newNamesPerHour: 200,
       unusedNameHours: 24,
       namesClosed: true,
+      maxExercisesPerName: 300,
+      maxDbBytes: 64 * 1024 * 1024,
     });
     assert.throws(() => readConfig({ NEW_NAMES_PER_HOUR: "-1" }), /NEW_NAMES_PER_HOUR/);
     assert.throws(() => readConfig({ KURS_LAGE: "offentlig" }), /KURS_LAGE/);
     assert.throws(() => readConfig({ MAX_NAMES: "0" }), /MAX_NAMES/);
     assert.throws(() => readConfig({ WRITES_PER_MINUTE: "många" }), /WRITES_PER_MINUTE/);
+    assert.throws(() => readConfig({ MAX_EXERCISES_PER_NAME: "0" }), /MAX_EXERCISES_PER_NAME/);
+    assert.throws(() => readConfig({ MAX_DB_MB: "" + "abc" }), /MAX_DB_MB/);
   });
 });
 
