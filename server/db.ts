@@ -152,6 +152,24 @@ export class Store {
     return { kod: code, klar: done, tid: time };
   }
 
+  /** How many exercises a name has saved, and the stored code length of one (null if it has none). */
+  exerciseStats(name: string, id: string): { count: number; codeBytes: number | null } | null {
+    const personId = this.personId(name);
+    if (personId === null) return null;
+    const count = Number(this.db.prepare("SELECT count(*) AS n FROM exercises WHERE person_id = ?").get(personId)?.n ?? 0);
+    const row = this.db.prepare("SELECT length(CAST(code AS BLOB)) AS bytes FROM exercises WHERE person_id = ? AND exercise_id = ?")
+      .get(personId, id);
+    return { count, codeBytes: row ? Number(row.bytes) : null };
+  }
+
+  /** Bytes the database uses (pages in use; free pages are reused before the file grows). */
+  sizeBytes(): number {
+    const pages = Number(this.db.prepare("PRAGMA page_count").get()?.page_count ?? 0);
+    const free = Number(this.db.prepare("PRAGMA freelist_count").get()?.freelist_count ?? 0);
+    const size = Number(this.db.prepare("PRAGMA page_size").get()?.page_size ?? 0);
+    return (pages - free) * size;
+  }
+
   saveLastLesson(name: string, lesson: string): boolean {
     return Number(this.db.prepare("UPDATE people SET last_lesson = ? WHERE key = ?").run(lesson, nameKey(name)).changes) > 0;
   }

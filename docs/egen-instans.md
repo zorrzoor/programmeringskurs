@@ -37,6 +37,8 @@ podman run -d --name kurs -p 8080:8080 -v kurs-data:/data programmeringskurs:dev
 | `KURS_LAGE` | `privat` (standard, för dig och dina nära) eller `publik` (kod per namn, sökbar namnlista, varningar) |
 | `MAX_NAMES` | Högsta antal namn (standard 50) |
 | `WRITES_PER_MINUTE` | Skydd mot för många sparningar (standard 300) |
+| `MAX_EXERCISES_PER_NAME` | Högsta antal sparade övningar per namn (standard 500; kursen har cirka 250) |
+| `MAX_DB_MB` | Databasens storlek i MB där inget nytt sparas längre, och en varning i loggen vid 80 % (standard 256). Volymen rymmer också sju dagliga kopior. |
 | `NEW_NAMES_PER_IP_PER_DAY`, `NEW_NAMES_PER_HOUR`, `UNUSED_NAME_HOURS` | Skydd mot massskapade namn i publikt läge (av om de saknas) |
 | `NAMES_CLOSED=1` | Stänger nyskapande av namn direkt |
 | `DATABASE_PATH`, `BACKUP_DIR`, `PORT` | Var databasen och dygnskopiorna ligger, och vilken port |
