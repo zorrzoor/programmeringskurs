@@ -3,6 +3,8 @@ import { config, loadConfig } from "./config.ts";
 import { glomKod, hamtaKod, sparaKod } from "./koder.ts";
 import { skapaKoerare } from "./py/koerare.ts";
 import { ProgressSync } from "./sync.ts";
+import { loadFailure, LOST_TEXT } from "./uppstart.ts";
+import { h } from "./ui/dom.ts";
 import { startApp, type App } from "./ui/app.ts";
 import { skapaCodeMirror } from "./ui/editor.ts";
 import { showPicker } from "./ui/picker.ts";
@@ -34,12 +36,6 @@ const remembered = () => {
   } catch {
     return null;
   }
-};
-
-/** Why the learner was sent back to the picker (#194): the name was removed on another device, or the code no longer fits. */
-const LOST_TEXT: Record<string, string> = {
-  "okant-namn": "Namnet finns inte längre (det togs bort på en annan enhet eller rensades). Det du skrivit sedan dess finns kvar i den här webbläsaren, men kan inte sparas under namnet. Välj eller skapa ett namn.",
-  "fel-kod": "Koden för namnet stämmer inte längre. Öppna namnet igen med koden.",
 };
 
 function choose(notice?: string): void {
@@ -77,16 +73,33 @@ async function start(name: string): Promise<void> {
     void koerare.start().catch(() => {}); // load Python in the background while the learner reads
     app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, () => choose());
     app.setStatus(s.status);
-  } catch {
-    // The name was removed on another device, the code no longer fits, or the server answered with an error: start over.
-    if (config().lage === "publik") glomKod(name);
-    choose();
+  } catch (err) {
+    const what = loadFailure(err, config().lage);
+    if (what.visa === "forsok-igen") return unavailable(() => void start(name));
+    if (what.glomKod) glomKod(name);
+    choose(what.notice);
   }
 }
 
+/** The server does not answer (restarting, #190): nothing is forgotten, and the learner can try again. */
+function unavailable(retry: () => void): void {
+  (root as HTMLElement).replaceChildren(
+    h(
+      "main",
+      { id: "innehall", class: "sida" },
+      h("h1", {}, "Programmeringskurs"),
+      h("p", { class: "message", role: "alert" }, "Servern svarar inte just nu. Ditt namn, din kod och det du har gjort finns kvar."),
+      h("button", { type: "button", onclick: retry }, "Försök igen"),
+    ),
+  );
+}
+
 window.addEventListener("online", () => void sync?.flush());
-void loadConfig(api).then(() => {
+// Without the server's mode the public instance would show the private picker (no code field): wait for it (#190).
+async function boot(): Promise<void> {
+  if (!(await loadConfig(api))) return unavailable(() => void boot());
   const last = remembered();
   if (last) void start(last);
   else choose();
-});
+}
+void boot();
