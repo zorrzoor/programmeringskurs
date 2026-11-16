@@ -251,7 +251,7 @@ export const ordId = (ord: string): string =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-/** ordlista.yml: a list of entries with `ord`, `forklaring` and optionally `former`. */
+/** ordlista.yml: a list of entries with `ord`, `forklaring` and optionally `former`, `ej` and `python`. */
 export function parseOrdlista(text: string, file: string): Ord[] {
   let value: unknown;
   try {
@@ -281,7 +281,15 @@ export function parseOrdlista(text: string, file: string): Ord[] {
         throw new ContentError(file, 1, `${ord}: ogiltigt mönster i "ej": ${e}`);
       }
     }
-    return { id, ord, former: former as string[], forklaring: str(o, "forklaring", file, 1, ord), ...(ej.length > 0 ? { ej: ej as string[] } : {}) };
+    if (o.python !== undefined && typeof o.python !== "boolean") throw new ContentError(file, 1, `${ord}: "python" ska vara true eller false`);
+    return {
+      id,
+      ord,
+      former: former as string[],
+      forklaring: str(o, "forklaring", file, 1, ord),
+      ...(ej.length > 0 ? { ej: ej as string[] } : {}),
+      ...(o.python === true ? { python: true } : {}),
+    };
   });
 }
 
@@ -309,7 +317,8 @@ function fornuftigtLankat(o: Ord, line: string, idx: number, len: number): boole
  * skipped (see `fornuftigtLankat`), so that the link goes to a place where it is right.
  */
 export function lankaOrd(lektion: Lektion, ordlista: Ord[], lankade: Set<string> = new Set()): void {
-  const monster = ordlista.map((o) => {
+  // Python's words are code: in running text "in", "len" and "and" are Swedish words (#205).
+  const monster = ordlista.filter((o) => !o.python).map((o) => {
     const former = [o.ord, ...o.former].sort((a, b) => b.length - a.length).map(escapeRe);
     return { o, re: new RegExp(`(?<![\\p{L}\\p{N}_-])(?:${former.join("|")})(?![\\p{L}\\p{N}_-])`, "giu") };
   });

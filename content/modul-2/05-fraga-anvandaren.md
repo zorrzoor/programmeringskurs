@@ -14,11 +14,11 @@ print(f"Hej {namn}!")
 
 ## Så fungerar input
 
-`input(...)` är en funktion som **väntar på att någon skriver något**. Texten inom parenteserna visas som en fråga, och det som skrivs in blir svaret. Du sparar svaret i en variabel, här `namn`.
+`input(...)` (engelska för *inmatning*) är en funktion som **väntar på att någon skriver något**. Texten inom parenteserna visas som en fråga, och det som skrivs in blir svaret. Du sparar svaret i en variabel, här `namn`.
 
 - Texten i `input("...")` är frågan. Den kan vara tom: `input()`.
 - Svaret är **alltid text**, även om man skriver en siffra.
-- Vill du räkna med svaret måste du göra om det till ett tal med `int(...)` (heltal) eller `float(...)` (decimaltal).
+- Vill du räkna med svaret måste du göra om det till ett tal med `int(...)` (heltal, av engelskans *integer*) eller `float(...)` (decimaltal, av *floating-point number*, flyttal).
 
 ```python-exempel
 alder = int(input("Hur gammal är du? "))

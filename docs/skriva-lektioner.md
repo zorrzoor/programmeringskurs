@@ -166,6 +166,12 @@ text: |
 `content/ordlista.yml` är ordlistan: en lista med `ord`, `forklaring` och eventuellt `former` (andra böjningar som också ska
 länka hit, som `variabeln` och `variabler`). Det ska finnas minst 40 ord, och varje ord får finnas en gång.
 
+Pythons egna engelska ord (`for`, `in`, `len`, `continue` …) har `python: true` och förklaringen börjar med den svenska
+översättningen ("På svenska: för (varje)."). De visas i en egen grupp, *Pythons ord*, och länkas inte från löptexten,
+eftersom de står som kod där och "in", "len" och "and" också är svenska ord. Används ett nytt nyckelord i ett exempel eller
+ett facit måste det läggas till här (`tests/innehall.test.ts` kontrollerar det), och första gången det förekommer i en
+lektion får det sin översättning inom parentes (#205).
+
 ````yaml
 - ord: variabel
   former: [variabeln, variabler, variablerna]
