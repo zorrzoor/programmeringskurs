@@ -6,10 +6,7 @@ mal: Efter den här lektionen kan du spara ett resultat i en ny fil.
 ```ruta
 rubrik: Kort om CSV
 text: |
-  **CSV** (comma-separated values) är en tabell som textfil: en rad per rad i tabellen, kolumnerna åtskilda av ett tecken (oftast komma) och rubrikerna på första raden.
-
-  - **Med Excel:** en CSV-fil öppnas i Excel som ett vanligt kalkylblad, och ett kalkylblad sparas som CSV med Arkiv, Spara som och filtypen CSV. Så flyttas data mellan program.
-  - **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader` och skriver dem med `csv.DictWriter`.
+  En CSV-fil är en tabell som textfil, med en rad per rad och kolumnerna åtskilda av komma. Mer om CSV och Excel finns i lektionen [Tabeller i CSV-filer](#/lektion/m7-csv).
 ```
 
 Samma fil som förut följer med.
@@ -51,14 +48,14 @@ text: |
 ```forutsag
 kod: |
   with open("a.txt", "w", encoding="utf-8") as fil:
-      fil.write("ett")
-      fil.write("två")
+      fil.write("ab")
+      fil.write("cd")
 
   with open("a.txt", encoding="utf-8") as fil:
       print(fil.read())
-alternativ: ["ettvå", "ett två", "ett och två på varsin rad", "Ett felmeddelande"]
+alternativ: ["abcd", "ab cd", "ab och cd på varsin rad", "Ett felmeddelande"]
 ratt: 0
-forklaring: "write lägger inte till något radbyte. Texterna sätts ihop direkt efter varandra: ettvå."
+forklaring: "write lägger inte till något radbyte. Texterna sätts ihop direkt efter varandra: abcd."
 ```
 
 ## Din tur

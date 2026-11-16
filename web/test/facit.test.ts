@@ -58,6 +58,26 @@ describe("every prediction with running code", () => {
       if (b.typ === "forutsag" && b.alternativ.length > 0) expect(b.ratt).toBeLessThan(b.alternativ.length);
     }
   });
+
+  // #202: a multiple choice question whose program prints one line must mark that line as right, when it is among the
+  // alternatives; and a right alternative that looks like output (one line, no description) must be what is printed.
+  // Alternatives that describe the output instead of quoting it are listed here.
+  const BESKRIVANDE = /^(Ett felmeddelande|Inget|Ingenting|.* på varsin rad|.*(skrivs|blir|ger|händer|fel|rader|gånger).*)$/i;
+  test("a multiple choice question that runs marks what the program really prints (#202)", () => {
+    const fel: string[] = [];
+    for (const { b } of forutsagelser) {
+      if (b.typ !== "forutsag" || !b.kor || b.alternativ.length === 0) continue;
+      const r = e.run(b.kod, { stdin: b.stdin, filer: b.filer });
+      const rader = normalisera(r.utdata, true);
+      if (r.fel || rader.length !== 1) continue;
+      const utskrift = rader[0] as string;
+      const ratt = b.alternativ[b.ratt] as string;
+      const finns = b.alternativ.findIndex((a) => normalisera(a, true).join("\n") === utskrift);
+      if (finns >= 0 && finns !== b.ratt) fel.push(`${b.id}: prints "${utskrift}", which is alternative ${finns}, not ${b.ratt}`);
+      else if (finns < 0 && !BESKRIVANDE.test(ratt)) fel.push(`${b.id}: prints "${utskrift}", but the right alternative is "${ratt}"`);
+    }
+    expect(fel).toEqual([]);
+  });
 });
 
 describe("examples", () => {

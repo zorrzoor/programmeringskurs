@@ -61,18 +61,18 @@ forklaring: "10, plus 5 blir 15, plus 5 blir 20."
 
 ```ovning
 id: m2-andra-lon
-uppgift: "Sätt `lön = 25000`, höj den med 1000 och skriv ut den nya lönen."
+uppgift: "Sätt `lon = 25000`, höj den med 1000 och skriv ut den nya lönen."
 start: |
   # skriv din kod här
 ratta: {utdata: "26000"}
 ledtradar:
-  - Börja med att skapa variabeln lön.
-  - Ändra lön med "lön = lön + ...".
-  - Sist ska du skriva ut lön med print.
+  - Börja med att skapa variabeln lon.
+  - Ändra lon med "lon = lon + ...".
+  - Sist ska du skriva ut lon med print.
 facit: |
-  lön = 25000
-  lön = lön + 1000
-  print(lön)
+  lon = 25000
+  lon = lon + 1000
+  print(lon)
 ```
 
 ```ovning

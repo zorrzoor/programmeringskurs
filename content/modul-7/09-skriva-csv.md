@@ -6,10 +6,7 @@ mal: "Efter den här lektionen kan du skriva en korrekt CSV-fil från dina data,
 ```ruta
 rubrik: Kort om CSV
 text: |
-  **CSV** (comma-separated values) är en tabell som textfil: en rad per rad i tabellen, kolumnerna åtskilda av ett tecken (oftast komma) och rubrikerna på första raden.
-
-  - **Med Excel:** en CSV-fil öppnas i Excel som ett vanligt kalkylblad, och ett kalkylblad sparas som CSV med Arkiv, Spara som och filtypen CSV. Så flyttas data mellan program.
-  - **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader` och skriver dem med `csv.DictWriter`.
+  En CSV-fil är en tabell som textfil, med en rad per rad och kolumnerna åtskilda av komma. Mer om CSV och Excel finns i lektionen [Tabeller i CSV-filer](#/lektion/m7-csv).
 ```
 
 Samma fil som förut följer med.
@@ -39,7 +36,8 @@ with open("poang.csv", "w", newline="", encoding="utf-8") as ut:
     skrivare.writeheader()
     skrivare.writerows(rader)
 
-print(open("poang.csv", encoding="utf-8").read())
+with open("poang.csv", encoding="utf-8") as fil:
+    print(fil.read())
 ```
 
 ## DictWriter
@@ -63,10 +61,11 @@ text: |
 kod: |
   import csv
 
-  with open("stad.csv", "w", newline="") as fil:
+  with open("stad.csv", "w", newline="", encoding="utf-8") as fil:
       skrivare = csv.DictWriter(fil, fieldnames=["stad"])
       skrivare.writerow({"stad": "Lund, Sverige"})
-  print(open("stad.csv").read().strip())
+  with open("stad.csv", encoding="utf-8") as fil:
+      print(fil.read().strip())
 kor: true
 alternativ: ["\"Lund, Sverige\"", "Lund, Sverige", "Lund Sverige", "Ett felmeddelande"]
 ratt: 0
@@ -77,7 +76,8 @@ forklaring: "Värdet innehåller ett komma, så DictWriter sätter citattecken r
 
 ```ovning
 id: m7-skriv-csv-omsattning
-uppgift: "Räkna ut omsättningen (antal gånger pris) per vara från `forsaljning.csv` och skriv den till en ny CSV-fil `omsattning.csv` med rubrikerna `vara` och `summa`, med en rad per vara i den ordning varorna först förekommer."
+uppgift: "Räkna ut omsättningen (antal gånger pris) per vara från `forsaljning.csv` och skriv den till en ny CSV-fil `omsattning.csv` med rubrikerna `vara` och `summa`, med en rad per vara i den ordning varorna först förekommer. Använd DictWriter."
+krav: ["anropa:DictWriter"]
 start: |
   import csv
 ratta: {"fil": "omsattning.csv", "innehall": "vara,summa\nkaffe,120\nte,75\nbulle,60"}

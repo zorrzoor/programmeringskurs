@@ -60,10 +60,9 @@ ratta: {variabler: {alder: 30}}
 ledtradar:
   - Namnet står till vänster och värdet till höger om =.
   - Raden ska börja med alder = och sedan värdet.
-  - alder = 30 och sedan print(alder).
+  - Skriv alder = 30 på en rad.
 facit: |
   alder = 30
-  print(alder)
 ```
 
 ```ovning
