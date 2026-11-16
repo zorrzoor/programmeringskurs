@@ -64,7 +64,7 @@ id: m3-elif-temp
 uppgift: "Variabeln `temp` finns redan. Skriv ut `Varmt` om `temp` är över 20, annars `Lagom` om den är över 10, annars `Kallt`."
 start: |
   temp = 5
-ratta: {utdata: "Kallt"}
+ratta: {utdata: "Kallt", fall: [{varden: {temp: 25}, utdata: "Varmt"}, {varden: {temp: 15}, utdata: "Lagom"}]}
 ledtradar:
   - Du behöver if, elif och else, i den ordningen.
   - Börja med det varmaste villkoret (över 20), sedan över 10.
@@ -85,7 +85,7 @@ uppgift: "Be om en ålder med `int(input())`. Skriv ut `Gratis` om åldern är u
 start: |
   # skriv din kod här
 stdin: ["12"]
-ratta: {utdata: "Barn"}
+ratta: {utdata: "Barn", fall: [{stdin: ["5"], utdata: "Gratis"}, {stdin: ["30"], utdata: "Vuxen"}]}
 ledtradar:
   - Läs in åldern som heltal och spara i en variabel.
   - Minsta gränsen först (under 7), sedan under 18, och else sist.

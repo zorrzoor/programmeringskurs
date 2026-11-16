@@ -65,9 +65,10 @@ facit: |
 ```ovning
 id: m4-while-dubbla
 uppgift: "Börja med `x = 1` och dubbla `x` så länge det är högst 100. Skriv ut det första värdet som blir större än 100."
+krav: ["while"]
 start: |
   x = 1
-ratta: {utdata: "128"}
+ratta: {utdata: "128", fall: [{varden: {x: 3}, utdata: "192"}]}
 ledtradar:
   - Loopa så länge x är högst 100.
   - Dubbla x inne i loopen.

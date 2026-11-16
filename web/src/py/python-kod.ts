@@ -95,6 +95,22 @@ def _funktion(namn, indata_json, svar_json):
         return json.dumps({"finns": True, "lika": False, "faktisk": "", "fel": _fel(e)})
     return json.dumps({"finns": True, "lika": bool(_lika(r, json.loads(svar_json))), "faktisk": repr(r), "fel": None})
 
+def _satt_varden(kod, varden_json):
+    # #204: the same program with other values: the first assignment to each name at the top level of the code gets the
+    # new value; a name the code never assigns is set first (so a program that ignores it still fails the case).
+    import ast
+    varden = json.loads(varden_json)
+    tree = ast.parse(kod)
+    kvar = dict(varden)
+    for stmt in tree.body:
+        if isinstance(stmt, ast.Assign) and len(stmt.targets) == 1 and isinstance(stmt.targets[0], ast.Name):
+            namn = stmt.targets[0].id
+            if namn in kvar:
+                stmt.value = ast.parse(repr(kvar.pop(namn)), mode="eval").body
+    forst = [ast.parse(f"{namn} = {v!r}").body[0] for namn, v in kvar.items()]
+    tree.body = forst + tree.body
+    return ast.unparse(ast.fix_missing_locations(tree))
+
 def _krav(kod, krav_json):
     import ast, tokenize, io
     tree = ast.parse(kod)
@@ -144,6 +160,20 @@ def _krav(kod, krav_json):
             ok = any(isinstance(n, ast.Continue) for n in noder)
         elif k == "funktion":
             ok = any(isinstance(n, ast.FunctionDef) for n in noder)
+        elif k == "jämförelse":
+            ok = any(isinstance(n, ast.Compare) for n in noder)
+        elif k == "if":
+            ok = any(isinstance(n, (ast.If, ast.IfExp)) for n in noder)
+        elif k == "else":
+            ok = any(isinstance(n, ast.If) and n.orelse and not (len(n.orelse) == 1 and isinstance(n.orelse[0], ast.If)) for n in noder)
+        elif k == "elif":
+            ok = any(isinstance(n, ast.If) and len(n.orelse) == 1 and isinstance(n.orelse[0], ast.If) for n in noder)
+        elif k == "in":
+            ok = any(isinstance(n, ast.Compare) and any(isinstance(o, (ast.In, ast.NotIn)) for o in n.ops) for n in noder)
+        elif k == "lista":
+            ok = any(isinstance(n, (ast.List, ast.ListComp)) for n in noder)
+        elif k == "uppslag":
+            ok = any(isinstance(n, (ast.Dict, ast.DictComp)) for n in noder)
         elif k.startswith("import:"):
             ok = importerar(k[7:])
         elif k.startswith("anropa:"):

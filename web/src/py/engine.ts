@@ -3,7 +3,7 @@
 import type { Filer, Ratta } from "../kurs-typer.ts";
 import { forklaraFel, type PyFel } from "./felmeddelanden.ts";
 import { PYTHON_KOD } from "./python-kod.ts";
-import { jamforFil, jamforUtdata, jamforVariabel, kravMeddelande } from "./rattning.ts";
+import { beskrivFall, jamforFil, jamforUtdata, jamforVariabel, kravMeddelande, normalisera } from "./rattning.ts";
 
 /** The part of Pyodide that the engine uses (so a test can pass a fake). */
 export interface PyodideLite {
@@ -99,6 +99,24 @@ export class PyEngine {
     let meddelanden: string[] = [];
     if (ratta.typ === "utdata") {
       meddelanden = jamforUtdata(k.utdata, ratta.forvantat, ratta.ignoreraVersaler, ratta.friOrdning);
+      // #204: the other cases run only when the first is right; the first case that fails is explained.
+      for (const fall of meddelanden.length === 0 ? (ratta.fall ?? []) : []) {
+        const kodFall = fall.varden ? (this.fn("_satt_varden")(kod, JSON.stringify(fall.varden)) as string) : kod;
+        const r = this.run(kodFall, { stdin: fall.stdin ?? alt.stdin, filer: alt.filer, grans: alt.grans });
+        const nar = beskrivFall(fall);
+        if (r.fel) {
+          const f = forklaraFel(r.fel);
+          meddelanden.push(`Rätt för värdena i uppgiften, men ${nar} stoppas programmet av ett fel. ${f.rubrik}: ${f.forklaring}`);
+          break;
+        }
+        if (jamforUtdata(r.utdata, fall.utdata, ratta.ignoreraVersaler, ratta.friOrdning).length > 0) {
+          const skrev = normalisera(r.utdata, false).join(" / ") || "(ingenting)";
+          meddelanden.push(
+            `Rätt för värdena i uppgiften, men programmet ska fungera för andra värden också: ${nar} ska utskriften vara \`${normalisera(fall.utdata, false).join(" / ")}\`, men programmet skrev \`${skrev}\`. Använder koden variablerna (eller svaren) i stället för färdiga värden?`,
+          );
+          break;
+        }
+      }
     } else if (ratta.typ === "fil") {
       const svar = JSON.parse(this.fn("_las_fil")(ratta.namn)) as { finns: boolean; text: string };
       meddelanden = jamforFil(ratta.namn, svar, ratta.forvantat);

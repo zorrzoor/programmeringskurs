@@ -85,11 +85,27 @@ export function kravMeddelande(krav: string): string {
     case "break": return "Uppgiften ber dig använda `break`, men koden gör inte det.";
     case "continue": return "Uppgiften ber dig använda `continue`, men koden gör inte det.";
     case "funktion": return "Uppgiften ber om en funktion, men koden har ingen `def`.";
+    case "jämförelse": return "Uppgiften ber om en jämförelse (till exempel `7 > 5`), men koden skriver bara ut ett färdigt svar.";
+    case "if": return "Uppgiften ber om ett villkor med `if`, men koden har inget.";
+    case "else": return "Uppgiften ber om både `if` och `else`, men koden har ingen `else`.";
+    case "elif": return "Uppgiften ber om `elif`, men koden har ingen.";
+    case "in": return "Uppgiften ber dig använda `in`, men koden gör inte det.";
+    case "lista": return "Uppgiften ber om en lista (med hakparenteser, `[...]`), men koden skapar ingen.";
+    case "uppslag": return "Uppgiften ber om ett uppslag (med klamrar, `{...}`), men koden skapar inget.";
     case "import": return `Uppgiften ber dig använda modulen \`${namn}\`, men koden hämtar den inte med \`import ${namn}\`.`;
     case "anropa": return `Uppgiften ber dig använda \`${namn}\`, men koden anropar den inte.`;
     case "inte-anropa": return `Uppgiften ber dig lösa det utan \`${namn}\`, men koden använder den.`;
     default: return `Uppgiften har ett krav (${krav}) som koden inte uppfyller.`;
   }
+}
+
+/** The case of an output exercise in words (#204): "när betyg är 75" or "när svaret är 8". */
+export function beskrivFall(fall: { varden?: Record<string, unknown>; stdin?: string[] }): string {
+  const delar = [
+    ...Object.entries(fall.varden ?? {}).map(([namn, v]) => `\`${namn}\` är \`${typeof v === "string" ? JSON.stringify(v) : JSON.stringify(v)}\``),
+    ...(fall.stdin && fall.stdin.length > 0 ? [`svaret är ${fall.stdin.map((s) => `\`${s}\``).join(" och sedan ")}`] : []),
+  ];
+  return `när ${delar.join(" och ")}`;
 }
 
 export const jamforVariabel = (namn: string, svar: { finns: boolean; lika: boolean; faktisk: string }, forvantat: unknown): string[] => {

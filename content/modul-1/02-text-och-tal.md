@@ -49,6 +49,7 @@ forklaring: "Plus mellan texter sätter ihop dem. Notera mellanslaget efter Hej 
 ```ovning
 id: m1-text-satta-ihop
 uppgift: "Skriv ut `Hej Anna` genom att sätta ihop två texter med `+`: `\"Hej \"` och `\"Anna\"`."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "Hej Anna"}

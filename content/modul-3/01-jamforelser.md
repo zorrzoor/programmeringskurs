@@ -58,6 +58,7 @@ forklaring: "3 är inte lika med 4, så != ger True."
 ```ovning
 id: m3-jamfor-storre
 uppgift: "Skriv ut om `7` är större än `5`."
+krav: ["jämförelse"]
 start: |
   # skriv din kod här
 ratta: {utdata: "True"}
@@ -74,7 +75,7 @@ id: m3-jamfor-alder
 uppgift: "Variabeln `alder` finns redan. Skriv ut om `alder` är minst 18, alltså om `alder >= 18`."
 start: |
   alder = 17
-ratta: {utdata: "False"}
+ratta: {utdata: "False", fall: [{varden: {alder: 20}, utdata: "True"}]}
 ledtradar:
   - Använd variabeln i jämförelsen, inom print.
   - Minst 18 betyder större än eller lika med 18.
@@ -89,7 +90,7 @@ id: m3-jamfor-namn
 uppgift: "Variabeln `namn` finns redan. Skriv ut om `namn` är lika med `Anna`."
 start: |
   namn = "Anna"
-ratta: {utdata: "True"}
+ratta: {utdata: "True", fall: [{varden: {namn: "Bo"}, utdata: "False"}]}
 ledtradar:
   - Lika med skrivs med två likhetstecken, ==.
   - Texten Anna ska stå inom citattecken i jämförelsen.

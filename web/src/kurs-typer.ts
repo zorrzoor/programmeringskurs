@@ -3,12 +3,23 @@
 
 /** How an exercise is checked: by behaviour, never by the exact code (docs/koncept.md §7). */
 export type Ratta =
-  /** `friOrdning`: the lines may come in any order (e.g. SQL without ORDER BY, #203). */
-  | { typ: "utdata"; forvantat: string; ignoreraVersaler: boolean; friOrdning?: boolean }
+  /**
+   * `friOrdning`: the lines may come in any order (e.g. SQL without ORDER BY, #203). `fall` (#204): more cases, each run
+   * anew with other values for variables of the start code (`varden`) and/or other answers to input() (`stdin`), and its
+   * own expected output. A program that only prints the answer fails them.
+   */
+  | { typ: "utdata"; forvantat: string; ignoreraVersaler: boolean; friOrdning?: boolean; fall?: Fall[] }
   | { typ: "variabler"; forvantat: Record<string, unknown> }
   | { typ: "funktion"; namn: string; tester: { indata: unknown[]; svar: unknown }[] }
   /** A file the program must have written: its content is compared line by line like output. */
   | { typ: "fil"; namn: string; forvantat: string };
+
+/** One more case of an output exercise (#204). */
+export interface Fall {
+  varden?: Record<string, unknown>;
+  stdin?: string[];
+  utdata: string;
+}
 
 /** Files a lesson shows (block `fil`), by name: placed in the program's working directory before every run. */
 export type Filer = Record<string, string>;
