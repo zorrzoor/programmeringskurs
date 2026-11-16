@@ -99,7 +99,7 @@ Skisserna är ASCII och visar upplägg, inte utseende. Utseendet beskrivs i [9.8
 |  Modul 4  Upprepning                                     ○○○○                |
 |   ...                                                                       |
 |                                                                            |
-|  Du har gjort 12 av 38 lektioner.        [ Spara en säkerhetskopia ]       |
+|  Du har gjort 12 av 38 lektioner.                                          |
 +----------------------------------------------------------------------------+
 ```
 
@@ -382,21 +382,27 @@ Ett ogiltigt block ger ett byggfel med fil och rad.
 
   | Anrop | Gör |
   |---|---|
-  | `GET /api/namn` | lista namnen |
-  | `POST /api/namn` `{namn}` | skapa ett namn (409 om det finns) |
+  | `GET /api/config` | instansens läge (`privat` eller `publik`) och största antal namn |
+  | `GET /api/namn` | lista namnen (privat instans) |
+  | `GET /api/namn?q=` | sök bland namnen, högst 50 träffar (publik instans) |
+  | `POST /api/namn` `{namn}` | skapa ett namn (409 om det finns). I den publika instansen svarar servern också med namnets kod |
   | `GET /api/namn/{namn}/framsteg` | hämta allt framsteg för namnet |
   | `PUT /api/namn/{namn}/ovningar/{id}` `{kod, klar, tid}` | spara en övning (senaste ändring vinner) |
   | `PUT /api/namn/{namn}/senast` `{lektion}` | spara var man var |
   | `DELETE /api/namn/{namn}` | ta bort namnet och allt framsteg |
   | `GET /api/halsa` | för driftens hälsokontroll |
 
-- **Begränsningar** mot missbruk och buggar: högst 50 namn, högst 20 kB kod per övning, högst 64 kB per anrop, enkel
-  begränsning av antal anrop per minut, strikt validering av namn och id.
+  I den publika instansen kräver alla anrop om ett namn (`/api/namn/{namn}/…`, och borttagning) namnets kod i headern
+  `x-kod`.
+
+- **Begränsningar** mot missbruk och buggar: högst 50 namn i den privata instansen och 2000 i den publika (`MAX_NAMES`),
+  högst 20 kB kod per övning, högst 500 sparade övningar per namn, ett tak för databasens storlek (256 MB, #195), högst
+  64 kB per anrop, enkel begränsning av antal anrop per minut, strikt validering av namn och id.
 - **Flera enheter samtidigt:** per övning gäller senaste sparningen. Klar-markeringar bara läggs till (en övning som är
   klar blir inte oklar av att en annan enhet har äldre läge).
-- **Export och import** av framsteg till en fil finns kvar som säkerhetskopia och som sätt att flytta till en annan
-  installation.
-- **Säkerhetskopia av servern:** databasen kopieras regelbundet (se [#33](https://github.com/zorrzoor/programmeringskurs/issues/33)).
+- **Säkerhetskopia:** servern kopierar databasen en gång per dygn och behåller de sju senaste kopiorna (se
+  [#33](https://github.com/zorrzoor/programmeringskurs/issues/33)). Det är den enda säkerhetskopian: någon export eller
+  import av framsteg till en fil finns inte i appen (#201).
 - **Integritet:** namn och kod är personliga. Inget skickas till tredje part, inga externa teckensnitt eller skript.
   Det finns inget lösenord: åtkomsten skyddas utanför appen (kapitel 11).
 
@@ -477,11 +483,11 @@ nätverksregler (inget in utom från Traefik) och backup.
 | **Stegvisaren och långsamma program** | Stegbegränsning och tydligt meddelande. |
 | **Mycket innehåll att skriva** | Moduler skrivs och provkörs en i taget. Valfria moduler (8) kan vänta. |
 | **Svårt att veta om texten är begriplig** | Provkörning med en riktig nybörjare, och pedagogikreglerna som granskningslista. |
-| **Wi-Fi/surfplatta/olika webbläsare** | Webbläsartester i Chromium och Firefox, manuell kontroll på Safari/surfplatta. |
+| **Wi-Fi/surfplatta/olika webbläsare** | Webbläsartester i Chromium (`playwright.config.ts`), manuell kontroll på Firefox, Safari och surfplatta. |
 | **Var ska kursen ligga?** | I k3s-klustret (kapitel 11). Åtkomst via Cloudflare Access (beslutat i [#26](https://github.com/zorrzoor/programmeringskurs/issues/26)). |
 | **Inget lösenord: alla med åtkomst kan öppna och ta bort alla namn** | Medvetet val för enkelhetens skull. Skydd utanför appen (Cloudflare Access), bekräftelse genom att skriva namnet vid borttagning, och regelbunden säkerhetskopia. |
-| **Förlorat framsteg** (felaktig borttagning, trasig volym) | Säkerhetskopia av databasen ([#33](https://github.com/zorrzoor/programmeringskurs/issues/33)) och export/import i appen. |
-| **Servern ligger nere** | Sidan fungerar utan nätverk och köar framsteg tills servern svarar. |
+| **Förlorat framsteg** (felaktig borttagning, trasig volym) | Dygnskopior av databasen på volymen ([#33](https://github.com/zorrzoor/programmeringskurs/issues/33)), sju dygn bakåt. En trasig volym skyddas inte av dem. |
+| **Servern ligger nere** | Kursen kräver servern (9.7). Vid korta avbrott köas framsteg i webbläsaren och skickas när servern svarar, och en sida som laddas medan servern startar om visar "Servern svarar inte just nu" med "Försök igen" (#190). |
 | **Ska kursen ha en AI-handledare?** | Nej i första versionen: det kräver extern tjänst och bryter "inget lämnar sidan". Kan utredas senare. |
 | **Gemensam EE med övriga repon** | Separat ärende i `k3s_hosting`. Skelettet (#3) börjar med en liten egen Node-image. |
 
