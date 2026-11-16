@@ -12,7 +12,8 @@ const say = (el: HTMLElement, text: string) => {
 };
 const fel = (err: unknown): string => (err instanceof ApiError ? err.message : "Något gick fel.");
 
-export function showPublicPicker(root: HTMLElement, { api, onPick }: PickerOptions): void {
+export function showPublicPicker(root: HTMLElement, { api, onPick, notice }: PickerOptions): void {
+  let pending = notice; // shown once, not again when the learner comes back to the list
   /** Puts what was just added to the root inside <main> (every page needs the landmark). */
   const asMain = () => {
     const main = h("main", { id: "innehall" });
@@ -47,6 +48,7 @@ export function showPublicPicker(root: HTMLElement, { api, onPick }: PickerOptio
   function render(): void {
     clear(root);
     api.setCode(null);
+    queueMicrotask(() => (pending = undefined));
     const message = h("p", { role: "alert", class: "message" });
     const results = h("ul", { class: "names", "aria-label": "Namn som matchar" });
     const more = h("p", { class: "help" });
@@ -76,6 +78,7 @@ export function showPublicPicker(root: HTMLElement, { api, onPick }: PickerOptio
     root.append(
       h("h1", {}, "Programmeringskurs"),
       h("h2", {}, "Vem är du?"),
+      ...(pending ? [h("p", { class: "message", role: "alert" }, pending)] : []),
       warnings(),
       h("h3", {}, "Jag har redan ett namn"),
       h("label", { for: "sok-namn" }, "Sök ditt användarnamn:"),

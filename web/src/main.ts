@@ -36,7 +36,13 @@ const remembered = () => {
   }
 };
 
-function choose(): void {
+/** Why the learner was sent back to the picker (#194): the name was removed on another device, or the code no longer fits. */
+const LOST_TEXT: Record<string, string> = {
+  "okant-namn": "Namnet finns inte längre (det togs bort på en annan enhet eller rensades). Det du skrivit sedan dess finns kvar i den här webbläsaren, men kan inte sparas under namnet. Välj eller skapa ett namn.",
+  "fel-kod": "Koden för namnet stämmer inte längre. Öppna namnet igen med koden.",
+};
+
+function choose(notice?: string): void {
   sync?.stop();
   app?.stang();
   sync = undefined;
@@ -46,6 +52,7 @@ function choose(): void {
   history.replaceState(null, "", location.pathname);
   showPicker(root as HTMLElement, {
     api,
+    notice,
     onPick: (name, code) => {
       if (code !== undefined) sparaKod(name, code);
       void start(name);
@@ -57,12 +64,18 @@ async function start(name: string): Promise<void> {
   remember(name);
   // The public instance: this device's code for the name (the picker saved it). Without it the server refuses and we start over.
   api.setCode(config().lage === "publik" ? hamtaKod(name) : null);
-  const s = new ProgressSync(api, name, { onStatus: (st) => app?.setStatus(st) });
+  const s = new ProgressSync(api, name, {
+    onStatus: (st) => app?.setStatus(st),
+    onNameLost: (err) => {
+      if (config().lage === "publik" && err.code === "fel-kod") glomKod(name);
+      choose(LOST_TEXT[err.code] ?? LOST_TEXT["okant-namn"]);
+    },
+  });
   try {
     await s.load();
     sync = s;
     void koerare.start().catch(() => {}); // load Python in the background while the learner reads
-    app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, choose);
+    app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, () => choose());
     app.setStatus(s.status);
   } catch {
     // The name was removed on another device, the code no longer fits, or the server answered with an error: start over.

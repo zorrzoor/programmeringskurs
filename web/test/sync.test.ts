@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { ProgressSync, type SaveStatus } from "../src/sync.ts";
+import { ApiError } from "../src/api.ts";
 import { FakeApi, MemoryStorage } from "./helpers.ts";
 
 let api: FakeApi;
@@ -7,8 +8,16 @@ let storage: MemoryStorage;
 let clock: number;
 let statuses: SaveStatus[];
 
+let lost: ApiError[];
 const make = (name = "Fia") =>
-  new ProgressSync(api, name, { delayMs: 100, retryMs: 1000, now: () => ++clock, storage, onStatus: (s) => statuses.push(s) });
+  new ProgressSync(api, name, {
+    delayMs: 100,
+    retryMs: 1000,
+    now: () => ++clock,
+    storage,
+    onStatus: (s) => statuses.push(s),
+    onNameLost: (e) => lost.push(e),
+  });
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -16,6 +25,7 @@ beforeEach(() => {
   storage = new MemoryStorage();
   clock = 1000;
   statuses = [];
+  lost = [];
 });
 
 describe("ProgressSync", () => {
@@ -110,5 +120,75 @@ describe("ProgressSync", () => {
     await vi.advanceTimersByTimeAsync(1100);
     expect(s.status).toBe("sparat");
     expect(api.people.get("fia")!.ovningar.o1?.kod).toBe("x");
+  });
+
+  describe("errors that never pass (#194)", () => {
+    const refuse = (ids: string[], err: ApiError) => {
+      const original = api.saveExercise.bind(api);
+      api.saveExercise = async (name, id, body) => {
+        if (ids.includes(id)) {
+          api.calls.push(`saveExercise ${id}`);
+          throw err;
+        }
+        return original(name, id, body);
+      };
+    };
+
+    test("an exercise the server refuses (422) is skipped, the rest is saved, and the learner is told why", async () => {
+      const s = make();
+      await s.load();
+      refuse(["o1"], new ApiError(422, "ogiltig-kod", "Koden är för lång (högst 20 kB)."));
+      s.save("o1", { kod: "x".repeat(30_000) });
+      s.save("o2", { kod: "print(2)" });
+      await vi.advanceTimersByTimeAsync(150);
+      expect(api.people.get("fia")!.ovningar.o2?.kod).toBe("print(2)");
+      expect(s.status).toBe("avvisad");
+      expect(s.refused).toBe("Koden är för lång (högst 20 kB).");
+      expect(storage.data.size).toBe(0); // nothing left that would be sent for ever
+      const calls = api.calls.length;
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(api.calls.length).toBe(calls); // no retries
+    });
+
+    test("a temporary error (503) is sent again later", async () => {
+      const s = make();
+      await s.load();
+      refuse(["o1"], new ApiError(503, "okant", "Något gick fel."));
+      s.save("o1", { kod: "a" });
+      await vi.advanceTimersByTimeAsync(150);
+      expect(s.status).toBe("fel");
+      expect(storage.data.size).toBe(1);
+      refuse([], new ApiError(503, "okant", ""));
+      api.saveExercise = FakeApi.prototype.saveExercise.bind(api);
+      await vi.advanceTimersByTimeAsync(1100);
+      expect(api.people.get("fia")!.ovningar.o1?.kod).toBe("a");
+      expect(s.status).toBe("sparat");
+    });
+
+    test("a name that is gone (404) stops the retries, keeps the queue and reports it once", async () => {
+      const s = make();
+      await s.load();
+      api.people.delete("fia");
+      s.save("o1", { kod: "kvar" });
+      await vi.advanceTimersByTimeAsync(150);
+      expect(s.status).toBe("namn-borta");
+      expect(lost.map((e) => e.code)).toEqual(["okant-namn"]);
+      expect(storage.data.size).toBe(1); // what was written is still in the browser
+      const calls = api.calls.length;
+      s.save("o2", { kod: "mer" });
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(api.calls.length).toBe(calls);
+      expect(lost).toHaveLength(1);
+    });
+
+    test("a code that no longer fits (403) is a lost name too", async () => {
+      const s = make();
+      await s.load();
+      refuse(["o1"], new ApiError(403, "fel-kod", "Koden stämmer inte."));
+      s.save("o1", { kod: "a" });
+      await vi.advanceTimersByTimeAsync(150);
+      expect(s.status).toBe("namn-borta");
+      expect(lost.map((e) => e.code)).toEqual(["fel-kod"]);
+    });
   });
 });

@@ -3,7 +3,18 @@
 // changes stay queued and are sent again later (timer and the browser's "online" event).
 import { Api, ApiError, type Exercise, type Progress } from "./api.ts";
 
-export type SaveStatus = "sparat" | "sparas" | "offline" | "fel";
+/**
+ * "fel": a temporary error, sent again later. "avvisad": the server refused an exercise for good (e.g. code over 20 kB);
+ * it is skipped so the rest is saved (#194). "namn-borta": the name is gone or the code does not fit; saving stops.
+ */
+export type SaveStatus = "sparat" | "sparas" | "offline" | "fel" | "avvisad" | "namn-borta";
+
+/** How an error from the server is handled (#194). */
+export function errorKind(err: unknown): "tillfalligt" | "ovning" | "namn" {
+  if (!(err instanceof ApiError) || err.offline || err.status >= 500 || err.status === 429) return "tillfalligt";
+  if (err.status === 403 || (err.status === 404 && err.code === "okant-namn")) return "namn";
+  return "ovning";
+}
 
 interface Pending {
   kod?: string;
@@ -23,6 +34,8 @@ export interface SyncOptions {
   now?: () => number;
   storage?: Storage;
   onStatus?: (status: SaveStatus) => void;
+  /** The name is gone (404) or the code no longer fits (403): saving has stopped. */
+  onNameLost?: (err: ApiError) => void;
 }
 
 export class ProgressSync {
@@ -35,6 +48,9 @@ export class ProgressSync {
   private timer: ReturnType<typeof setTimeout> | undefined;
   private sending = false;
   status: SaveStatus = "sparat";
+  /** Why the last refused exercise could not be saved (status "avvisad"). */
+  refused: string | null = null;
+  private lost = false;
 
   constructor(api: Api, name: string, opts: SyncOptions = {}) {
     this.api = api;
@@ -45,6 +61,7 @@ export class ProgressSync {
       now: opts.now ?? Date.now,
       storage: opts.storage ?? safeStorage(),
       onStatus: opts.onStatus ?? (() => {}),
+      onNameLost: opts.onNameLost ?? (() => {}),
     };
     this.progress = { namn: name, senast: null, ovningar: {} };
   }
@@ -93,13 +110,22 @@ export class ProgressSync {
 
   /** Sends everything now (also used by tests and before the page is closed). */
   async flush(): Promise<void> {
-    if (this.sending) return;
+    if (this.sending || this.lost) return;
     this.sending = true;
     clearTimeout(this.timer);
+    let refused = false;
     try {
       for (const [id, p] of Object.entries(this.queue)) {
-        const saved = await this.api.saveExercise(this.name, id, p);
-        this.progress.ovningar[id] = saved;
+        try {
+          const saved = await this.api.saveExercise(this.name, id, p);
+          this.progress.ovningar[id] = saved;
+        } catch (err) {
+          if (errorKind(err) !== "ovning") throw err;
+          // Refused for good (too long, too many exercises …): sending it again would fail the same way and hold up the
+          // rest of the queue. It stays in the editor; the learner is told why.
+          refused = true;
+          this.refused = (err as ApiError).message;
+        }
         if (this.queue[id] === p) delete this.queue[id]; // not changed again while it was being sent
       }
       if (this.lastLesson) {
@@ -107,13 +133,22 @@ export class ProgressSync {
         this.lastLesson = null;
       }
       this.persistQueue();
-      this.setStatus(this.hasPending() ? "sparas" : "sparat");
+      this.setStatus(this.hasPending() ? "sparas" : refused ? "avvisad" : "sparat");
     } catch (err) {
-      this.setStatus(err instanceof ApiError && err.offline ? "offline" : "fel");
+      this.persistQueue();
+      const kind = errorKind(err);
+      if (kind === "namn") {
+        // The name was removed on another device, or the code no longer fits: no retries. The queue stays in the browser.
+        this.lost = true;
+        this.setStatus("namn-borta");
+        this.opts.onNameLost(err as ApiError);
+      } else {
+        this.setStatus(err instanceof ApiError && err.offline ? "offline" : "fel");
+      }
     } finally {
       this.sending = false;
     }
-    if (this.hasPending()) this.schedule(this.status === "sparas" ? this.opts.delayMs : this.opts.retryMs, true);
+    if (this.hasPending() && !this.lost) this.schedule(this.status === "sparas" ? this.opts.delayMs : this.opts.retryMs, true);
   }
 
   private apply(id: string, p: Pending): void {
@@ -127,6 +162,7 @@ export class ProgressSync {
 
   /** A new change shows "sparas" (unless the server is known to be out of reach); a retry keeps the status it has. */
   private schedule(ms = this.opts.delayMs, retry = false): void {
+    if (this.lost) return;
     if (!retry) this.setStatus(this.status === "offline" ? "offline" : "sparas");
     clearTimeout(this.timer);
     this.timer = setTimeout(() => void this.flush(), ms);
