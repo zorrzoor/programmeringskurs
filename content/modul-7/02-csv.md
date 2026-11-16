@@ -9,7 +9,7 @@ text: |
   **CSV** (comma-separated values) är en tabell som textfil: en rad per rad i tabellen, kolumnerna åtskilda av ett tecken (oftast komma) och rubrikerna på första raden.
 
   - **Med Excel:** en CSV-fil öppnas i Excel som ett vanligt kalkylblad, och ett kalkylblad sparas som CSV med Arkiv, Spara som och filtypen CSV. Så flyttas data mellan program.
-  - **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader` och skriver dem med `csv.DictWriter`.
+  - **I kursen:** CSV-filerna visas i lektionen och följer med koden, som läser dem med `csv.DictReader`. Längre fram (lektion 9) skriver du egna CSV-filer med `csv.DictWriter`.
 ```
 
 ```fil
