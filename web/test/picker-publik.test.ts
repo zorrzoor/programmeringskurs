@@ -84,8 +84,32 @@ describe("public name picker", () => {
     type("#kod", "kkkk-kkkk-kkkk");
     submit();
     await settle();
-    expect(picked).toEqual([["Anna", "kkkk-kkkk-kkkk"]]);
-    expect(hamtaKod("Anna")).toBe("kkkk-kkkk-kkkk");
+    expect(picked).toEqual([["Anna", "KKKK-KKKK-KKKK"]]);
+    expect(hamtaKod("Anna")).toBe("KKKK-KKKK-KKKK");
+  });
+
+  test("a code with en dashes, spaces or a minus sign opens the name (#199)", async () => {
+    await start();
+    click("Anna");
+    type("#kod", " kkkk–kkkk −kkkk ");
+    submit();
+    await settle();
+    expect(picked).toEqual([["Anna", "KKKK-KKKK-KKKK"]]);
+  });
+
+  test("something that cannot be a code is explained without a request (#199)", async () => {
+    await start();
+    click("Anna");
+    const calls = api.calls.length;
+    for (const typed of ["KKKK-KKKK-KKK", "KKKK-KKKK-KKK😀", "OOOO-IIII-1111"]) {
+      type("#kod", typed);
+      submit();
+      await settle();
+      expect(root.textContent).toContain("Koden ska vara tolv tecken");
+      expect(root.textContent).not.toContain("Det går inte att nå servern");
+    }
+    expect(api.calls.length).toBe(calls);
+    expect(picked).toEqual([]);
   });
 
   test("a remembered code opens the name without typing it", async () => {
@@ -124,6 +148,10 @@ describe("public name picker", () => {
     click("Ta bort ett namn");
     type("#ta-bort-val", "Anna");
     type("#ta-bort-kod", "FEL");
+    click("Radera");
+    await settle();
+    expect(root.textContent).toContain("Koden ska vara tolv tecken"); // not a code at all: no request (#199)
+    type("#ta-bort-kod", "AAAA-AAAA-AAAA");
     click("Radera");
     await settle();
     expect(root.textContent).toContain("Koden stämmer inte, så inget har raderats.");

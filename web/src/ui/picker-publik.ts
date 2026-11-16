@@ -1,7 +1,7 @@
 // "Vem är du?" in the public instance, which has no Cloudflare Access in front: every name has a code that is shown once when
 // the name is made. The list of names is a search (there can be thousands). No e-mail addresses, nothing can be recovered.
 import { Api, ApiError } from "../api.ts";
-import { glomKod, hamtaKod, sparaKod } from "../koder.ts";
+import { glomKod, hamtaKod, KOD_HJALP, rensaKod, sparaKod } from "../koder.ts";
 import { cleanName, NAME_HELP } from "../names.ts";
 import { clear, h } from "./dom.ts";
 import { integritetsText } from "./integritet.ts";
@@ -29,7 +29,9 @@ export function showPublicPicker(root: HTMLElement, { api, onPick, notice }: Pic
     );
 
   /** Opens a name with its code; the server checks it when the progress is loaded. */
-  async function open(name: string, code: string, message: HTMLElement): Promise<void> {
+  async function open(name: string, typed: string, message: HTMLElement): Promise<void> {
+    const code = rensaKod(typed);
+    if (code === null) return say(message, KOD_HJALP); // cannot be a code: no request (#199)
     api.setCode(code);
     try {
       await api.getProgress(name);
@@ -203,7 +205,9 @@ export function showPublicPicker(root: HTMLElement, { api, onPick, notice }: Pic
             onclick: () => {
               const n = cleanName(name.value);
               if (n === null) return say(message, NAME_HELP);
-              api.setCode(code.value);
+              const kod = rensaKod(code.value);
+              if (kod === null) return say(message, KOD_HJALP);
+              api.setCode(kod);
               void api.deleteName(n).then(
                 () => {
                   glomKod(n);
