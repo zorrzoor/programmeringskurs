@@ -3,7 +3,8 @@
 
 /** How an exercise is checked: by behaviour, never by the exact code (docs/koncept.md §7). */
 export type Ratta =
-  | { typ: "utdata"; forvantat: string; ignoreraVersaler: boolean }
+  /** `friOrdning`: the lines may come in any order (e.g. SQL without ORDER BY, #203). */
+  | { typ: "utdata"; forvantat: string; ignoreraVersaler: boolean; friOrdning?: boolean }
   | { typ: "variabler"; forvantat: Record<string, unknown> }
   | { typ: "funktion"; namn: string; tester: { indata: unknown[]; svar: unknown }[] }
   /** A file the program must have written: its content is compared line by line like output. */

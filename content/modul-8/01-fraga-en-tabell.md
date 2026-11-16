@@ -115,7 +115,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "dryck\nbakverk"}
+ratta: {utdata: "dryck\nbakverk", ordning: fri}
 ledtradar:
   - Kolumnen kategori har samma värde på flera rader.
   - SELECT DISTINCT tar bort dubbletter.

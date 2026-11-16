@@ -98,7 +98,7 @@ export class PyEngine {
     if (k.fel) return { ok: false, meddelanden: [], utdata: k.utdata, fel: k.fel };
     let meddelanden: string[] = [];
     if (ratta.typ === "utdata") {
-      meddelanden = jamforUtdata(k.utdata, ratta.forvantat, ratta.ignoreraVersaler);
+      meddelanden = jamforUtdata(k.utdata, ratta.forvantat, ratta.ignoreraVersaler, ratta.friOrdning);
     } else if (ratta.typ === "fil") {
       const svar = JSON.parse(this.fn("_las_fil")(ratta.namn)) as { finns: boolean; text: string };
       meddelanden = jamforFil(ratta.namn, svar, ratta.forvantat);
@@ -132,7 +132,7 @@ export class PyEngine {
       meddelanden.push(...saknas.map(kravMeddelande));
     }
     let notering: string | undefined;
-    if (meddelanden.length === 0 && ratta.typ === "utdata" && ratta.ignoreraVersaler && jamforUtdata(k.utdata, ratta.forvantat, false).length > 0) {
+    if (meddelanden.length === 0 && ratta.typ === "utdata" && ratta.ignoreraVersaler && jamforUtdata(k.utdata, ratta.forvantat, false, ratta.friOrdning).length > 0) {
       notering = "Här spelade stora och små bokstäver ingen roll, så svaret räknades som rätt fast det inte ser likadant ut.";
     }
     return { ok: meddelanden.length === 0, meddelanden, utdata: k.utdata, fel: null, ...(notering ? { notering } : {}) };

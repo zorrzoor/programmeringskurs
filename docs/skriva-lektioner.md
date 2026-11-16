@@ -100,7 +100,7 @@ facit: |
 
 | Skrivsätt | Betyder |
 |---|---|
-| `{utdata: "26000"}` | det som skrivs ut ska vara 26000 (radslut och blanksteg i slutet av rader ignoreras; `ignorera_versaler: true` ignorerar stora/små bokstäver) |
+| `{utdata: "26000"}` | det som skrivs ut ska vara 26000 (radslut och blanksteg i slutet av rader ignoreras; `ignorera_versaler: true` ignorerar stora/små bokstäver; `ordning: fri` godtar raderna i vilken ordning som helst, för uppgifter där ordningen inte är given, som SQL utan `ORDER BY`) |
 | `{variabler: {lon: 26000}}` | efter körningen ska variabeln `lon` ha värdet 26000 |
 | `{funktion: dubbla, tester: [{in: [2], ut: 4}, {in: [0], ut: 0}]}` | deltagarens funktion `dubbla` anropas med `in` och ska svara `ut` |
 

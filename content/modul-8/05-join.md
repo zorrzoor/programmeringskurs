@@ -149,7 +149,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bulle\nkaffe"}
+ratta: {utdata: "bulle\nkaffe", ordning: fri}
 ledtradar:
   - Summera antalet per vara, och filtrera grupperna.
   - HAVING SUM(ordrar.antal) > 3.
