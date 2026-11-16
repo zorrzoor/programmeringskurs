@@ -45,7 +45,7 @@ id: m3-else-betyg
 uppgift: "Variabeln `betyg` finns redan. Skriv ut `Godkänd` om `betyg` är minst 50, annars `Underkänd`."
 start: |
   betyg = 40
-ratta: {utdata: "Underkänd"}
+ratta: {utdata: "Underkänd", fall: [{varden: {betyg: 75}, utdata: "Godkänd"}]}
 ledtradar:
   - Du behöver både en if och en else.
   - else har inget villkor, bara ett kolon, och raderna under har indrag.
@@ -64,7 +64,7 @@ uppgift: "Be om ett tal med `int(input())` och skriv ut `Jämnt` om talet är j�
 start: |
   # skriv din kod här
 stdin: ["7"]
-ratta: {utdata: "Udda"}
+ratta: {utdata: "Udda", fall: [{stdin: ["8"], utdata: "Jämnt"}]}
 ledtradar:
   - Börja med att läsa in talet och göra om det till ett heltal.
   - "Jämnt betyder att resten vid delning med 2 är 0: tal % 2 == 0."

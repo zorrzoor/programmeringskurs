@@ -60,6 +60,7 @@ forklaring: "/ ger ett tal med decimaler. Python skriver decimaltal med punkt."
 ```ovning
 id: m1-rakna-uttryck
 uppgift: "Skriv ut vad `12 * 4 + 3` blir."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "51"}

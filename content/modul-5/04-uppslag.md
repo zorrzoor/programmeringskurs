@@ -44,6 +44,7 @@ forklaring: "Uppslaget har nycklarna kaffe och te. Slår du upp te får du 25."
 ```ovning
 id: m5-uppslag-skapa
 uppgift: "Skapa ett uppslag `bil` med nycklarna `marke` (värdet `Volvo`) och `ar` (värdet `2020`), och skriv ut märket."
+krav: ["uppslag"]
 start: |
   # skriv din kod här
 ratta: {utdata: "Volvo"}

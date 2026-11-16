@@ -298,3 +298,17 @@ test("Python's words are never linked from running text (#205)", () => {
   assert.equal((l.block[0] as { markdown: string }).markdown.includes("#/ordlista/"), false);
 });
 
+test("ratta.fall: more cases for an output exercise, validated (#204)", () => {
+  const med = (ratta: string) => parse(OVNING().replace('ratta: {utdata: "26000"}', `ratta: ${ratta}`));
+  const b = med('{utdata: "26000", fall: [{varden: {lon: 1}, utdata: "1001"}, {stdin: ["3"], utdata: "x"}]}').block.find((x) => x.typ === "ovning");
+  assert.deepEqual(b && b.typ === "ovning" ? b.ratta : null, {
+    typ: "utdata",
+    forvantat: "26000",
+    ignoreraVersaler: false,
+    fall: [{ utdata: "1001", varden: { lon: 1 } }, { utdata: "x", stdin: ["3"] }],
+  });
+  assert.throws(() => med('{utdata: "1", fall: []}'), /ratta.fall/);
+  assert.throws(() => med('{utdata: "1", fall: [{utdata: "2"}]}'), /ratta.fall/);
+  assert.throws(() => med('{utdata: "1", fall: [{varden: {}, utdata: "2"}]}'), /varden/);
+});
+

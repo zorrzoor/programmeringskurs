@@ -12,6 +12,37 @@ beforeAll(async () => {
   e = new PyEngine((await loadPyodide()) as unknown as PyodideLite);
 }, 60_000);
 
+// #204: printing a given text (or writing a comment) is the task itself.
+const LISTA_UTSKRIFT: string[] = [
+  "m0-forsta-program-tva", "m0-forsta-program-tre", "m1-print-tre-rader",
+  "m1-print-tom-rad", "m1-kommentar-skriv-egen",
+];
+// #204: not converted yet (83 exercises, follow-up issue). Remove an id when its exercise gets `fall` or `krav`;
+// the second test fails until it is removed, so the list can only shrink.
+const LISTA_INTE_KLARA: string[] = [
+  "m2-andra-lon", "m2-andra-dubbla", "m2-tal-text-rakna", "m2-input-hej",
+  "m2-input-alder", "m5-listor-andra", "m5-listor-antal", "m5-andra-lagg-till",
+  "m5-andra-sortera", "m5-andra-finns", "m5-uppslag-andra", "m5-poster-namn-over",
+  "m5-poster-totalpris", "m5-unika-antal", "m5-unika-lista", "m5-unika-ordning",
+  "m5-delar-forsta", "m5-delar-storsta", "m5-delar-minsta", "m5-gruppera-skriv",
+  "m5-gruppera-minst", "m5-gruppera-antal", "m5-blandat-storst", "m5-blandat-ordrakning",
+  "m5-blandat-medelvarde", "m7-lasa-antal-rader", "m7-lasa-hej", "m7-csv-varor",
+  "m7-csv-antal-delar", "m7-rakna-te", "m7-rakna-dyraste", "m7-rakna-medelpris",
+  "m7-grupp-omsattning", "m7-grupp-basta", "m7-grupp-sorterat", "m7-diagram-omsattning",
+  "m7-diagram-enheter", "m7-topp-rangordning", "m7-topp-sist", "m7-topp-tva",
+  "m7-sv-medel", "m7-sv-hoga", "m7-blandat-per-kund", "m7-blandat-diagram",
+  "m8-select-kolumner", "m8-select-distinct", "m8-where-billiga", "m8-where-och",
+  "m8-where-like", "m8-sortera-namn", "m8-sortera-dyrast", "m8-sortera-billigaste",
+  "m8-grupp-summa", "m8-grupp-medel", "m8-grupp-having", "m8-join-omsattning",
+  "m8-join-kategori", "m8-join-manga", "m8-blandat-antal-drycker", "m8-blandat-dyraste-bakverk",
+  "m8-blandat-total", "m9-budget-total", "m9-budget-rapport", "m9-budget-hela",
+  "m9-fraga-en", "m9-fraga-alla", "m9-rapport-total", "m9-rapport-per-projekt",
+  "m9-rapport-diagram", "m10-counter-antal", "m10-counter-vanligaste", "m10-text-antal-ord",
+  "m10-text-titel", "m10-datum-dagar", "m10-datum-framat", "m10-slump-tarning",
+  "m10-slump-val", "m10-slump-fem", "m10-slump-blanda", "m10-regex-summa",
+  "m10-regex-mellanslag", "m10-blandat-vanligast", "m10-blandat-dagar",
+];
+
 const ovningar = alla().flatMap((l) => uppgifter(l).filter((b) => b.typ === "ovning").map((b) => ({ lektion: l.id, b })));
 const forutsagelser = alla().flatMap((l) => uppgifter(l).filter((b) => b.typ === "forutsag").map((b) => ({ lektion: l.id, b })));
 
@@ -24,6 +55,43 @@ describe("every exercise", () => {
     expect(facit.ok).toBe(true);
     const start = e.kontrollera(b.start, b.ratta, { stdin: b.stdin, filer: b.filer });
     expect(start.ok, "the start code must not already pass (then there is nothing to do)").toBe(false);
+  });
+
+  // #204: an exercise rated on its output must not pass a program that only prints the answer (the start code kept, so
+  // its variables exist). That takes several cases (`fall`) or a `krav`. Exceptions, each with its reason:
+  // UTSKRIFT_AR_UPPGIFTEN: printing a given text is the task itself. INTE_KLARA: not converted yet (#204), may only shrink.
+  const UTSKRIFT_AR_UPPGIFTEN = new Set<string>(LISTA_UTSKRIFT);
+  const INTE_KLARA = new Set<string>(LISTA_INTE_KLARA);
+  test("a program that only prints the answer does not pass (#204)", () => {
+    const godkanda: string[] = [];
+    for (const { b } of ovningar) {
+      if (b.typ !== "ovning" || b.ratta.typ !== "utdata" || UTSKRIFT_AR_UPPGIFTEN.has(b.id) || INTE_KLARA.has(b.id)) continue;
+      const rader = normalisera(b.ratta.forvantat, false);
+      const fusk = `${b.start}\n${rader.map((r) => `print(${JSON.stringify(r)})`).join("\n")}\n`;
+      const k = e.kontrollera(fusk, b.ratta, { stdin: b.stdin, filer: b.filer, krav: b.krav });
+      if (k.ok) godkanda.push(b.id);
+    }
+    expect(godkanda, "these pass by printing the answer: add `fall` or `krav`").toEqual([]);
+  });
+
+  test("a case that fails says which values and what was expected (#204)", () => {
+    const b = ovningar.find((o) => o.b.id === "m3-else-betyg")?.b;
+    if (b?.typ !== "ovning") throw new Error("m3-else-betyg");
+    const k = e.kontrollera(`${b.start}\nprint("Underkänd")\n`, b.ratta, {});
+    expect(k.ok).toBe(false);
+    expect(k.meddelanden.join(" ")).toContain("när `betyg` är `75` ska utskriften vara `Godkänd`, men programmet skrev `Underkänd`");
+    // A name the code never assigns is set first, so a program that ignores the variable fails too.
+    expect(e.kontrollera('print("Underkänd")\n', b.ratta, {}).ok).toBe(false);
+  });
+
+  test("the lists of exceptions only name exercises that exist and still need it (#204)", () => {
+    const ids = new Set(ovningar.map((o) => o.b.id));
+    for (const id of [...UTSKRIFT_AR_UPPGIFTEN, ...INTE_KLARA]) expect(ids.has(id), `${id} is not an exercise`).toBe(true);
+    for (const { b } of ovningar) {
+      if (b.typ !== "ovning" || b.ratta.typ !== "utdata" || !INTE_KLARA.has(b.id)) continue;
+      const fusk = `${b.start}\n${normalisera(b.ratta.forvantat, false).map((r) => `print(${JSON.stringify(r)})`).join("\n")}\n`;
+      expect(e.kontrollera(fusk, b.ratta, { stdin: b.stdin, filer: b.filer, krav: b.krav }).ok, `${b.id} is fixed: remove it from INTE_KLARA`).toBe(true);
+    }
   });
 
   test("each exercise has a task text and three real hints", () => {

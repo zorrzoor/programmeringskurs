@@ -46,6 +46,7 @@ forklaring: "20 hamnar i pris och 3 i antal, eftersom de kommer i den ordningen.
 ```ovning
 id: m6-param-pris
 uppgift: "Skapa en funktion `visa_pris(pris)` som skriver ut `Priset är`, priset och `kr`. Anropa den med `25`, så att det skrivs ut `Priset är 25 kr`."
+krav: ["funktion"]
 start: |
   # skriv din kod här
 ratta: {utdata: "Priset är 25 kr"}
@@ -63,6 +64,7 @@ facit: |
 ```ovning
 id: m6-param-tva
 uppgift: "Skapa en funktion `addera(a, b)` som skriver ut summan av `a` och `b`. Anropa den med `4` och `7`."
+krav: ["funktion"]
 start: |
   # skriv din kod här
 ratta: {utdata: "11"}

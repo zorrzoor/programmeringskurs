@@ -15,7 +15,7 @@ uppgift: "Variablerna `a` och `b` finns redan. Skriv ut det största av dem."
 start: |
   a = 8
   b = 12
-ratta: {utdata: "12"}
+ratta: {utdata: "12", fall: [{varden: {a: 20, b: 3}, utdata: "20"}]}
 ledtradar:
   - Du behöver jämföra a och b och välja en av dem.
   - Använd if och else.
@@ -34,7 +34,7 @@ id: m3-blandat-skottar
 uppgift: "Variabeln `ar` finns redan. Skriv ut `Skottår` om året är delbart med 4 men inte med 100, eller om det är delbart med 400, annars `Inte skottår`."
 start: |
   ar = 2024
-ratta: {utdata: "Skottår"}
+ratta: {utdata: "Skottår", fall: [{varden: {ar: 1900}, utdata: "Inte skottår"}, {varden: {ar: 2000}, utdata: "Skottår"}, {varden: {ar: 2023}, utdata: "Inte skottår"}]}
 ledtradar:
   - "Delbart med 4 betyder ar % 4 == 0."
   - "Du behöver and och or, och parenteser kring den första delen."
@@ -53,7 +53,7 @@ uppgift: "Be om ett belopp med `int(input())`. Är beloppet minst 1000 får kund
 start: |
   # skriv din kod här
 stdin: ["700"]
-ratta: {utdata: "5"}
+ratta: {utdata: "5", fall: [{stdin: ["1200"], utdata: "10"}, {stdin: ["100"], utdata: "0"}]}
 ledtradar:
   - Läs in beloppet, och använd en if-kedja.
   - Börja med den största gränsen (1000), sedan 500, och else för resten.

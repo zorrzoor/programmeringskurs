@@ -48,6 +48,7 @@ forklaring: "Definitionen skriver ingenting ut. Först körs print(B), sedan anr
 ```ovning
 id: m6-funktion-skapa
 uppgift: "Skapa en funktion `tack` som skriver ut `Tack!`, och anropa den två gånger."
+krav: ["funktion"]
 start: |
   # skriv din kod här
 ratta: {utdata: "Tack!\nTack!"}

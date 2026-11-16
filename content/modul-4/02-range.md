@@ -65,6 +65,7 @@ forklaring: "range(2, 7) ger talen 2, 3, 4, 5 och 6, alltså fem varv. Det är s
 ```ovning
 id: m4-range-ett-till-fem
 uppgift: "Skriv ut talen från `1` till och med `5`, ett per rad."
+krav: ["loop"]
 start: |
   # skriv din kod här
 ratta: {utdata: "1\n2\n3\n4\n5"}

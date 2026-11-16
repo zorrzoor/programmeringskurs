@@ -28,6 +28,7 @@ facit: |
 ```ovning
 id: m4-blandat-jamna-summa
 uppgift: "Summera alla jämna tal från `1` till och med `20` (alltså `2 + 4 + … + 20`) och skriv ut summan."
+krav: ["loop"]
 start: |
   # skriv din kod här
 ratta: {utdata: "110"}
@@ -46,6 +47,7 @@ facit: |
 ```ovning
 id: m4-blandat-fizz
 uppgift: "För varje tal från `1` till och med `15`: skriv ut `Fizz` om talet är delbart med 3, annars talet självt."
+krav: ["loop"]
 start: |
   # skriv din kod här
 ratta: {utdata: "1\n2\nFizz\n4\n5\nFizz\n7\n8\nFizz\n10\n11\nFizz\n13\n14\nFizz"}
