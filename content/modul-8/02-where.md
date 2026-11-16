@@ -88,7 +88,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "te\nbulle\nkaka"}
+ratta: {utdata: "te\nbulle\nkaka", ordning: fri}
 ledtradar:
   - Du behöver ett villkor på kolumnen pris.
   - "Högst 25 betyder mindre än eller lika med: <=."
@@ -118,7 +118,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "kaffe\nte"}
+ratta: {utdata: "kaffe\nte", ordning: fri}
 ledtradar:
   - "Två villkor ska gälla samtidigt: kategori och pris."
   - Förena dem med AND.
@@ -148,7 +148,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "kaffe\nkaka"}
+ratta: {utdata: "kaffe\nkaka", ordning: fri}
 ledtradar:
   - LIKE jämför text med ett mönster.
   - Mönstret för "börjar på k" är 'k%'.

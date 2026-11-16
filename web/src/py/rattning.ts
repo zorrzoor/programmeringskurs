@@ -25,10 +25,31 @@ export function skillnad(rad: number, skrev: string, ville: string, vad: string)
   return null;
 }
 
+/**
+ * Lines in any order (#203): the same lines, each as many times, count as right. Otherwise say which lines are missing
+ * and which should not be there, without line numbers (they mean nothing here).
+ */
+function jamforUtanOrdning(a: string[], f: string[]): string[] {
+  const kvar = [...f];
+  const extra: string[] = [];
+  for (const r of a) {
+    const i = kvar.indexOf(r);
+    if (i >= 0) kvar.splice(i, 1);
+    else extra.push(r);
+  }
+  if (kvar.length === 0 && extra.length === 0) return [];
+  if (a.length === 0) return ["Programmet skrev inte ut något. Glömde du `print(...)`?"];
+  const messages = ["Ordningen på raderna spelar ingen roll här, men innehållet stämmer inte."];
+  if (kvar.length > 0) messages.push(`Det saknas: ${kvar.map(visa).join(", ")}`);
+  if (extra.length > 0) messages.push(`Det här ska inte vara med: ${extra.map(visa).join(", ")}`);
+  return messages;
+}
+
 /** Messages for output that is not the expected one; an empty list when it matches. */
-export function jamforUtdata(faktisk: string, forvantat: string, ignoreraVersaler: boolean): string[] {
+export function jamforUtdata(faktisk: string, forvantat: string, ignoreraVersaler: boolean, friOrdning = false): string[] {
   const a = normalisera(faktisk, ignoreraVersaler);
   const f = normalisera(forvantat, ignoreraVersaler);
+  if (friOrdning) return jamforUtanOrdning(a, f);
   if (a.length === f.length && a.every((r, i) => r === f[i])) return [];
   if (a.length === 0) return ["Programmet skrev inte ut något. Glömde du `print(...)`?"];
   const rader = a.map((r, i) => ({ r, i })).find(({ r, i }) => r !== f[i]);

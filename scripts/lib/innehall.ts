@@ -47,7 +47,8 @@ function rattaOf(raw: unknown, file: string, line: number): Ratta {
   if (kinds.length !== 1) throw new ContentError(file, line, 'ovning: "ratta" ska ha exakt en av utdata, variabler, funktion, fil');
   if (kinds[0] === "utdata") {
     if (typeof r.utdata !== "string") throw new ContentError(file, line, 'ovning: ratta.utdata ska vara text (skriv t.ex. "26000")');
-    return { typ: "utdata", forvantat: r.utdata, ignoreraVersaler: r.ignorera_versaler === true };
+    if (r.ordning !== undefined && r.ordning !== "fri") throw new ContentError(file, line, 'ovning: ratta.ordning kan bara vara "fri" (raderna får komma i vilken ordning som helst)');
+    return { typ: "utdata", forvantat: r.utdata, ignoreraVersaler: r.ignorera_versaler === true, ...(r.ordning === "fri" ? { friOrdning: true } : {}) };
   }
   if (kinds[0] === "fil") {
     if (typeof r.fil !== "string" || !FILNAMN_RE.test(r.fil)) throw new ContentError(file, line, "ovning: ratta.fil ska vara ett filnamn utan katalog, t.ex. resultat.csv");

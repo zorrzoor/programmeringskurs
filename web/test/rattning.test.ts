@@ -67,4 +67,24 @@ describe("skillnad: the rating is strict but says what differs", () => {
       expect(kravMeddelande(k)).toMatch(/^Uppgiften ber/);
     }
   });
+
+  describe("lines in any order (#203)", () => {
+    test("the same lines in another order are right, but only with ordning: fri", () => {
+      expect(jamforUtdata("kaffe\nbulle\n", "bulle\nkaffe", false, true)).toEqual([]);
+      expect(jamforUtdata("kaffe\nbulle\n", "bulle\nkaffe", false)).not.toEqual([]);
+    });
+
+    test("missing and extra lines are named, a line counts as often as it is wanted", () => {
+      expect(jamforUtdata("te\nkaka\n", "te\nbulle\nkaka", false, true)).toEqual([
+        "Ordningen på raderna spelar ingen roll här, men innehållet stämmer inte.",
+        "Det saknas: `bulle`",
+      ]);
+      expect(jamforUtdata("te\nte\n", "te", false, true)).toEqual([
+        "Ordningen på raderna spelar ingen roll här, men innehållet stämmer inte.",
+        "Det här ska inte vara med: `te`",
+      ]);
+      expect(jamforUtdata("", "te", false, true)).toEqual(["Programmet skrev inte ut något. Glömde du `print(...)`?"]);
+    });
+  });
 });
+
