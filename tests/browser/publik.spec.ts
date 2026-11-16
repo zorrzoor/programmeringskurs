@@ -31,6 +31,16 @@ test("a name with a code: shown once, remembered on the device, required elsewhe
   await page.reload();
   await expect(page.getByText(`Du är ${namn}`)).toBeVisible();
 
+  // On a shared computer: "Glöm mig" removes the code from this device, and opening the name needs it again (#198).
+  await page.getByRole("button", { name: "Glöm mig på den här enheten" }).click();
+  await expect(page.getByText(`${namn} är glömt på den här enheten.`)).toBeVisible();
+  await page.locator("#sok-namn").fill(namn.slice(0, 8));
+  await page.getByRole("button", { name: namn, exact: true }).click();
+  await expect(page.locator("#kod")).toBeVisible();
+  await page.locator("#kod").fill(kod);
+  await page.getByRole("button", { name: "Öppna" }).click();
+  await expect(page.getByText(`Du är ${namn}`)).toBeVisible();
+
   // Another device sees the name in the list but needs the code.
   const other = await browser.newContext({ baseURL: url });
   const p2 = await other.newPage();

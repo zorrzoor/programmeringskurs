@@ -71,7 +71,8 @@ async function start(name: string): Promise<void> {
     await s.load();
     sync = s;
     void koerare.start().catch(() => {}); // load Python in the background while the learner reads
-    app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, () => choose());
+    const glom = config().lage === "publik" ? () => void forget(name, s) : undefined;
+    app = startApp(root as HTMLElement, name, s, { koerare, editor: skapaCodeMirror }, () => choose(), glom);
     app.setStatus(s.status);
   } catch (err) {
     const what = loadFailure(err, config().lage);
@@ -79,6 +80,25 @@ async function start(name: string): Promise<void> {
     if (what.glomKod) glomKod(name);
     choose(what.notice);
   }
+}
+
+/**
+ * "Glöm mig på den här enheten" (public instance, #198): on a computer that others use too, the next person could open the
+ * name without the code. Sends what is queued first; what cannot be sent is lost from this device, so ask before that.
+ */
+async function forget(name: string, s: ProgressSync): Promise<void> {
+  await s.flush();
+  if (s.status !== "sparat" && s.status !== "avvisad") {
+    const ok = window.confirm("Allt du gjort är inte sparat på servern än. Glömmer du namnet nu försvinner det osparade från den här enheten. Fortsätta?");
+    if (!ok) return;
+  }
+  glomKod(name);
+  try {
+    localStorage.removeItem(`kurs.ko.${name}`);
+  } catch {
+    // nothing stored
+  }
+  choose(`${name} är glömt på den här enheten. Nästa gång behövs koden för att öppna namnet.`);
 }
 
 /** The server does not answer (restarting, #190): nothing is forgotten, and the learner can try again. */
