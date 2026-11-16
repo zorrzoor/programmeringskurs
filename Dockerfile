@@ -1,7 +1,7 @@
 # The course: a small Node.js server (no npm dependencies at run time) that serves the built site and
 # stores progress in SQLite. Node runs the TypeScript of the server directly (type stripping), so the
 # server needs no build step; only the site (web/) is built, in the first stage.
-FROM docker.io/library/node:24-alpine@sha256:ec318aabf188af4e5488847eea4b24452650b9917140563e140762526a37f1df AS build
+FROM docker.io/library/node:24-alpine@sha256:d8d97e479cdc64f052f81f129362168717c59783ade8dcc1abd22e1cca8dbd7c AS build
 WORKDIR /src
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
@@ -10,7 +10,7 @@ COPY scripts/ ./scripts/
 COPY content/ ./content/
 RUN npm run build
 
-FROM docker.io/library/node:24-alpine@sha256:ec318aabf188af4e5488847eea4b24452650b9917140563e140762526a37f1df
+FROM docker.io/library/node:24-alpine@sha256:d8d97e479cdc64f052f81f129362168717c59783ade8dcc1abd22e1cca8dbd7c
 # Runs as an unprivileged user (1000 here, 10001 in the cluster); the database directory is a mounted volume.
 WORKDIR /app
 COPY server/ ./server/
