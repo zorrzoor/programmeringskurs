@@ -5,10 +5,11 @@ SHELL := bash
 MAKEFLAGS += --no-builtin-rules
 
 RUNTIME ?= podman
-# Same base as the Dockerfile (Dependabot watches the Dockerfile; `make lint` checks that they agree).
+# The base image of the Dockerfile, read from it (Renovate watches the Dockerfile).
 NODE_IMAGE := $(shell sed -n 's/^FROM \(docker.io\/library\/node:[^ ]*\).*/\1/p' Dockerfile | head -1)
 PORT ?= 8080
-# Same version as @playwright/test in package.json (Dependabot keeps both; the browser must match the library).
+# Same version as @playwright/test in package.json: the browser must match the library. Renovate bumps both in one PR
+# (renovate.json) and `make lint` (scripts/check-repo.sh) fails when they differ (#193).
 PLAYWRIGHT_IMAGE := mcr.microsoft.com/playwright:v1.64.1-resolute@sha256:5804dd8c666684ea858091d52c91ef97974caa999b25f0f03efa485d9ffeb434
 
 NODE_RUN = $(RUNTIME) run --rm -i --userns=keep-id --user "$$(id -u):$$(id -g)" \

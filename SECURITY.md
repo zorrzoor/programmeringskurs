@@ -19,3 +19,15 @@ ska bli gamla och sårbara öppnar Renovate varje måndag PR:ar med nya versione
 kända sårbarheter kommer direkt. Varje PR går igenom hela CI (tester, webbläsartester, test av imagen) och mergas för
 hand: inget uppdateras utan att allt är grönt. Nya huvudversioner av körmiljöer väljs för hand. På GitHub är Dependabot
 alerts, secret scanning med push protection och privat sårbarhetsrapportering påslagna.
+
+Några låsta versioner sköts för hand, eftersom de följer något annat eller har en kontrollsumma som Renovate inte kan
+räkna om (#193):
+
+- `KUBECTL_VERSION` och `-kubernetes-version` (CI, `scripts/validate-deploy.sh`) följer k3s i klustret och höjs när det
+  uppgraderas (k3s_hosting).
+- `KUBECONFORM_VERSION` med `KUBECONFORM_SHA256` i CI: kontrollsumman måste räknas om med versionen.
+- `EE_IMAGE` (`make validate`) pekar på minor-taggen `1.6` av den gemensamma EE:n, utan digest: den används bara för
+  att validera manifesten lokalt.
+
+Playwright-imagen i `Makefile` och flux-CLI:t i CI följs av Renovate. Imagen höjs i samma PR som `@playwright/test`, och
+`make lint` fallerar om versionerna skiljer sig.

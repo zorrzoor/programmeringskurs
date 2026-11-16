@@ -2,6 +2,25 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["github>zorrzoor/ee//renovate/default"],
   "description": "Weekly (Mondays, from the shared preset), grouped; security fixes at any time; every PR runs the full CI (tests, browser tests, image smoke test) and is merged by hand.",
+  "customManagers": [
+    {
+      "description": "The Playwright image in the Makefile (browser tests), with its digest. Must have the same version as @playwright/test, so it is in the npm group (#193)",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Makefile$/"],
+      "matchStrings": ["PLAYWRIGHT_IMAGE := (?<depName>mcr\\.microsoft\\.com/playwright):(?<currentValue>v[0-9.]+-[a-z]+)@(?<currentDigest>sha256:[0-9a-f]{64})"],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>[a-z]+)$"
+    },
+    {
+      "description": "The flux CLI in the publish job (pushes deploy/ as an OCI artifact)",
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/ci\\.yml$/"],
+      "matchStrings": ["fluxcd/flux2/action@\\S+[^\\n]*\\n\\s+with:\\n\\s+version: (?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "fluxcd/flux2",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    }
+  ],
   "packageRules": [
     {
       "description": "TypeScript major is chosen by hand (versionsregeln): 7.0 came out 2026-08-20, less than six months ago. Revisit around 2027-02",
@@ -11,6 +30,11 @@
     },
     {
       "matchManagers": ["npm"],
+      "groupName": "npm"
+    },
+    {
+      "description": "The Playwright browser image follows @playwright/test in the same PR (#193)",
+      "matchPackageNames": ["mcr.microsoft.com/playwright"],
       "groupName": "npm"
     },
     {
