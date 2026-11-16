@@ -5,6 +5,7 @@ import { DatabaseSync } from "node:sqlite";
 import { DEFAULT_MAX_NAMES } from "./config.ts";
 import { hashCode, nameKey, sameHash } from "./validate.ts";
 
+
 export interface Exercise {
   kod: string;
   klar: boolean;
@@ -135,16 +136,30 @@ export class Store {
    * device must not make a finished exercise unfinished). Returns the stored state, or null
    * when there is no such name.
    */
-  saveExercise(name: string, id: string, update: { kod?: string; klar?: boolean; tid: number }): Exercise | null {
+  /**
+   * "The newest save wins", by the time the client sends. A device with its clock in the future would otherwise give the
+   * exercise that time, and every later save with the right clock would count as older and be dropped (#196). So no time
+   * after the server's `now` is stored, and a stored time from the future (saved before this check) cannot be trusted and
+   * counts as the oldest, so the next save wins.
+   */
+  saveExercise(
+    name: string,
+    id: string,
+    update: { kod?: string; klar?: boolean; tid: number },
+    now = Date.now(),
+  ): Exercise | null {
     const personId = this.personId(name);
     if (personId === null) return null;
     const old = this.db
       .prepare("SELECT code, done, updated_at FROM exercises WHERE person_id = ? AND exercise_id = ?")
       .get(personId, id);
-    const newer = !old || update.tid >= Number(old.updated_at);
+    const tid = Math.min(update.tid, now);
+    const stored = old ? Number(old.updated_at) : 0;
+    const oldTid = stored > now ? 0 : stored;
+    const newer = !old || tid >= oldTid;
     const code = update.kod !== undefined && newer ? update.kod : old ? String(old.code) : (update.kod ?? "");
     const done = Boolean(old?.done) || update.klar === true;
-    const time = old ? Math.max(Number(old.updated_at), update.tid) : update.tid;
+    const time = old ? Math.max(oldTid, tid) : tid;
     this.db
       .prepare(
         `INSERT INTO exercises (person_id, exercise_id, code, done, updated_at) VALUES (?, ?, ?, ?, ?)
