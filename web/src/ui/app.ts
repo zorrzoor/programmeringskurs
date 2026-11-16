@@ -57,6 +57,7 @@ export function startApp(
     klarNu: () => {},
   };
   const visa = () => {
+    bas.koerare.avbryt?.(); // a program waiting for input() on the old page would hold up the next run (#191)
     const vy = tolka(location.hash);
     const l = vy.vy === "lektion" ? hittaLektion(vy.id) : undefined;
     if (l) {

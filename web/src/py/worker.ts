@@ -1,5 +1,5 @@
 // The Web Worker that owns Pyodide, so that the page stays responsive and a program that never ends can be stopped by
-// terminating the worker. Messages in: start, kor, kontrollera. Out: klar, utdata, input, resultat.
+// terminating the worker. Messages in: start, kor, kontrollera. Out: klar, fel (loading failed), utdata, input, resultat.
 // input(): the worker blocks on a SharedArrayBuffer until the page has the learner's answer (needs cross-origin
 // isolation, which the server sets with COOP and COEP headers).
 import type { Filer, Ratta } from "../kurs-typer.ts";
@@ -45,9 +45,14 @@ scope.onmessage = async (ev) => {
       state = new Int32Array(m.sab, 0, 2);
       text = new Uint8Array(m.sab, 8);
     }
-    const { loadPyodide } = (await import(/* @vite-ignore */ `${m.indexURL}pyodide.mjs`)) as { loadPyodide: (o: { indexURL: string }) => Promise<unknown> };
-    engine = new PyEngine((await loadPyodide({ indexURL: m.indexURL })) as PyodideLite);
-    scope.postMessage({ typ: "klar" });
+    try {
+      const { loadPyodide } = (await import(/* @vite-ignore */ `${m.indexURL}pyodide.mjs`)) as { loadPyodide: (o: { indexURL: string }) => Promise<unknown> };
+      engine = new PyEngine((await loadPyodide({ indexURL: m.indexURL })) as PyodideLite);
+      scope.postMessage({ typ: "klar" });
+    } catch (err) {
+      // e.g. the network dropped while fetching the ~10 MB, or the server restarted: the page shows an error (#192)
+      scope.postMessage({ typ: "fel", text: String(err) });
+    }
     return;
   }
   if (!engine) return;

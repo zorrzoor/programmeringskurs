@@ -245,6 +245,14 @@ const REGLER: Regel[] = [
     }),
   },
   {
+    typ: /^_Avbrutet$/,
+    gor: () => ({
+      rubrik: "Programmet avbröts",
+      forklaring: "Programmet väntade på ditt svar när du körde något annat, så det stoppades.",
+      tips: "Kör det igen och svara i rutan, eller tryck Stoppa innan du går vidare.",
+    }),
+  },
+  {
     typ: /^_ForMycket$/,
     gor: () => ({
       rubrik: "Programmet skrev ut för mycket",

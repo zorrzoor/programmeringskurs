@@ -15,6 +15,8 @@ export interface KoerareLike {
   kontrollera(kod: string, ratta: Extract<Block, { typ: "ovning" }>["ratta"], v?: KorValj): Promise<Kontroll>;
   stega(kod: string, v?: KorValj): Promise<StegResultat>;
   stoppaWorker(): void;
+  /** Stops what is running when the page is replaced (#191). */
+  avbryt?(): void;
 }
 
 export interface Kontext {
@@ -69,7 +71,7 @@ function skapaKorning(ctx: Kontext, stdin: string[], ut: Utdata, hamtaKod: () =>
         });
         yta.append(sv.rot);
       } catch {
-        ut.meddela("Python kunde inte laddas. Ladda om sidan och försök igen.", "fel");
+        ut.meddela("Python kunde inte laddas. Kontrollera nätet och tryck igen, eller ladda om sidan.", "fel");
       } finally {
         (stegKnapp as HTMLButtonElement).disabled = false;
       }
@@ -95,7 +97,7 @@ function skapaKorning(ctx: Kontext, stdin: string[], ut: Utdata, hamtaKod: () =>
         return r;
       } catch {
         tillstand(false);
-        ut.meddela("Python kunde inte laddas. Ladda om sidan och försök igen.", "fel");
+        ut.meddela("Python kunde inte laddas. Kontrollera nätet och tryck igen, eller ladda om sidan.", "fel");
         return undefined;
       }
     },
