@@ -66,7 +66,7 @@ id: m7-diagram-omsattning
 uppgift: "Rita omsättningen per vara (antal gånger pris) som staplar där varje `#` är tio hela kronor (använd `// 10`, så att 75 kr blir sju `#`), på formen `kaffe: ############`. Varorna i den ordning de först förekommer."
 start: |
   import csv
-ratta: {utdata: "kaffe: ############\nte: #######\nbulle: ######"}
+ratta: {utdata: "kaffe: ############\nte: #######\nbulle: ######", fall: [{andra_tal: true, utdata: "kaffe: #############################################################\nte: ########################################\nbulle: ###########################"}]}
 ledtradar:
   - Räkna först ut omsättningen per vara, till exempel 120 för kaffe.
   - Antalet staplar får du med summa // 10.
@@ -88,7 +88,7 @@ id: m7-diagram-enheter
 uppgift: "Rita antal sålda enheter per vara, med ett `#` per enhet, men skriv bara ut de varor där minst 4 enheter såldes."
 start: |
   import csv
-ratta: {utdata: "kaffe: ####\nbulle: ####"}
+ratta: {utdata: "kaffe: ####\nbulle: ####", fall: [{andra_tal: true, utdata: "kaffe: ##########\nte: ########\nbulle: #########"}]}
 ledtradar:
   - Räkna antal per vara i ett uppslag.
   - Använd en if i loopen över uppslaget, så att bara varor med minst 4 skrivs ut.

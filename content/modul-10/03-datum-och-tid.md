@@ -55,6 +55,7 @@ forklaring: "Februari 2026 har 28 dagar (2026 är inte ett skottår), så skilln
 ```ovning
 id: m10-datum-dagar
 uppgift: "Skriv ut hur många dagar det är mellan 2026-10-18 och 2026-12-24."
+krav: ["anropa:date"]
 start: |
   from datetime import date
 ratta: {"utdata": "67"}
@@ -71,6 +72,7 @@ facit: |
 ```ovning
 id: m10-datum-framat
 uppgift: "Skriv ut datumet 100 dagar efter 2026-01-01, på formen 2026-04-11."
+krav: ["anropa:timedelta"]
 start: |
   from datetime import date, timedelta
 ratta: {"utdata": "2026-04-11"}

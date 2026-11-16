@@ -58,7 +58,7 @@ start: |
       {"namn": "Bo", "alder": 25},
       {"namn": "Cia", "alder": 41},
   ]
-ratta: {utdata: "Anna\nCia"}
+ratta: {utdata: "Anna\nCia", fall: [{varden: {"personer": [{"namn": "Anna", "alder": 61}, {"namn": "Bo", "alder": 51}, {"namn": "Cia", "alder": 83}]}, utdata: "Anna\nBo\nCia"}]}
 ledtradar:
   - Gå igenom listan, och kontrollera åldern för varje person.
   - Använd if med p["alder"] > 28 och skriv ut p["namn"].
@@ -82,7 +82,7 @@ start: |
       {"namn": "kaffe", "pris": 30, "antal": 2},
       {"namn": "te", "pris": 25, "antal": 4},
   ]
-ratta: {utdata: "160"}
+ratta: {utdata: "160", fall: [{varden: {"varor": [{"namn": "kaffe", "pris": 61, "antal": 5}, {"namn": "te", "pris": 51, "antal": 9}]}, utdata: "764"}]}
 ledtradar:
   - Skapa en summavariabel före loopen och uppdatera den för varje vara.
   - Det varje vara kostar är pris gånger antal.

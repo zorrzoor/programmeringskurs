@@ -52,7 +52,7 @@ id: m5-delar-forsta
 uppgift: "Listan `tal` finns redan. Skriv ut de tre första elementen som en lista."
 start: |
   tal = [9, 4, 7, 1, 8, 6]
-ratta: {"utdata": "[9, 4, 7]"}
+ratta: {"utdata": "[9, 4, 7]", fall: [{varden: {"tal": [19, 9, 15, 3, 17, 13]}, utdata: "[19, 9, 15]"}]}
 ledtradar:
   - "Du vill ha en del av listan från början."
   - "tal[:3] ger de tre första."
@@ -67,7 +67,7 @@ id: m5-delar-storsta
 uppgift: "Listan `tal` finns redan. Skriv ut de tre största talen som en lista, störst först."
 start: |
   tal = [9, 4, 7, 1, 8, 6]
-ratta: {"utdata": "[9, 8, 7]"}
+ratta: {"utdata": "[9, 8, 7]", fall: [{varden: {"tal": [19, 9, 15, 3, 17, 13]}, utdata: "[19, 17, 15]"}]}
 ledtradar:
   - "Sortera först med störst först, och ta sedan de tre första."
   - "sorted(tal, reverse=True) sorterar fallande."
@@ -82,7 +82,7 @@ id: m5-delar-minsta
 uppgift: "Listan `tal` finns redan. Skriv ut de tre minsta talen som en lista, minst först."
 start: |
   tal = [9, 4, 7, 1, 8, 6]
-ratta: {"utdata": "[1, 4, 6]"}
+ratta: {"utdata": "[1, 4, 6]", fall: [{varden: {"tal": [19, 9, 15, 3, 17, 13]}, utdata: "[3, 9, 13]"}]}
 ledtradar:
   - "Sortera stigande, och ta de första tre."
   - "sorted(tal) sorterar stigande, och [:3] tar de tre första."

@@ -85,7 +85,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "kaffe 30\nte 25\nbulle 15\nkaka 20\njuice 35"}
+ratta: {utdata: "kaffe 30\nte 25\nbulle 15\nkaka 20\njuice 35", fall: [{andra_tal: true, utdata: "kaffe 61\nte 51\nbulle 31\nkaka 41\njuice 71"}]}
 ledtradar:
   - Du vill ha två kolumner från tabellen varor.
   - Skriv kolumnnamnen med komma emellan efter SELECT.
@@ -106,6 +106,7 @@ facit: |
 ```ovning
 id: m8-select-distinct
 uppgift: "Skriv ut vilka kategorier som finns, en gång vardera."
+krav: ["sql:DISTINCT"]
 start: |
   import sqlite3
 

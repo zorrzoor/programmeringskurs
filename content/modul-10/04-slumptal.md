@@ -52,6 +52,7 @@ forklaring: "randint(1, 6) ger alltid ett heltal från 1 till 6, oavsett startv�
 ```ovning
 id: m10-slump-tarning
 uppgift: "Börja med `random.seed(42)` och skriv ut ett slumpat heltal från 1 till 100."
+krav: ["anropa:randint"]
 start: |
   import random
 ratta: {"utdata": "82"}
@@ -73,7 +74,7 @@ start: |
   import random
 
   farger = ["röd", "grön", "blå"]
-ratta: {"utdata": "grön"}
+ratta: {"utdata": "grön", fall: [{varden: {"farger": ["röda", "gröna", "blåa"]}, utdata: "gröna"}]}
 ledtradar:
   - "Sätt startvärdet, och välj sedan ur listan."
   - "random.choice(farger) väljer ett element."
@@ -89,6 +90,7 @@ facit: |
 ```ovning
 id: m10-slump-fem
 uppgift: "Börja med `random.seed(3)` och skriv ut fem tärningskast (heltal 1 till 6), ett per rad."
+krav: ["anropa:randint", "loop"]
 start: |
   import random
 ratta: {"utdata": "2\n5\n5\n2\n3"}
@@ -111,7 +113,7 @@ start: |
   import random
 
   tal = [1, 2, 3, 4, 5]
-ratta: {"utdata": "[1, 2, 4, 3, 5]"}
+ratta: {"utdata": "[1, 2, 4, 3, 5]", fall: [{varden: {"tal": [3, 5, 7, 9, 11]}, utdata: "[3, 5, 9, 7, 11]"}]}
 ledtradar:
   - "shuffle blandar listan på plats, och ger inget tillbaka."
   - "Anropa random.shuffle(tal) och skriv sedan ut tal."

@@ -56,7 +56,7 @@ uppgift: "Be om ett namn med `input()` (lämna parenteserna tomma) och skriv ut 
 start: |
   # skriv din kod här
 stdin: ["Kalle"]
-ratta: {utdata: "Hej Kalle!"}
+ratta: {utdata: "Hej Kalle!", fall: [{stdin: ["Lisa"], utdata: "Hej Lisa!"}]}
 ledtradar:
   - Spara svaret från input() i en variabel.
   - Skriv ut med en f-sträng som innehåller variabeln.
@@ -72,7 +72,7 @@ uppgift: "Be om en ålder med `input()`, gör om svaret till ett heltal med `int
 start: |
   # skriv din kod här
 stdin: ["30"]
-ratta: {utdata: "31"}
+ratta: {utdata: "31", fall: [{stdin: ["61"], utdata: "62"}]}
 ledtradar:
   - Svaret från input är text. Du behöver göra om det till ett tal innan du räknar.
   - int(input()) ger ett heltal direkt.

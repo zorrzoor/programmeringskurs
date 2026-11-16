@@ -76,6 +76,7 @@ forklaring: "Sorterat på pris, dyrast först, är det juice (35) och kaffe (30)
 ```ovning
 id: m8-sortera-namn
 uppgift: "Skriv ut namnen på alla varor i bokstavsordning."
+krav: ["sql:ORDER"]
 start: |
   import sqlite3
 
@@ -106,6 +107,7 @@ facit: |
 ```ovning
 id: m8-sortera-dyrast
 uppgift: "Skriv ut namnet på den dyraste varan."
+krav: ["sql:ORDER"]
 start: |
   import sqlite3
 
@@ -145,7 +147,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bulle 15\nkaka 20\nte 25"}
+ratta: {utdata: "bulle 15\nkaka 20\nte 25", fall: [{andra_tal: true, utdata: "bulle 31\nkaka 41\nte 51"}]}
 ledtradar:
   - Sortera stigande på pris, och begränsa till tre rader.
   - ORDER BY pris (stigande är standard) och LIMIT 3.

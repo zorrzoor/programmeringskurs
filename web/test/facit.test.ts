@@ -17,31 +17,9 @@ const LISTA_UTSKRIFT: string[] = [
   "m0-forsta-program-tva", "m0-forsta-program-tre", "m1-print-tre-rader",
   "m1-print-tom-rad", "m1-kommentar-skriv-egen",
 ];
-// #204: not converted yet (83 exercises, follow-up issue). Remove an id when its exercise gets `fall` or `krav`;
-// the second test fails until it is removed, so the list can only shrink.
-const LISTA_INTE_KLARA: string[] = [
-  "m2-andra-lon", "m2-andra-dubbla", "m2-tal-text-rakna", "m2-input-hej",
-  "m2-input-alder", "m5-listor-andra", "m5-listor-antal", "m5-andra-lagg-till",
-  "m5-andra-sortera", "m5-andra-finns", "m5-uppslag-andra", "m5-poster-namn-over",
-  "m5-poster-totalpris", "m5-unika-antal", "m5-unika-lista", "m5-unika-ordning",
-  "m5-delar-forsta", "m5-delar-storsta", "m5-delar-minsta", "m5-gruppera-skriv",
-  "m5-gruppera-minst", "m5-gruppera-antal", "m5-blandat-storst", "m5-blandat-ordrakning",
-  "m5-blandat-medelvarde", "m7-lasa-antal-rader", "m7-lasa-hej", "m7-csv-varor",
-  "m7-csv-antal-delar", "m7-rakna-te", "m7-rakna-dyraste", "m7-rakna-medelpris",
-  "m7-grupp-omsattning", "m7-grupp-basta", "m7-grupp-sorterat", "m7-diagram-omsattning",
-  "m7-diagram-enheter", "m7-topp-rangordning", "m7-topp-sist", "m7-topp-tva",
-  "m7-sv-medel", "m7-sv-hoga", "m7-blandat-per-kund", "m7-blandat-diagram",
-  "m8-select-kolumner", "m8-select-distinct", "m8-where-billiga", "m8-where-och",
-  "m8-where-like", "m8-sortera-namn", "m8-sortera-dyrast", "m8-sortera-billigaste",
-  "m8-grupp-summa", "m8-grupp-medel", "m8-grupp-having", "m8-join-omsattning",
-  "m8-join-kategori", "m8-join-manga", "m8-blandat-antal-drycker", "m8-blandat-dyraste-bakverk",
-  "m8-blandat-total", "m9-budget-total", "m9-budget-rapport", "m9-budget-hela",
-  "m9-fraga-en", "m9-fraga-alla", "m9-rapport-total", "m9-rapport-per-projekt",
-  "m9-rapport-diagram", "m10-counter-antal", "m10-counter-vanligaste", "m10-text-antal-ord",
-  "m10-text-titel", "m10-datum-dagar", "m10-datum-framat", "m10-slump-tarning",
-  "m10-slump-val", "m10-slump-fem", "m10-slump-blanda", "m10-regex-summa",
-  "m10-regex-mellanslag", "m10-blandat-vanligast", "m10-blandat-dagar",
-];
+// #204, #220: exercises not converted yet. Empty: every output exercise has `fall` or `krav`. Remove an id when its
+// exercise gets one; the second test fails until it is removed, so the list can only shrink.
+const LISTA_INTE_KLARA: string[] = [];
 
 const ovningar = alla().flatMap((l) => uppgifter(l).filter((b) => b.typ === "ovning").map((b) => ({ lektion: l.id, b })));
 const forutsagelser = alla().flatMap((l) => uppgifter(l).filter((b) => b.typ === "forutsag").map((b) => ({ lektion: l.id, b })));

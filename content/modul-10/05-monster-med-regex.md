@@ -61,7 +61,7 @@ start: |
   import re
 
   text = "Köpte 3 äpplen och 12 päron för 45 kr"
-ratta: {"utdata": "60"}
+ratta: {"utdata": "60", fall: [{varden: {"text": "2 bullar och 5 kakor för 30 kr"}, utdata: "37"}]}
 ledtradar:
   - "Hitta alla tal med ett mönster, och lägg ihop dem."
   - "re.findall(r\"\\d+\", text) ger texter, så gör om dem med int(...)."
@@ -83,7 +83,7 @@ start: |
   import re
 
   text = "ett   två    tre"
-ratta: {"utdata": "ett två tre"}
+ratta: {"utdata": "ett två tre", fall: [{varden: {"text": "a  b    c"}, utdata: "a b c"}]}
 ledtradar:
   - "Byt ut varje följd av mellanslag mot ett enda."
   - "\\s+ är ett eller flera mellanslag."

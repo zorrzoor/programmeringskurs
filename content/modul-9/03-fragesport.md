@@ -14,7 +14,7 @@ uppgift: "Skriv ut frågan `Vilken är Sveriges huvudstad?`, läs ett svar med `
 start: |
   # skriv din kod här
 stdin: ["Stockholm"]
-ratta: {"utdata": "Vilken är Sveriges huvudstad?\nRätt!"}
+ratta: {"utdata": "Vilken är Sveriges huvudstad?\nRätt!", fall: [{stdin: ["Göteborg"], utdata: "Vilken är Sveriges huvudstad?\nFel!"}]}
 ledtradar:
   - "Skriv ut frågan med print, och läs svaret med input()."
   - "Jämför svaret med \"Stockholm\" i en if, och använd else för fel."
@@ -64,7 +64,7 @@ start: |
   def ratta(svar, ratt):
       return svar.strip().lower() == ratt.strip().lower()
 stdin: ["stockholm ", "5"]
-ratta: {"utdata": "Vilken är Sveriges huvudstad?\nRätt!\nVad är 2 + 2?\nFel!\nPoäng: 1 av 2"}
+ratta: {"utdata": "Vilken är Sveriges huvudstad?\nRätt!\nVad är 2 + 2?\nFel!\nPoäng: 1 av 2", fall: [{stdin: ["göteborg ", "11"], utdata: "Vilken är Sveriges huvudstad?\nFel!\nVad är 2 + 2?\nFel!\nPoäng: 0 av 2"}]}
 ledtradar:
   - "Gå igenom fragor med en for-loop, och räkna poäng i en variabel som börjar på 0."
   - "Varje fråga är ett uppslag: f[\"fraga\"] och f[\"svar\"]."

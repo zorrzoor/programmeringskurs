@@ -62,6 +62,7 @@ forklaring: "10, plus 5 blir 15, plus 5 blir 20."
 ```ovning
 id: m2-andra-lon
 uppgift: "Sätt `lon = 25000`, höj den med 1000 och skriv ut den nya lönen."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "26000"}
@@ -78,6 +79,7 @@ facit: |
 ```ovning
 id: m2-andra-dubbla
 uppgift: "Sätt `pris = 15`, dubbla det med `*` och skriv ut det nya priset."
+krav: ["uträkning"]
 start: |
   # skriv din kod här
 ratta: {utdata: "30"}

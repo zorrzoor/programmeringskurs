@@ -75,7 +75,7 @@ id: m7-rakna-te
 uppgift: "Skriv ut hur många `te` som såldes sammanlagt (summan av `antal` på de rader där varan är `te`)."
 start: |
   import csv
-ratta: {utdata: "3"}
+ratta: {utdata: "3", fall: [{andra_tal: true, utdata: "8"}]}
 ledtradar:
   - Gå igenom raderna, och använd en if för att bara räkna raderna med te.
   - Lägg till int(rad["antal"]) till en summa som börjar på 0.
@@ -94,6 +94,7 @@ facit: |
 ```ovning
 id: m7-rakna-dyraste
 uppgift: "Skriv ut namnet på den vara som har högst pris. Om flera har samma högsta pris räcker det med den första."
+krav: ["anropa:open"]
 start: |
   import csv
 ratta: {utdata: "kaffe"}
@@ -120,7 +121,7 @@ id: m7-rakna-medelpris
 uppgift: "Skriv ut medelpriset (summan av alla priser delad med antalet rader). Det ska bli `25.0`."
 start: |
   import csv
-ratta: {utdata: "25.0"}
+ratta: {utdata: "25.0", fall: [{andra_tal: true, utdata: "51.0"}]}
 ledtradar:
   - Du behöver både en summa av priserna och ett antal rader.
   - Båda byggs upp i samma loop, och delningen görs efter loopen.

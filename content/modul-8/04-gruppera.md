@@ -85,7 +85,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bakverk 35\ndryck 90"}
+ratta: {utdata: "bakverk 35\ndryck 90", fall: [{andra_tal: true, utdata: "bakverk 72\ndryck 183"}]}
 ledtradar:
   - Gruppera på kategori och använd en summeringsfunktion.
   - SUM(pris) och GROUP BY kategori. Ordningen får du med ORDER BY kategori.
@@ -115,7 +115,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bakverk 17.5\ndryck 30.0"}
+ratta: {utdata: "bakverk 17.5\ndryck 30.0", fall: [{andra_tal: true, utdata: "bakverk 36.0\ndryck 61.0"}]}
 ledtradar:
   - Medelvärde heter AVG.
   - AVG(pris) och GROUP BY kategori.
@@ -136,6 +136,7 @@ facit: |
 ```ovning
 id: m8-grupp-having
 uppgift: "Skriv ut de kategorier som har fler än två varor."
+krav: ["sql:HAVING"]
 start: |
   import sqlite3
 

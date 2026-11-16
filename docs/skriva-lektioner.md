@@ -114,7 +114,8 @@ ratta: {utdata: "Underkänd", fall: [{varden: {betyg: 75}, utdata: "Godkänd"}, 
 ```
 
 `varden` byter värdet i den första tilldelningen till variabeln i elevens kod (eller sätter variabeln först, om koden
-saknar den), och `stdin` ger andra svar till `input()`. Fallen prövas bara när det första svaret är rätt, och det första
+saknar den), `stdin` ger andra svar till `input()`, och `andra_tal: true` byter varje heltal n i lektionens filer mot
+2n + 1 (andra värden, samma ordning mellan dem; för övningar som läser en CSV-fil eller `butik.sql`, #220). Fallen prövas bara när det första svaret är rätt, och det första
 fall som inte stämmer förklaras: "när `betyg` är `75` ska utskriften vara `Godkänd`, men programmet skrev `Underkänd`".
 Går det inte att variera något (en uppgift utan variabler) används i stället `krav`. `web/test/facit.test.ts` underkänner
 en ny utdata-övning som godkänns av ren utskrift, utom de som står med motivering i dess undantagslistor.
@@ -127,7 +128,7 @@ spelade någon roll.
 
 **`krav`** på en övning kontrollerar *hur* uppgiften löstes, genom att läsa koden (Pythons `ast`), så att `print(70)` inte
 godkänns när uppgiften säger "med en uträkning". Använd det när uppgiftstexten ber om ett visst sätt. Kända krav:
-`uträkning`, `kommentar-först`, `kommentar`, `f-sträng`, `for`, `while`, `loop` (for eller while), `and`, `or`, `break`, `continue`, `funktion`, `jämförelse`, `if`, `else`, `elif`, `in`, `lista` (hakparenteser), `uppslag` (klamrar),
+`uträkning`, `kommentar-först`, `kommentar`, `f-sträng`, `for`, `while`, `loop` (for eller while), `and`, `or`, `break`, `continue`, `funktion`, `jämförelse`, `if`, `else`, `elif`, `in`, `lista` (hakparenteser), `uppslag` (klamrar), `sql:<ORD>` (en SQL-fråga i koden som använder ordet, t.ex. `sql:HAVING`),
 `import:<modul>`, `anropa:<namn>` och `inte-anropa:<namn>`. Facit måste uppfylla sina egna krav (det testas).
 
 ````yaml

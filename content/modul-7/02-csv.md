@@ -67,6 +67,7 @@ forklaring: "Filen har fem datarader (rubrikraden räknas inte). Plats 1 är den
 ```ovning
 id: m7-csv-varor
 uppgift: "Skriv ut namnet på varje vara i filen `forsaljning.csv`, en per rad, i den ordning de står."
+krav: ["anropa:open"]
 start: |
   import csv
 ratta: {utdata: "kaffe\nte\nkaffe\nbulle\nte"}
@@ -87,7 +88,7 @@ id: m7-csv-antal-delar
 uppgift: "Räkna ut hur många enheter som såldes sammanlagt (summan av kolumnen `antal`) och skriv ut det. Kom ihåg att göra om texten till tal."
 start: |
   import csv
-ratta: {utdata: "11"}
+ratta: {utdata: "11", fall: [{andra_tal: true, utdata: "27"}]}
 ledtradar:
   - Skapa en summa som börjar på 0, och lägg till antalet för varje rad.
   - Värdet i filen är text, så använd int(rad["antal"]).

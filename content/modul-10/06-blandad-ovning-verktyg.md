@@ -14,7 +14,7 @@ start: |
   from collections import Counter
 
   text = "ett ord och ett ord och ett annat"
-ratta: {"utdata": "ett"}
+ratta: {"utdata": "ett", fall: [{varden: {"text": "katt hund katt fisk"}, utdata: "katt"}]}
 ledtradar:
   - "Dela texten i ord och räkna dem."
   - "Counter(...).most_common(1) ger det vanligaste ordet som ett par i en lista."
@@ -34,7 +34,7 @@ start: |
 
   start = date(2026, 10, 1)
   datum = ["2026-10-18", "2026-12-24"]
-ratta: {"utdata": "2026-10-18: 17 dagar\n2026-12-24: 84 dagar"}
+ratta: {"utdata": "2026-10-18: 17 dagar\n2026-12-24: 84 dagar", fall: [{varden: {"datum": ["2026-12-24", "2026-10-18"]}, utdata: "2026-12-24: 84 dagar\n2026-10-18: 17 dagar"}]}
 ledtradar:
   - "Gå igenom listan, och gör varje text till ett datum."
   - "date.fromisoformat(d) - start ger tidsskillnaden, och .days är antalet dagar."

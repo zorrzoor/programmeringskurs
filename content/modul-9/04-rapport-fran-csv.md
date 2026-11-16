@@ -30,7 +30,7 @@ id: m9-rapport-total
 uppgift: "Skriv ut det totala antalet timmar i `arbetstid.csv` (summan av kolumnen `timmar`)."
 start: |
   import csv
-ratta: {"utdata": "30"}
+ratta: {"utdata": "30", fall: [{andra_tal: true, utdata: "65"}]}
 ledtradar:
   - "Läs filen med csv.DictReader och lägg ihop timmarna."
   - "Värdena i filen är text: använd int(rad[\"timmar\"])."
@@ -52,7 +52,7 @@ id: m9-rapport-per-projekt
 uppgift: "Skriv ut timmarna per projekt på formen `webb: 19`, i den ordning projekten först förekommer i filen."
 start: |
   import csv
-ratta: {"utdata": "webb: 19\napp: 11"}
+ratta: {"utdata": "webb: 19\napp: 11", fall: [{andra_tal: true, utdata: "webb: 41\napp: 24"}]}
 ledtradar:
   - "Det är en summa per grupp, och projektet är gruppen."
   - "per_projekt[p] = per_projekt.get(p, 0) + int(rad[\"timmar\"])"
@@ -106,7 +106,7 @@ id: m9-rapport-diagram
 uppgift: "Rita timmarna per projekt som staplar med ett `#` per timme, på formen `app: ###########`, i bokstavsordning efter projektets namn."
 start: |
   import csv
-ratta: {"utdata": "app: ###########\nwebb: ###################"}
+ratta: {"utdata": "app: ###########\nwebb: ###################", fall: [{andra_tal: true, utdata: "app: ########################\nwebb: #########################################"}]}
 ledtradar:
   - "Räkna timmar per projekt, och gå sedan igenom projekten i bokstavsordning med sorted(...)."
   - "En stapel är '#' multiplicerat med antalet timmar."

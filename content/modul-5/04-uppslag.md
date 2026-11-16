@@ -62,7 +62,7 @@ id: m5-uppslag-andra
 uppgift: "Uppslaget `lager` finns redan. Öka antalet `bananer` med 5 och skriv ut det nya antalet."
 start: |
   lager = {"apelsiner": 10, "bananer": 3}
-ratta: {utdata: "8"}
+ratta: {utdata: "8", fall: [{varden: {"lager": {"apelsiner": 21, "bananer": 7}}, utdata: "12"}]}
 ledtradar:
   - Slå upp värdet med nyckeln, lägg till 5, och lägg tillbaka det under samma nyckel.
   - Det ser ut som en variabeländring, men med lager["bananer"] i stället för ett variabelnamn.

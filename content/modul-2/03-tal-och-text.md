@@ -77,7 +77,7 @@ uppgift: "Variablerna `antal` och `pris` finns redan. Skriv ut vad alla varor ko
 start: |
   antal = 4
   pris = 25
-ratta: {utdata: "100"}
+ratta: {utdata: "100", fall: [{varden: {"antal": 9, "pris": 51}, utdata: "459"}]}
 ledtradar:
   - Använd variablerna i en uträkning, inom print.
   - Gånger skrivs med *.

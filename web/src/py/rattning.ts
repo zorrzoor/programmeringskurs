@@ -94,18 +94,26 @@ export function kravMeddelande(krav: string): string {
     case "uppslag": return "Uppgiften ber om ett uppslag (med klamrar, `{...}`), men koden skapar inget.";
     case "import": return `Uppgiften ber dig använda modulen \`${namn}\`, men koden hämtar den inte med \`import ${namn}\`.`;
     case "anropa": return `Uppgiften ber dig använda \`${namn}\`, men koden anropar den inte.`;
+    case "sql": return `Uppgiften ska lösas med en SQL-fråga som använder \`${namn}\`, men koden har ingen sådan fråga.`;
     case "inte-anropa": return `Uppgiften ber dig lösa det utan \`${namn}\`, men koden använder den.`;
     default: return `Uppgiften har ett krav (${krav}) som koden inte uppfyller.`;
   }
 }
 
 /** The case of an output exercise in words (#204): "när betyg är 75" or "när svaret är 8". */
-export function beskrivFall(fall: { varden?: Record<string, unknown>; stdin?: string[] }): string {
+export function beskrivFall(fall: { varden?: Record<string, unknown>; stdin?: string[]; andraTal?: boolean }): string {
   const delar = [
+    ...(fall.andraTal ? ["filerna innehåller andra tal"] : []),
     ...Object.entries(fall.varden ?? {}).map(([namn, v]) => `\`${namn}\` är \`${typeof v === "string" ? JSON.stringify(v) : JSON.stringify(v)}\``),
     ...(fall.stdin && fall.stdin.length > 0 ? [`svaret är ${fall.stdin.map((s) => `\`${s}\``).join(" och sedan ")}`] : []),
   ];
   return `när ${delar.join(" och ")}`;
+}
+
+/** The lesson's files with other numbers (#220): every whole number n becomes 2n + 1, so their order stays the same. */
+export function andraTal(filer: Record<string, string> | undefined): Record<string, string> | undefined {
+  if (!filer) return filer;
+  return Object.fromEntries(Object.entries(filer).map(([namn, text]) => [namn, text.replace(/(?<![\w.])\d+(?![\w.])/g, (n) => String(2 * Number(n) + 1))]));
 }
 
 export const jamforVariabel = (namn: string, svar: { finns: boolean; lika: boolean; faktisk: string }, forvantat: unknown): string[] => {
