@@ -168,3 +168,99 @@
 - ord: "Counter"
   former: []
   forklaring: "Ett färdigt verktyg som räknar hur många gånger varje värde förekommer i en lista."
+
+# Pythons ord (#205): Pythons engelska nyckelord och vanligaste funktioner, med svensk översättning. `python: true`
+# visar dem i en egen grupp på ordlistans sida och länkar dem inte från löptexten (där står de som kod, och "in",
+# "len" och "and" är också svenska ord).
+- ord: "if"
+  former: []
+  python: true
+  forklaring: "På svenska: om. Inleder ett villkor: koden i indraget körs bara om villkoret är sant."
+- ord: "else"
+  former: []
+  python: true
+  forklaring: "På svenska: annars. Det som körs när villkoret i if inte är sant."
+- ord: "elif"
+  former: []
+  python: true
+  forklaring: "På svenska: annars om. En förkortning av else if: ett nytt villkor som prövas när de före inte var sanna."
+- ord: "for"
+  former: []
+  python: true
+  forklaring: "På svenska: för (varje). Upprepar koden i indraget en gång för varje värde: for namn in lista:."
+- ord: "in"
+  former: []
+  python: true
+  forklaring: "På svenska: i. I for x in lista: tar loopen värdena i listan. x in lista frågar om x finns i listan."
+- ord: "while"
+  former: []
+  python: true
+  forklaring: "På svenska: så länge som. Upprepar koden i indraget så länge villkoret är sant."
+- ord: "range"
+  former: []
+  python: true
+  forklaring: "På svenska: intervall. Ger talen i ett intervall, till exempel range(3): 0, 1 och 2. Används ofta med for."
+- ord: "break"
+  former: []
+  python: true
+  forklaring: "På svenska: bryt. Avbryter en loop direkt."
+- ord: "continue"
+  former: []
+  python: true
+  forklaring: "På svenska: fortsätt. Hoppar över resten av varvet: loopen fortsätter med nästa varv."
+- ord: "and"
+  former: []
+  python: true
+  forklaring: "På svenska: och. Båda villkoren måste vara sanna."
+- ord: "or"
+  former: []
+  python: true
+  forklaring: "På svenska: eller. Minst ett av villkoren måste vara sant."
+- ord: "not"
+  former: []
+  python: true
+  forklaring: "På svenska: inte. Vänder ett villkor: sant blir falskt och tvärtom."
+- ord: "len"
+  former: []
+  python: true
+  forklaring: "På svenska: längd. En förkortning av length: ger antalet element i en lista eller tecken i en text."
+- ord: "int"
+  former: []
+  python: true
+  forklaring: "På svenska: heltal. En förkortning av integer: gör om en text till ett heltal, till exempel int(\"7\")."
+- ord: "float"
+  former: []
+  python: true
+  forklaring: "På svenska: decimaltal. Av floating-point number, flyttal: gör om en text till ett decimaltal."
+- ord: "append"
+  former: []
+  python: true
+  forklaring: "På svenska: lägg till. Lägger till ett element sist i en lista: lista.append(x)."
+- ord: "remove"
+  former: []
+  python: true
+  forklaring: "På svenska: ta bort. Tar bort ett element ur en lista: lista.remove(x)."
+- ord: "sorted"
+  former: []
+  python: true
+  forklaring: "På svenska: sorterad. Ger en ny, sorterad lista."
+- ord: "def"
+  former: []
+  python: true
+  forklaring: "På svenska: definiera. En förkortning av define: skapar en funktion."
+- ord: "return"
+  former: []
+  python: true
+  forklaring: "På svenska: returnera. Skickar tillbaka ett värde från en funktion, och avslutar den."
+- ord: "open"
+  former: []
+  python: true
+  forklaring: "På svenska: öppna. Öppnar en fil för att läsa eller skriva."
+- ord: "with … as"
+  former: ["with", "as"]
+  python: true
+  forklaring: "På svenska: med … som. with open(...) as fil: öppnar filen som fil och stänger den när indraget är slut."
+- ord: "from"
+  former: []
+  python: true
+  forklaring: "På svenska: från. from modul import namn hämtar ett namn från en modul."

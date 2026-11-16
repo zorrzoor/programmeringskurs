@@ -18,8 +18,8 @@ Loopen skulle gå till 9, men `break` avbröt den när `i` blev 3.
 
 ## Två instruktioner
 
-- `break` **avbryter** loopen direkt. Koden efter loopen körs sedan som vanligt.
-- `continue` **hoppar över** resten av det här varvet och går vidare till nästa.
+- `break` (*bryt*) **avbryter** loopen direkt. Koden efter loopen körs sedan som vanligt.
+- `continue` **hoppar över** resten av det här varvet och går vidare till nästa. Ordet betyder *fortsätt*, och det är loopen som fortsätter: med nästa varv, inte med raderna under `continue`.
 
 ```python-exempel
 for i in range(5):

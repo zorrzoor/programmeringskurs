@@ -20,7 +20,7 @@ print("Anna" in namn)
 - `lista.append(x)` lägger till `x` sist.
 - `lista.remove(x)` tar bort det första `x` som finns.
 - `lista[1] = "ny"` byter ut ett element.
-- `sorted(lista)` ger en ny, sorterad lista (den gamla ändras inte), och `lista.sort()` sorterar den gamla på plats.
+- `sorted(lista)` (*sorterad*) ger en ny, sorterad lista (den gamla ändras inte), och `lista.sort()` sorterar den gamla på plats.
 - `x in lista` svarar `True` eller `False` på om `x` finns i listan.
 
 ```ruta
@@ -100,6 +100,6 @@ facit: |
 
 ## Det här lärde du dig
 
-- `append` lägger till, `remove` tar bort, och `lista[i] = x` byter ut ett element.
+- `append` (*lägg till*) lägger till, `remove` (*ta bort*) tar bort, och `lista[i] = x` byter ut ett element.
 - `sorted(lista)` sorterar, och `x in lista` kollar om något finns.
 - Funktioner som `sorted` ändrar inte originalet, men `lista.sort()` gör det.

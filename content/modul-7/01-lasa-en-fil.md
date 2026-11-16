@@ -27,7 +27,7 @@ print(len(text))
 
 ## Så öppnar du en fil
 
-`open("namn.txt", encoding="utf-8")` öppnar filen. Raden `with … as fil:` ser till att filen stängs när indraget är slut, även om något går fel. Inne i indraget kan du läsa:
+`open("namn.txt", encoding="utf-8")` (*öppna*) öppnar filen. Raden `with … as fil:` (*med … som fil*) ser till att filen stängs när indraget är slut, även om något går fel. Inne i indraget kan du läsa:
 
 - `fil.read()` ger **hela** innehållet som en enda text.
 - Med en `for`-loop får du **en rad i taget**: `for rad in fil:`.

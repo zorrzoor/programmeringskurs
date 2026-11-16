@@ -272,3 +272,29 @@ test("a text block that only had a generic heading disappears", () => {
   const ut = taBortGeneriskaRubriker([{ typ: "text", markdown: "## Ett test" }, { typ: "forutsag", id: "a", kod: "x", kor: true, stdin: [], alternativ: [], ratt: -1, svar: "1", forklaring: "" }]);
   assert.deepEqual(ut.map((b) => b.typ), ["forutsag"]);
 });
+
+// #205: Python's English words. Every keyword and the built-in functions the lessons teach that appear in some example,
+// start code or facit must be in the glossary (as "Pythons ord"), so the learner can look up what `continue` means.
+const PYTHONS_ORD = [
+  "if", "else", "elif", "for", "in", "while", "break", "continue", "and", "or", "not", "def", "return", "with", "as", "from",
+  "import", "True", "False", "None", "range", "len", "int", "float", "input", "print", "open", "sorted", "append", "remove",
+];
+test("every Python word used in the course code is in the glossary (#205)", () => {
+  const kurs = byggKurs();
+  const iOrdlistan = new Set(kurs.ordlista.flatMap((o) => [o.ord, ...o.former]));
+  const kod = kurs.moduler
+    .flatMap((m) => m.lektioner.flatMap((l) => l.block))
+    .flatMap((b) => [("kod" in b ? b.kod : ""), ("start" in b ? b.start : ""), ("facit" in b ? b.facit : "")])
+    .join("\n")
+    .replace(/"[^"\n]*"|'[^'\n]*'|#.*/g, ""); // not in strings or comments
+  const saknas = PYTHONS_ORD.filter((w) => new RegExp(`(?<![\\w.])${w}(?!\\w)|\\.${w}\\(`).test(kod) && !iOrdlistan.has(w));
+  assert.deepEqual(saknas, []);
+});
+
+test("Python's words are never linked from running text (#205)", () => {
+  const o = parseOrdlista('- ord: "in"\n  former: []\n  python: true\n  forklaring: "i"\n', "o.yml");
+  const l = parse(`Skriv in ditt namn i rutan.\n\n${OVNING()}`);
+  lankaOrd(l, o);
+  assert.equal((l.block[0] as { markdown: string }).markdown.includes("#/ordlista/"), false);
+});
+

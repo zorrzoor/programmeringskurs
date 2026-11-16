@@ -76,6 +76,8 @@ export interface Ord {
   forklaring: string;
   /** Patterns (with the mention marked « ») where the word has another meaning and must not be linked. */
   ej?: string[];
+  /** One of Python's own words (for, in, len …, #205): a group of its own on the page, never linked from running text. */
+  python?: boolean;
 }
 
 export interface Kurs {

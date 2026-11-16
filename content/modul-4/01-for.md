@@ -16,7 +16,7 @@ Samma rad körs tre gånger, fast du bara skrev den en gång.
 
 ## Så fungerar for
 
-- `for i in range(3):` betyder "gör det här tre gånger".
+- `for i in range(3):` betyder "gör det här tre gånger". Ordagrant står det "för varje `i` i intervallet 0 till 3": `for` betyder *för (varje)*, `in` betyder *i* och `range` betyder *intervall*.
 - Raderna som ska upprepas är **indragna** (fyra mellanslag), precis som under `if`.
 - `i` är en variabel som får ett nytt värde för varje varv: först 0, sedan 1, sedan 2. Räkningen börjar på **noll**, och `range(3)` stannar innan den kommer till 3. Därför blir det tre varv: 0, 1 och 2. Hur `range` räknar förklaras mer i nästa lektion.
 

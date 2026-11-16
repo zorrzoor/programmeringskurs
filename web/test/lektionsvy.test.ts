@@ -293,9 +293,12 @@ describe("ordlistan och fastnat", () => {
     const rot = document.createElement("main");
     visaOrdlista(rot, "variabel");
     expect(rot.querySelector("h1")?.textContent).toBe("Ordlista");
-    const ord = [...rot.querySelectorAll("dt")].map((d) => d.textContent ?? "");
-    expect(ord.length).toBeGreaterThanOrEqual(40);
-    expect(ord).toEqual([...ord].sort((a, b) => a.localeCompare(b, "sv", { sensitivity: "base" })));
+    // Two lists, each alphabetical: the words of the course, then Python's own words (#205).
+    const [kursens, pythons] = [...rot.querySelectorAll("dl")].map((dl) => [...dl.querySelectorAll("dt")].map((d) => d.textContent ?? ""));
+    expect(kursens?.length).toBeGreaterThanOrEqual(40);
+    for (const ord of [kursens ?? [], pythons ?? []]) expect(ord).toEqual([...ord].sort((a, b) => a.localeCompare(b, "sv", { sensitivity: "base" })));
+    expect(pythons).toContain("continue");
+    expect(rot.querySelector("h2")?.textContent).toBe("Pythons ord");
     expect(rot.querySelector("#ord-variabel")?.classList.contains("markerad")).toBe(true);
     expect(rot.querySelectorAll(".markerad").length).toBe(2);
   });
