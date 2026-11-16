@@ -15,7 +15,7 @@ uppgift: "Skriv ut det största talet i listan `tal`, utan att använda funktion
 krav: ["inte-anropa:max"]
 start: |
   tal = [4, 17, 9, 12]
-ratta: {utdata: "17"}
+ratta: {utdata: "17", fall: [{varden: {"tal": [9, 35, 19, 25]}, utdata: "35"}]}
 ledtradar:
   - Skapa en variabel för det största hittills, och starta den på det första elementet.
   - Jämför varje element med den, och byt ut den om elementet är större.
@@ -34,7 +34,7 @@ id: m5-blandat-ordrakning
 uppgift: "Räkna hur många gånger ordet `ja` förekommer i listan `svar`, och skriv ut antalet."
 start: |
   svar = ["ja", "nej", "ja", "kanske", "ja"]
-ratta: {utdata: "3"}
+ratta: {utdata: "3", fall: [{varden: {"svar": ["nej", "ja", "nej"]}, utdata: "1"}]}
 ledtradar:
   - Skapa en räknare som börjar på 0.
   - Gå igenom listan och öka räknaren när elementet är ja.
@@ -53,7 +53,7 @@ id: m5-blandat-medelvarde
 uppgift: "Räkna ut medelvärdet av talen i listan `tal` (summan delad med antalet) och skriv ut det."
 start: |
   tal = [4, 8, 6, 10]
-ratta: {utdata: "7.0"}
+ratta: {utdata: "7.0", fall: [{varden: {"tal": [9, 17, 13, 21]}, utdata: "15.0"}]}
 ledtradar:
   - Du behöver summan av talen och antalet element.
   - Summera i en loop, och dela summan med len(tal).

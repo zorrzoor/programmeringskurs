@@ -54,7 +54,7 @@ id: m10-text-antal-ord
 uppgift: "Skriv ut hur många ord texten innehåller."
 start: |
   text = "det är en fin dag idag"
-ratta: {"utdata": "6"}
+ratta: {"utdata": "6", fall: [{varden: {"text": "en kort mening"}, utdata: "3"}]}
 ledtradar:
   - "Dela texten i ord, och räkna orden i listan."
   - "split() ger listan, och len ger antalet."
@@ -69,7 +69,7 @@ id: m10-text-titel
 uppgift: "Skriv ut texten med stor första bokstav i varje ord."
 start: |
   text = "programmering är roligt"
-ratta: {"utdata": "Programmering Är Roligt"}
+ratta: {"utdata": "Programmering Är Roligt", fall: [{varden: {"text": "hej på dig"}, utdata: "Hej På Dig"}]}
 ledtradar:
   - "Det finns en färdig metod för det."
   - "Den heter title()."

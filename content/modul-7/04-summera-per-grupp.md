@@ -80,7 +80,7 @@ id: m7-grupp-omsattning
 uppgift: "Räkna ut omsättningen (antal gånger pris) per vara och skriv ut den på formen `kaffe: 120`, en vara per rad, i den ordning varorna först förekommer i filen."
 start: |
   import csv
-ratta: {utdata: "kaffe: 120\nte: 75\nbulle: 60"}
+ratta: {utdata: "kaffe: 120\nte: 75\nbulle: 60", fall: [{andra_tal: true, utdata: "kaffe: 610\nte: 408\nbulle: 279"}]}
 ledtradar:
   - Bygg ett uppslag med varan som nyckel, och lägg till antal * pris för varje rad.
   - "summor[vara] = summor.get(vara, 0) + int(rad[\"antal\"]) * int(rad[\"pris\"])"
@@ -100,6 +100,7 @@ facit: |
 ```ovning
 id: m7-grupp-basta
 uppgift: "Skriv ut namnet på den vara som har högst omsättning (antal gånger pris, summerat per vara)."
+krav: ["anropa:open"]
 start: |
   import csv
 ratta: {utdata: "kaffe"}
@@ -123,7 +124,7 @@ id: m7-grupp-sorterat
 uppgift: "Skriv ut antal sålda enheter per vara på formen `bulle: 4`, i bokstavsordning efter varans namn."
 start: |
   import csv
-ratta: {utdata: "bulle: 4\nkaffe: 4\nte: 3"}
+ratta: {utdata: "bulle: 4\nkaffe: 4\nte: 3", fall: [{andra_tal: true, utdata: "bulle: 9\nkaffe: 10\nte: 8"}]}
 ledtradar:
   - Räkna antal per vara i ett uppslag.
   - sorted(uppslag) ger nycklarna i bokstavsordning.

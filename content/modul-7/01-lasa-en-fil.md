@@ -57,6 +57,7 @@ forklaring: "Loopen tar en rad i taget. strip tar bort radbytet och upper gör b
 ```ovning
 id: m7-lasa-antal-rader
 uppgift: "Läs filen `namn.txt` rad för rad och skriv ut hur många rader den har."
+krav: ["anropa:open"]
 start: |
   # skriv din kod här
 ratta: {utdata: "4"}
@@ -75,6 +76,7 @@ facit: |
 ```ovning
 id: m7-lasa-hej
 uppgift: "Skriv ut `Hej` följt av namnet, för varje namn i filen `namn.txt`, till exempel `Hej Anna`."
+krav: ["anropa:open"]
 start: |
   # skriv din kod här
 ratta: {utdata: "Hej Anna\nHej Bo\nHej Cia\nHej Dan"}

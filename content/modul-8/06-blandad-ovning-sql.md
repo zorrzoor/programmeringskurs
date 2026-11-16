@@ -30,6 +30,7 @@ innehall: |
 ```ovning
 id: m8-blandat-antal-drycker
 uppgift: "Skriv ut hur många drycker butiken har."
+krav: ["sql:COUNT"]
 start: |
   import sqlite3
 
@@ -60,6 +61,7 @@ facit: |
 ```ovning
 id: m8-blandat-dyraste-bakverk
 uppgift: "Skriv ut namnet på det dyraste bakverket."
+krav: ["sql:ORDER"]
 start: |
   import sqlite3
 
@@ -99,7 +101,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "295"}
+ratta: {utdata: "295", fall: [{andra_tal: true, utdata: "1502"}]}
 ledtradar:
   - Koppla ordrar till varor, och summera över alla rader.
   - SUM(ordrar.antal * varor.pris), utan GROUP BY.

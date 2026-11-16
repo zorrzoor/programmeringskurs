@@ -68,6 +68,7 @@ forklaring: "Kommat byts mot en punkt, så texten blir 12.5, som float blir tale
 ```ovning
 id: m7-sv-medel
 uppgift: "Skriv ut medellönen i `lon.csv` (summan av lönerna delad med antalet personer)."
+krav: ["anropa:open", "anropa:replace"]
 start: |
   import csv
 ratta: {"utdata": "31583.75"}
@@ -90,6 +91,7 @@ facit: |
 ```ovning
 id: m7-sv-hoga
 uppgift: "Skriv ut namn och lön, på formen `Anna: 31500.5`, för de som har en lön över 30000, en per rad."
+krav: ["anropa:open", "anropa:replace"]
 start: |
   import csv
 ratta: {"utdata": "Anna: 31500.5\nCia: 35250.75"}

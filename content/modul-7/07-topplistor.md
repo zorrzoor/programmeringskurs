@@ -72,7 +72,7 @@ id: m7-topp-rangordning
 uppgift: "Räkna ut omsättningen (antal gånger pris) per vara och skriv ut varorna på formen `kaffe 120`, den med störst omsättning först."
 start: |
   import csv
-ratta: {"utdata": "kaffe 120\nte 75\nbulle 60"}
+ratta: {"utdata": "kaffe 120\nte 75\nbulle 60", fall: [{andra_tal: true, utdata: "kaffe 610\nte 408\nbulle 279"}]}
 ledtradar:
   - "Bygg först ett uppslag med omsättning per vara."
   - "Sortera nycklarna efter värdet, störst först, med key=summor.get och reverse=True."
@@ -92,6 +92,7 @@ facit: |
 ```ovning
 id: m7-topp-sist
 uppgift: "Skriv ut namnet på den vara som har lägst omsättning."
+krav: ["anropa:open"]
 start: |
   import csv
 ratta: {"utdata": "bulle"}
@@ -113,6 +114,7 @@ facit: |
 ```ovning
 id: m7-topp-tva
 uppgift: "Skriv ut namnen på de två varorna med högst omsättning, en per rad, störst först."
+krav: ["anropa:open"]
 start: |
   import csv
 ratta: {"utdata": "kaffe\nte"}

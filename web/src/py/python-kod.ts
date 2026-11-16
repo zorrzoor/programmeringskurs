@@ -178,6 +178,12 @@ def _krav(kod, krav_json):
             ok = importerar(k[7:])
         elif k.startswith("anropa:"):
             ok = anrop(k[7:])
+        elif k.startswith("sql:"):
+            # #220: an SQL query in the code (a text) that uses the word, e.g. sql:HAVING
+            ord_ = k[4:].upper()
+            import re as _re
+            ok = any(isinstance(n, ast.Constant) and isinstance(n.value, str) and _re.search(r"\\b" + ord_ + r"\\b", n.value.upper())
+                     and _re.search(r"\\bSELECT\\b", n.value.upper()) for n in noder)
         elif k.startswith("inte-anropa:"):
             ok = not anrop(k[12:])
         else:

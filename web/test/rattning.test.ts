@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { jamforFil, jamforUtdata, jamforVariabel, kravMeddelande, normalisera } from "../src/py/rattning.ts";
+import { andraTal, beskrivFall, jamforFil, jamforUtdata, jamforVariabel, kravMeddelande, normalisera } from "../src/py/rattning.ts";
 
 describe("normalisera", () => {
   test("trailing spaces, line endings and blank lines at the end do not count", () => {
@@ -85,6 +85,22 @@ describe("skillnad: the rating is strict but says what differs", () => {
       ]);
       expect(jamforUtdata("", "te", false, true)).toEqual(["Programmet skrev inte ut något. Glömde du `print(...)`?"]);
     });
+  });
+});
+
+describe("cases with other numbers in the files (#220)", () => {
+  test("every whole number n becomes 2n + 1 (also each side of a decimal comma), a decimal with a point and words stay", () => {
+    expect(andraTal({ "a.csv": "vara,antal,pris\nkaffe,4,30\nte,3,25", "b.txt": "lön 31583,39 och 2.5" })).toEqual({
+      "a.csv": "vara,antal,pris\nkaffe,9,61\nte,7,51",
+      "b.txt": "lön 63167,79 och 2.5",
+    });
+    expect(andraTal(undefined)).toBeUndefined();
+  });
+
+  test("the case is described in words", () => {
+    expect(beskrivFall({ andraTal: true })).toBe("när filerna innehåller andra tal");
+    expect(beskrivFall({ varden: { betyg: 75 } })).toBe("när `betyg` är `75`");
+    expect(kravMeddelande("sql:HAVING")).toContain("`HAVING`");
   });
 });
 

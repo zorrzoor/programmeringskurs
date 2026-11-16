@@ -89,7 +89,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bulle 60\nkaffe 120\nkaka 40\nte 75"}
+ratta: {utdata: "bulle 60\nkaffe 120\nkaka 40\nte 75", fall: [{andra_tal: true, utdata: "bulle 279\nkaffe 610\nkaka 205\nte 408"}]}
 ledtradar:
   - Koppla ordrar till varor, och gruppera på varans namn.
   - Omsättningen per vara är SUM(ordrar.antal * varor.pris). Ordningen får du med ORDER BY varor.namn.
@@ -119,7 +119,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bakverk 6\ndryck 7"}
+ratta: {utdata: "bakverk 6\ndryck 7", fall: [{andra_tal: true, utdata: "bakverk 14\ndryck 18"}]}
 ledtradar:
   - "Kategorin finns i varor, antalet i ordrar: du behöver en JOIN."
   - Gruppera på varor.kategori och summera ordrar.antal.
@@ -149,7 +149,7 @@ start: |
   def visa(sql):
       for rad in db.execute(sql):
           print(*rad)
-ratta: {utdata: "bulle\nkaffe", ordning: fri}
+ratta: {utdata: "bulle\nkaffe", ordning: fri, fall: [{andra_tal: true, utdata: "bulle\nkaffe\nkaka\nte"}]}
 ledtradar:
   - Summera antalet per vara, och filtrera grupperna.
   - HAVING SUM(ordrar.antal) > 3.

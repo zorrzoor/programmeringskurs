@@ -31,7 +31,7 @@ id: m7-blandat-per-kund
 uppgift: "Skriv ut totalt belopp per kund på formen `Anna: 700`, en kund per rad, i den ordning kunderna först förekommer."
 start: |
   import csv
-ratta: {utdata: "Anna: 700\nBo: 400\nCia: 1000"}
+ratta: {utdata: "Anna: 700\nBo: 400\nCia: 1000", fall: [{andra_tal: true, utdata: "Anna: 1402\nBo: 802\nCia: 2001"}]}
 ledtradar:
   - Det är en summa per grupp, och kunden är gruppen.
   - "summor[kund] = summor.get(kund, 0) + int(rad[\"belopp\"])"
@@ -78,7 +78,7 @@ id: m7-blandat-diagram
 uppgift: "Rita totalt belopp per kund som staplar, ett `#` per hundra kronor, på formen `Anna: #######`."
 start: |
   import csv
-ratta: {utdata: "Anna: #######\nBo: ####\nCia: ##########"}
+ratta: {utdata: "Anna: #######\nBo: ####\nCia: ##########", fall: [{andra_tal: true, utdata: "Anna: ##############\nBo: ########\nCia: ####################"}]}
 ledtradar:
   - Räkna totalen per kund först.
   - Antalet staplar är summa // 100.

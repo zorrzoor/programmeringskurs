@@ -49,7 +49,7 @@ id: m5-unika-antal
 uppgift: "Listan `stader` finns redan. Skriv ut hur många olika städer den innehåller."
 start: |
   stader = ["Lund", "Malmö", "Lund", "Umeå", "Malmö", "Lund"]
-ratta: {"utdata": "3"}
+ratta: {"utdata": "3", fall: [{varden: {"stader": ["Lund", "Lund", "Kiruna"]}, utdata: "2"}]}
 ledtradar:
   - "Gör en mängd av listan, så försvinner dubbletterna."
   - "len ger antalet element i mängden."
@@ -64,7 +64,7 @@ id: m5-unika-lista
 uppgift: "Listan `stader` finns redan. Skriv ut de olika städerna i bokstavsordning, en per rad."
 start: |
   stader = ["Lund", "Malmö", "Lund", "Umeå", "Malmö", "Lund"]
-ratta: {"utdata": "Lund\nMalmö\nUmeå"}
+ratta: {"utdata": "Lund\nMalmö\nUmeå", fall: [{varden: {"stader": ["Lunda", "Malmöa", "Lunda", "Umeåa", "Malmöa", "Lunda"]}, utdata: "Lunda\nMalmöa\nUmeåa"}]}
 ledtradar:
   - "Mängden har ingen ordning, så sortera den."
   - "sorted(set(stader)) ger en sorterad lista utan dubbletter."
@@ -80,7 +80,7 @@ id: m5-unika-ordning
 uppgift: "Listan `tal` finns redan. Skriv ut en ny lista utan dubbletter, där varje värde står kvar på den plats där det först förekom. Det ska bli `[3, 1, 2]`."
 start: |
   tal = [3, 1, 3, 2, 1]
-ratta: {"utdata": "[3, 1, 2]"}
+ratta: {"utdata": "[3, 1, 2]", fall: [{varden: {"tal": [7, 3, 7, 5, 3]}, utdata: "[7, 3, 5]"}]}
 ledtradar:
   - "En mängd tappar ordningen, så du behöver en lista också. Använd mängden för att komma ihåg vad du har sett."
   - "Gå igenom listan, och lägg bara till värden som inte redan finns i mängden."

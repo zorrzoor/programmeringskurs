@@ -79,6 +79,7 @@ forklaring: "Villkoret väljer de rader där kategorin är bakverk: bulle och ka
 ```ovning
 id: m8-where-billiga
 uppgift: "Skriv ut namnen på varor som kostar högst 25 kr, en per rad."
+krav: ["sql:WHERE"]
 start: |
   import sqlite3
 
@@ -109,6 +110,7 @@ facit: |
 ```ovning
 id: m8-where-och
 uppgift: "Skriv ut namnen på drycker som kostar mindre än 35 kr."
+krav: ["sql:AND"]
 start: |
   import sqlite3
 
@@ -139,6 +141,7 @@ facit: |
 ```ovning
 id: m8-where-like
 uppgift: "Skriv ut namnen på varor som börjar på bokstaven k."
+krav: ["sql:LIKE"]
 start: |
   import sqlite3
 

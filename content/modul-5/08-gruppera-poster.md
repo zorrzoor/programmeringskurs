@@ -74,7 +74,7 @@ start: |
       {"namn": "Dan", "stad": "Malmö"},
       {"namn": "Eva", "stad": "Umeå"},
   ]
-ratta: {"utdata": "Lund: Anna, Cia\nMalmö: Dan\nUmeå: Bo, Eva"}
+ratta: {"utdata": "Lund: Anna, Cia\nMalmö: Dan\nUmeå: Bo, Eva", fall: [{varden: {"personer": [{"namn": "Eva", "stad": "Umeå"}, {"namn": "Dan", "stad": "Malmö"}, {"namn": "Cia", "stad": "Lund"}, {"namn": "Bo", "stad": "Umeå"}, {"namn": "Anna", "stad": "Lund"}]}, utdata: "Lund: Cia, Anna\nMalmö: Dan\nUmeå: Eva, Bo"}]}
 ledtradar:
   - "Bygg ett uppslag med staden som nyckel och en lista med namn som värde."
   - "grupper.setdefault(p[\"stad\"], []).append(p[\"namn\"]) i loopen."
@@ -106,7 +106,7 @@ start: |
       {"namn": "Dan", "stad": "Malmö"},
       {"namn": "Eva", "stad": "Umeå"},
   ]
-ratta: {"utdata": "Malmö"}
+ratta: {"utdata": "Malmö", fall: [{varden: {"personer": [{"namn": "Annaa", "stad": "Lunda"}, {"namn": "Boa", "stad": "Umeåa"}, {"namn": "Ciaa", "stad": "Lunda"}, {"namn": "Dana", "stad": "Malmöa"}, {"namn": "Evaa", "stad": "Umeåa"}]}, utdata: "Malmöa"}]}
 ledtradar:
   - "Gruppera först, och leta sedan upp gruppen med kortast lista."
   - "len(grupper[stad]) är antalet personer i staden. Håll reda på den minsta hittills."
@@ -141,7 +141,7 @@ start: |
       {"namn": "Dan", "stad": "Malmö"},
       {"namn": "Eva", "stad": "Umeå"},
   ]
-ratta: {"utdata": "Lund: 2\nMalmö: 1\nUmeå: 2"}
+ratta: {"utdata": "Lund: 2\nMalmö: 1\nUmeå: 2", fall: [{varden: {"personer": [{"namn": "Annaa", "stad": "Lunda"}, {"namn": "Boa", "stad": "Umeåa"}, {"namn": "Ciaa", "stad": "Lunda"}, {"namn": "Dana", "stad": "Malmöa"}, {"namn": "Evaa", "stad": "Umeåa"}]}, utdata: "Lunda: 2\nMalmöa: 1\nUmeåa: 2"}]}
 ledtradar:
   - "Gruppera namnen per stad, och räkna sedan längden på varje lista."
   - "len(grupper[stad]) ger antalet personer i en stad."

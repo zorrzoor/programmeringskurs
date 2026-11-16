@@ -18,6 +18,8 @@ export type Ratta =
 export interface Fall {
   varden?: Record<string, unknown>;
   stdin?: string[];
+  /** Every whole number in the lesson's files becomes 2n + 1 (#220): other values, the same order between them. */
+  andraTal?: boolean;
   utdata: string;
 }
 

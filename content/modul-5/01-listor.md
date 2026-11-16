@@ -52,7 +52,7 @@ id: m5-listor-andra
 uppgift: "Listan `frukt` finns redan. Skriv ut det andra elementet, alltså `banan`."
 start: |
   frukt = ["äpple", "banan", "citron"]
-ratta: {utdata: "banan"}
+ratta: {utdata: "banan", fall: [{varden: {"frukt": ["äpplea", "banana", "citrona"]}, utdata: "banana"}]}
 ledtradar:
   - Det andra elementet har inte plats 2.
   - Platserna räknas från noll, så det andra elementet har plats 1.
@@ -65,6 +65,7 @@ facit: |
 ```ovning
 id: m5-listor-antal
 uppgift: "Skapa en lista `tal` med talen `5`, `10`, `15` och `20`, och skriv ut hur många element den har."
+krav: ["lista", "anropa:len"]
 start: |
   # skriv din kod här
 ratta: {utdata: "4"}

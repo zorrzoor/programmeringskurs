@@ -33,7 +33,7 @@ start: |
       {"kategori": "nöje", "belopp": 800},
       {"kategori": "transport", "belopp": 600},
   ]
-ratta: {"utdata": "14100"}
+ratta: {"utdata": "14100", fall: [{varden: {"utgifter": [{"kategori": "mat", "belopp": 5001}, {"kategori": "hyra", "belopp": 18001}, {"kategori": "mat", "belopp": 2401}, {"kategori": "nöje", "belopp": 1601}, {"kategori": "transport", "belopp": 1201}]}, utdata: "28205"}]}
 ledtradar:
   - "Gå igenom listan och lägg ihop beloppen."
   - "Varje utgift är ett uppslag: u[\"belopp\"] ger beloppet."
@@ -107,7 +107,7 @@ start: |
   # summorna och budgeten finns redan
   summor = {"mat": 3700, "hyra": 9000, "nöje": 800, "transport": 600}
   budget = {"mat": 3500, "hyra": 9000, "nöje": 500, "transport": 1000}
-ratta: {"utdata": "hyra: 9000 av 9000\nmat: 3700 av 3500 ÖVER\nnöje: 800 av 500 ÖVER\ntransport: 600 av 1000"}
+ratta: {"utdata": "hyra: 9000 av 9000\nmat: 3700 av 3500 ÖVER\nnöje: 800 av 500 ÖVER\ntransport: 600 av 1000", fall: [{varden: {"summor": {"mat": 7401, "hyra": 18001, "nöje": 1601, "transport": 1201}, "budget": {"mat": 7001, "hyra": 18001, "nöje": 1001, "transport": 2001}}, utdata: "hyra: 18001 av 18001\nmat: 7401 av 7001 ÖVER\nnöje: 1601 av 1001 ÖVER\ntransport: 1201 av 2001"}]}
 ledtradar:
   - "Gå igenom kategorierna i bokstavsordning med sorted(summor)."
   - "Bygg raden med en f-sträng, och lägg till ÖVER i en if om summan är större."
@@ -153,7 +153,7 @@ start: |
       {"kategori": "transport", "belopp": 600},
   ]
   budget = {"mat": 3500, "hyra": 9000, "nöje": 500, "transport": 1000}
-ratta: {"utdata": "hyra: 9000 av 9000\nmat: 3700 av 3500 ÖVER\nnöje: 800 av 500 ÖVER\ntransport: 600 av 1000\nÖver budget: mat, nöje"}
+ratta: {"utdata": "hyra: 9000 av 9000\nmat: 3700 av 3500 ÖVER\nnöje: 800 av 500 ÖVER\ntransport: 600 av 1000\nÖver budget: mat, nöje", fall: [{varden: {"utgifter": [{"kategori": "mat", "belopp": 5001}, {"kategori": "hyra", "belopp": 18001}, {"kategori": "mat", "belopp": 2401}, {"kategori": "nöje", "belopp": 1601}, {"kategori": "transport", "belopp": 1201}], "budget": {"mat": 7001, "hyra": 18001, "nöje": 1001, "transport": 2001}}, utdata: "hyra: 18001 av 18001\nmat: 7402 av 7001 ÖVER\nnöje: 1601 av 1001 ÖVER\ntransport: 1201 av 2001\nÖver budget: mat, nöje"}]}
 ledtradar:
   - "Börja med summor = summa_per_kategori(utgifter). Sedan är det samma loop som i steg 4."
   - "Sista raden: \", \".join(lista) sätter ihop kategorierna med komma emellan, och lista får du från over_budget(summor, budget)."

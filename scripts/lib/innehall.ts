@@ -11,7 +11,7 @@ export class ContentError extends Error {
 
 const SPECIAL = new Set(["python-exempel", "forutsag", "ovning", "ruta", "fil"]);
 /** What an exercise can require of the code itself; see `_krav` in web/src/py/python-kod.ts. */
-const KRAV_RE = /^(uträkning|kommentar-först|kommentar|f-sträng|for|while|loop|and|or|break|continue|funktion|jämförelse|if|else|elif|in|lista|uppslag|(import|anropa|inte-anropa):[A-Za-z_][A-Za-z0-9_]*)$/u;
+const KRAV_RE = /^(uträkning|kommentar-först|kommentar|f-sträng|for|while|loop|and|or|break|continue|funktion|jämförelse|if|else|elif|in|lista|uppslag|(import|anropa|inte-anropa):[A-Za-z_][A-Za-z0-9_]*|sql:[A-Z]+)$/u;
 const FILNAMN_RE = /^[A-Za-z0-9_][A-Za-z0-9_.-]{0,63}$/;
 const ID_RE = /^[a-z0-9][a-z0-9._-]{0,63}$/;
 const FENCE_RE = /^(`{3,}|~{3,})\s*([^\s`]*)\s*$/;
@@ -42,12 +42,12 @@ function stdinOf(o: Record<string, unknown>, file: string, line: number, what: s
 
 /** ratta.fall (#204): a list of cases, each with `varden` and/or `stdin`, and `utdata`. */
 function fallOf(raw: unknown, file: string, line: number): Fall[] {
-  const fel = 'ovning: ratta.fall ska vara en lista med fall, var och ett med "utdata" och "varden" (variabler att byta) och/eller "stdin"';
+  const fel = 'ovning: ratta.fall ska vara en lista med fall, var och ett med "utdata" och "varden" (variabler att byta), "stdin" och/eller "andra_tal: true" (andra tal i filerna)';
   if (!Array.isArray(raw) || raw.length === 0) throw new ContentError(file, line, fel);
   return raw.map((f) => {
     if (f === null || typeof f !== "object" || Array.isArray(f)) throw new ContentError(file, line, fel);
     const o = f as Record<string, unknown>;
-    if (typeof o.utdata !== "string" || (o.varden === undefined && o.stdin === undefined)) throw new ContentError(file, line, fel);
+    if (typeof o.utdata !== "string" || (o.varden === undefined && o.stdin === undefined && o.andra_tal !== true)) throw new ContentError(file, line, fel);
     if (o.varden !== undefined && (o.varden === null || typeof o.varden !== "object" || Array.isArray(o.varden) || Object.keys(o.varden).length === 0)) {
       throw new ContentError(file, line, "ovning: ratta.fall.varden ska vara en post, t.ex. {betyg: 75}");
     }
@@ -58,6 +58,7 @@ function fallOf(raw: unknown, file: string, line: number): Fall[] {
       utdata: o.utdata,
       ...(o.varden !== undefined ? { varden: o.varden as Record<string, unknown> } : {}),
       ...(o.stdin !== undefined ? { stdin: (o.stdin as unknown[]).map(String) } : {}),
+      ...(o.andra_tal === true ? { andraTal: true } : {}),
     };
   });
 }
@@ -139,7 +140,7 @@ function blockOf(kind: string, body: string, file: string, line: number, lessonI
   if (!Array.isArray(hints) || hints.length !== 3 || !hints.every((h) => typeof h === "string" && h.trim() !== "")) throw new ContentError(file, line, `ovning ${id}: "ledtradar" ska vara exakt tre texter (en knuff, en tydligare, nästan svaret)`);
   const uppgift = str(o, "uppgift", file, line, `ovning ${id}`);
   if (o.krav !== undefined && (!Array.isArray(o.krav) || o.krav.length === 0 || !o.krav.every((k) => typeof k === "string" && KRAV_RE.test(k)))) {
-    throw new ContentError(file, line, `ovning ${id}: "krav" ska vara en lista med kända krav (uträkning, kommentar-först, kommentar, f-sträng, for, while, loop, and, or, break, continue, funktion, jämförelse, if, else, elif, in, lista, uppslag, import:<modul>, anropa:<namn>, inte-anropa:<namn>)`);
+    throw new ContentError(file, line, `ovning ${id}: "krav" ska vara en lista med kända krav (uträkning, kommentar-först, kommentar, f-sträng, for, while, loop, and, or, break, continue, funktion, jämförelse, if, else, elif, in, lista, uppslag, import:<modul>, anropa:<namn>, inte-anropa:<namn>, sql:<ORD>)`);
   }
   const ratta = rattaOf(o.ratta, file, line);
   return {

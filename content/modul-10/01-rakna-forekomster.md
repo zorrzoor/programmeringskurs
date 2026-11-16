@@ -56,7 +56,7 @@ start: |
   from collections import Counter
 
   betyg = ["A", "B", "A", "C", "A", "B"]
-ratta: {"utdata": "3"}
+ratta: {"utdata": "3", fall: [{varden: {"betyg": ["B", "A", "C", "B"]}, utdata: "1"}]}
 ledtradar:
   - "Räkna med Counter, och slå upp antalet för A."
   - "Counter(betyg) ger ett uppslag, och [\"A\"] ger antalet."
@@ -75,7 +75,7 @@ start: |
   from collections import Counter
 
   text = "en hund och en katt och en fisk"
-ratta: {"utdata": "en 3\noch 2"}
+ratta: {"utdata": "en 3\noch 2", fall: [{varden: {"text": "ett och ett och två och ett"}, utdata: "ett 3\noch 3"}]}
 ledtradar:
   - "Dela texten i ord, räkna dem och ta de två vanligaste."
   - "Counter(text.split()).most_common(2) ger en lista av par."

@@ -3,7 +3,7 @@
 import type { Filer, Ratta } from "../kurs-typer.ts";
 import { forklaraFel, type PyFel } from "./felmeddelanden.ts";
 import { PYTHON_KOD } from "./python-kod.ts";
-import { beskrivFall, jamforFil, jamforUtdata, jamforVariabel, kravMeddelande, normalisera } from "./rattning.ts";
+import { andraTal, beskrivFall, jamforFil, jamforUtdata, jamforVariabel, kravMeddelande, normalisera } from "./rattning.ts";
 
 /** The part of Pyodide that the engine uses (so a test can pass a fake). */
 export interface PyodideLite {
@@ -102,7 +102,7 @@ export class PyEngine {
       // #204: the other cases run only when the first is right; the first case that fails is explained.
       for (const fall of meddelanden.length === 0 ? (ratta.fall ?? []) : []) {
         const kodFall = fall.varden ? (this.fn("_satt_varden")(kod, JSON.stringify(fall.varden)) as string) : kod;
-        const r = this.run(kodFall, { stdin: fall.stdin ?? alt.stdin, filer: alt.filer, grans: alt.grans });
+        const r = this.run(kodFall, { stdin: fall.stdin ?? alt.stdin, filer: fall.andraTal ? andraTal(alt.filer) : alt.filer, grans: alt.grans });
         const nar = beskrivFall(fall);
         if (r.fel) {
           const f = forklaraFel(r.fel);

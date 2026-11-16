@@ -54,7 +54,7 @@ id: m5-andra-lagg-till
 uppgift: "Listan `tal` finns redan. Lägg till talet `4` sist, och skriv ut hela listan."
 start: |
   tal = [1, 2, 3]
-ratta: {utdata: "[1, 2, 3, 4]"}
+ratta: {utdata: "[1, 2, 3, 4]", fall: [{varden: {"tal": [3, 5, 7]}, utdata: "[3, 5, 7, 4]"}]}
 ledtradar:
   - Det finns något färdigt för att lägga till sist i en lista.
   - Det heter append, och talet står inom parenteserna.
@@ -70,7 +70,7 @@ id: m5-andra-sortera
 uppgift: "Listan `tal` finns redan. Skriv ut den sorterad från minst till störst."
 start: |
   tal = [5, 2, 9, 1]
-ratta: {utdata: "[1, 2, 5, 9]"}
+ratta: {utdata: "[1, 2, 5, 9]", fall: [{varden: {"tal": [11, 5, 19, 3]}, utdata: "[3, 5, 11, 19]"}]}
 ledtradar:
   - Det finns en färdig funktion som sorterar.
   - Den heter sorted, och listan står inom parenteserna.
@@ -85,7 +85,7 @@ id: m5-andra-finns
 uppgift: "Skriv ut `Finns` om namnet `Bo` finns i listan `namn`, annars `Finns inte`."
 start: |
   namn = ["Anna", "Bo", "Cia"]
-ratta: {utdata: "Finns"}
+ratta: {utdata: "Finns", fall: [{varden: {"namn": ["Annaa", "Boa", "Ciaa"]}, utdata: "Finns inte"}]}
 ledtradar:
   - Du behöver en if och ett villkor som kollar om något finns i en lista.
   - Villkoret skrivs med ordet in.
