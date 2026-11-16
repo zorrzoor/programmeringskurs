@@ -46,7 +46,12 @@ export class Api {
     let res: Response;
     const headers: Record<string, string> = {};
     if (body !== undefined) headers["content-type"] = "application/json";
-    if (this.code !== null && path.startsWith("/api/namn/")) headers["x-kod"] = this.code;
+    if (this.code !== null && path.startsWith("/api/namn/")) {
+      // A header can only carry Latin-1; anything else makes fetch throw before sending, which would look like a network
+      // error (#199). The picker cleans codes first; this is the guard for anything else.
+      if (!/^[\x20-\x7e]*$/.test(this.code)) throw new ApiError(422, "ogiltig-kod", "Koden innehåller tecken som inte kan finnas i en kod.");
+      headers["x-kod"] = this.code;
+    }
     try {
       res = await this.fetchFn(path, {
         method,

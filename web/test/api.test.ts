@@ -45,4 +45,17 @@ describe("Api", () => {
     expect(err).toBeInstanceOf(ApiError);
     expect((err as ApiError).offline).toBe(true);
   });
+
+  test("a code with characters a header cannot carry is refused before the request, not called a network error (#199)", async () => {
+    let called = false;
+    const api = new Api(() => {
+      called = true;
+      return Promise.resolve(new Response("{}"));
+    });
+    api.setCode("KKKK–KKKK–KKKK");
+    const err = await api.getProgress("Anna").catch((e: unknown) => e);
+    expect(err).toMatchObject({ status: 422, code: "ogiltig-kod" });
+    expect((err as ApiError).offline).toBe(false);
+    expect(called).toBe(false);
+  });
 });
