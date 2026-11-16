@@ -25,9 +25,9 @@ jobs:
         uses: amannn/action-semantic-pull-request@2252a14e810aa9b85c2d560bd7070c802206ecf6 # v6.1.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Bot PRs (release-please, Dependabot) have no issue to close.
+      # Renovate's PRs have no issue to close.
       - name: PR description must close an issue
-        if: ${{ !startsWith(github.head_ref, 'release-please--') && !startsWith(github.head_ref, 'dependabot/') && !startsWith(github.head_ref, 'renovate/') }}
+        if: ${{ !startsWith(github.head_ref, 'renovate/') }}
         env:
           PR_BODY: ${{ github.event.pull_request.body }}
         run: |
