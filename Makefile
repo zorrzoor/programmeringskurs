@@ -10,7 +10,7 @@ NODE_IMAGE := $(shell sed -n 's/^FROM \(docker.io\/library\/node:[^ ]*\).*/\1/p'
 PORT ?= 8080
 # Same version as @playwright/test in package.json: the browser must match the library. Renovate bumps both in one PR
 # (renovate.json) and `make lint` (scripts/check-repo.sh) fails when they differ (#193).
-PLAYWRIGHT_IMAGE := mcr.microsoft.com/playwright:v1.64.1-resolute@sha256:5804dd8c666684ea858091d52c91ef97974caa999b25f0f03efa485d9ffeb434
+PLAYWRIGHT_IMAGE := mcr.microsoft.com/playwright:v1.65.1-resolute@sha256:dcf385f7a31aa1cbb0a7a0c97a539142bf70480b661f89f26a774ec1fe2edd1d
 
 NODE_RUN = $(RUNTIME) run --rm -i --userns=keep-id --user "$$(id -u):$$(id -g)" \
 	-e HOME=/tmp -e npm_config_cache=/tmp/npm -v "$(CURDIR):/work:Z" -w /work $(NODE_EXTRA) $(NODE_IMAGE)
