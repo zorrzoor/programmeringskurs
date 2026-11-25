@@ -15,6 +15,7 @@ import {
   type Config,
 } from "./config.ts";
 import type { Store } from "./db.ts";
+import { nextReset } from "./rensning.ts";
 import { cleanAccessCode, cleanCode, cleanId, cleanName, cleanTime, hashCode, MAX_BODY_BYTES, newCode } from "./validate.ts";
 
 const TYPES: Record<string, string> = {
@@ -111,6 +112,7 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     port: DEFAULT_PORT,
     backupDir: "",
     backupKeep: DEFAULT_BACKUP_KEEP,
+    resetEveryMonths: 0,
     ...opts.config,
   };
   const limit = opts.writesPerMinute ?? config.writesPerMinute;
@@ -200,7 +202,10 @@ export function createHandler(opts: Options): (req: IncomingMessage, res: Server
     }
     if (resource === "config" && path.length === 3) {
       if (method !== "GET") throw new HttpError(405, "metod", "Metoden stöds inte.");
-      json(res, 200, { lage: config.lage, maxNamn: config.maxNames });
+      // The day of the next reset and how often (months) (#165), so that the page can say when; null when nothing is reset.
+      const nastaRensning = config.resetEveryMonths > 0 ? nextReset(now(), config.resetEveryMonths) : null;
+      const rensaVarje = config.resetEveryMonths > 0 ? config.resetEveryMonths : null;
+      json(res, 200, { lage: config.lage, maxNamn: config.maxNames, nastaRensning, rensaVarje });
       return "GET /api/config";
     }
     if (resource !== "namn") throw new HttpError(404, "saknas", "Sidan finns inte.");

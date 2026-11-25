@@ -27,6 +27,11 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/env/-
         value: {name: UNUSED_NAME_HOURS, value: "24"}
+      # All names and progress are removed each quarter (#165): 1 Jan, 1 Apr, 1 Jul and 1 Oct, after a copy. The page reads
+      # the interval from /api/config, so changing it here (1, 2, 3, 4, 6 or 12) also changes the texts.
+      - op: add
+        path: /spec/template/spec/containers/0/env/-
+        value: {name: RESET_EVERY_MONTHS, value: "3"}
       # To stop new names at once: add NAMES_CLOSED = "1" here (or kubectl set env deploy/kurs NAMES_CLOSED=1).
       - op: replace
         path: /spec/template/spec/containers/0/resources/limits/memory

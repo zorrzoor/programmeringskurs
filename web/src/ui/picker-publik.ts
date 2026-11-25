@@ -1,8 +1,10 @@
 // "Vem är du?" in the public instance, which has no Cloudflare Access in front: every name has a code that is shown once when
 // the name is made. The list of names is a search (there can be thousands). No e-mail addresses, nothing can be recovered.
 import { Api, ApiError } from "../api.ts";
+import { config } from "../config.ts";
 import { glomKod, hamtaKod, KOD_HJALP, rensaKod, sparaKod } from "../koder.ts";
 import { cleanName, NAME_HELP } from "../names.ts";
+import { hurOfta, rensningsText, rensningsVarning } from "../rensning.ts";
 import { clear, h } from "./dom.ts";
 import { integritetsText } from "./integritet.ts";
 import type { PickerOptions } from "./picker.ts";
@@ -20,13 +22,18 @@ export function showPublicPicker(root: HTMLElement, { api, onPick, notice }: Pic
     main.append(...root.childNodes);
     root.append(main);
   };
-  const warnings = () =>
-    h(
+  const warnings = () => {
+    const varning = rensningsVarning(config().nastaRensning, new Date());
+    return h(
       "div",
       { class: "varning", role: "note" },
       h("p", {}, h("strong", {}, "Namnen syns för alla. "), "Alla som besöker sidan kan se listan med namn. Välj ett användarnamn som du hittar på, inte ditt riktiga namn."),
-      h("p", {}, h("strong", {}, "Framsteg kan rensas vid månadsbyte. "), "Räkna inte med att det du gör här finns kvar för alltid."),
+      config().nastaRensning && config().rensaVarje
+        ? h("p", {}, h("strong", {}, `Allt rensas ${hurOfta(config().rensaVarje as number)}. `), rensningsText(config().nastaRensning, config().rensaVarje), " Räkna inte med att det du gör här finns kvar.")
+        : h("p", {}, h("strong", {}, "Framsteg kan rensas. "), "Räkna inte med att det du gör här finns kvar för alltid."),
+      ...(varning ? [h("p", {}, h("strong", {}, varning))] : []),
     );
+  };
 
   /** Opens a name with its code; the server checks it when the progress is loaded. */
   async function open(name: string, typed: string, message: HTMLElement): Promise<void> {

@@ -1,5 +1,7 @@
 // The privacy text of the public instance (kursen.feuerliden.se). The private instance sits behind Cloudflare Access
 // and has no such page. Keep it in line with docs/koncept.md chapter 11 and with what the server really stores.
+import { config } from "../config.ts";
+import { rensningsText } from "../rensning.ts";
 import { h } from "./dom.ts";
 
 export const KONTAKT_URL = "https://github.com/zorrzoor/programmeringskurs/issues/new";
@@ -21,7 +23,7 @@ export function integritetsText(): HTMLElement[] {
       h("li", {}, "Dina framsteg: koden och svaren du skriver i övningarna, vilka övningar som är klara och din senaste lektion."),
       h("li", {}, "En avhuggen version (hash) av din åtkomstkod. Själva koden sparas inte, och därför går den inte att få tillbaka om du tappar den."),
     ),
-    h("p", {}, "Inga mejladresser, ingen statistik och inga IP-adresser sparas i databasen. Namn som skapats men aldrig använts tas bort efter ett dygn. Framsteg kan rensas vid månadsbyte."),
+    h("p", {}, "Inga mejladresser, ingen statistik och inga IP-adresser sparas i databasen. Namn som skapats men aldrig använts tas bort efter ett dygn. ", rensningsText(config().nastaRensning, config().rensaVarje) || "Framsteg kan rensas."),
     h("p", {}, "En kopia av hela databasen görs en gång per dygn och sparas i sju dygn, på samma server. Kopiorna används bara för att kunna återställa om något går fel."),
     h("h2", {}, "IP-adresser och missbruksskydd"),
     h("p", {}, "För att hindra att en besökare skapar tusentals namn räknar servern hur många namn varje besökare skapar. Den räknar med en hash av IP-adressen och ett slumpmässigt salt som bara finns i minnet. Hashen försvinner när servern startar om och skrivs aldrig till databasen eller loggen. Serverns egna loggrader innehåller bara metod, adress, svarskod och svarstid, inga IP-adresser och inga namn."),

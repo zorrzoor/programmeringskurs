@@ -8,6 +8,7 @@ import { createHandler } from "../app.ts";
 import { readConfig, type Config } from "../config.ts";
 import { DatabaseSync } from "node:sqlite";
 import { Store } from "../db.ts";
+import { nextReset, resetIfDue, resetPeriod } from "../rensning.ts";
 
 let dir: string;
 let server: Server;
@@ -351,20 +352,20 @@ describe("static files and headers", () => {
 describe("instance mode", () => {
   test("/api/config tells the client the mode (private by default)", async () => {
     const r = await call("GET", "/api/config");
-    assert.deepEqual([r.status, r.body], [200, { lage: "privat", maxNamn: 50 }]);
+    assert.deepEqual([r.status, r.body], [200, { lage: "privat", maxNamn: 50, nastaRensning: null, rensaVarje: null }]);
     assert.equal((await call("POST", "/api/config", {})).status, 405);
   });
 
   test("a public instance says so, with its own name limit", async () => {
     const s = start(":memory:", 300, { lage: "publik", maxNames: 2000 });
     const url = await listen(s);
-    assert.deepEqual(await (await fetch(`${url}/api/config`)).json(), { lage: "publik", maxNamn: 2000 });
+    assert.deepEqual(await (await fetch(`${url}/api/config`)).json(), { lage: "publik", maxNamn: 2000, nastaRensning: null, rensaVarje: null });
     s.close();
   });
 
   test("readConfig: defaults, values and invalid input", () => {
-    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false, maxExercisesPerName: 500, maxDbBytes: 256 * 1024 * 1024, port: 8080, backupDir: "", backupKeep: 7 });
-    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1", MAX_EXERCISES_PER_NAME: "300", MAX_DB_MB: "64", PORT: "8443", BACKUP_DIR: "/data/backup", BACKUP_KEEP: "3" }), {
+    assert.deepEqual(readConfig({}), { lage: "privat", maxNames: 50, writesPerMinute: 300, newNamesPerIpPerDay: 0, newNamesPerHour: 0, unusedNameHours: 0, namesClosed: false, maxExercisesPerName: 500, maxDbBytes: 256 * 1024 * 1024, port: 8080, backupDir: "", backupKeep: 7, resetEveryMonths: 0 });
+    assert.deepEqual(readConfig({ KURS_LAGE: "publik", MAX_NAMES: "2000", WRITES_PER_MINUTE: "1500", NEW_NAMES_PER_IP_PER_DAY: "15", NEW_NAMES_PER_HOUR: "200", UNUSED_NAME_HOURS: "24", NAMES_CLOSED: "1", MAX_EXERCISES_PER_NAME: "300", MAX_DB_MB: "64", PORT: "8443", BACKUP_DIR: "/data/backup", BACKUP_KEEP: "3", RESET_EVERY_MONTHS: "3" }), {
       lage: "publik",
       maxNames: 2000,
       writesPerMinute: 1500,
@@ -377,6 +378,7 @@ describe("instance mode", () => {
       port: 8443,
       backupDir: "/data/backup",
       backupKeep: 3,
+      resetEveryMonths: 3,
     });
     assert.throws(() => readConfig({ NEW_NAMES_PER_HOUR: "-1" }), /NEW_NAMES_PER_HOUR/);
     assert.throws(() => readConfig({ KURS_LAGE: "offentlig" }), /KURS_LAGE/);
@@ -390,6 +392,84 @@ describe("instance mode", () => {
     assert.throws(() => readConfig({ BACKUP_KEEP: "sju" }), /BACKUP_KEEP/);
     assert.throws(() => readConfig({ PORT: "70000" }), /PORT/);
     assert.throws(() => readConfig({ PORT: "http" }), /PORT/);
+    // #165: only divisors of 12, so that every year has the same reset days.
+    assert.equal(readConfig({ RESET_EVERY_MONTHS: "" }).resetEveryMonths, 0);
+    assert.throws(() => readConfig({ RESET_EVERY_MONTHS: "5" }), /RESET_EVERY_MONTHS/);
+    assert.throws(() => readConfig({ RESET_EVERY_MONTHS: "kvartal" }), /RESET_EVERY_MONTHS/);
+  });
+});
+
+describe("periodic reset (#165)", () => {
+  // 2026-12-31 23:30 UTC is already 1 January 2027 in Sweden (CET, UTC+1).
+  const newYearInSweden = Date.UTC(2026, 11, 31, 23, 30);
+  const lateDecember = Date.UTC(2026, 11, 31, 22, 30); // 23:30 in Sweden, still 2026
+
+  test("periods and the next reset day follow the Swedish calendar", () => {
+    assert.equal(resetPeriod(lateDecember, 3), "2026-4");
+    assert.equal(resetPeriod(newYearInSweden, 3), "2027-1");
+    assert.equal(resetPeriod(Date.UTC(2027, 2, 31, 12), 3), "2027-1");
+    assert.equal(resetPeriod(Date.UTC(2027, 3, 1, 12), 3), "2027-2");
+    assert.equal(nextReset(Date.UTC(2026, 10, 25, 12), 3), "2027-01-01");
+    assert.equal(nextReset(newYearInSweden, 3), "2027-04-01");
+    assert.equal(nextReset(Date.UTC(2027, 6, 15), 3), "2027-10-01");
+    assert.equal(nextReset(Date.UTC(2027, 6, 15), 1), "2027-08-01");
+    assert.equal(nextReset(Date.UTC(2027, 6, 15), 6), "2028-01-01");
+    assert.equal(nextReset(Date.UTC(2027, 6, 15), 12), "2028-01-01");
+    // Summer time (UTC+2): 30 June 22:30 UTC is 1 July 00:30 in Sweden.
+    assert.equal(resetPeriod(Date.UTC(2027, 5, 30, 22, 30), 3), "2027-3");
+  });
+
+  test("the first check only remembers the period; a new period removes everything after a copy", () => {
+    const store = new Store(":memory:");
+    store.addName("Anna");
+    store.saveExercise("Anna", "m1-l1-o1", { kod: "print(1)", klar: true, tid: 1 });
+    const copies: string[] = [];
+    const lines: string[] = [];
+    const run = (now: number) => resetIfDue(store, 3, now, (stamp) => copies.push(stamp), (m) => lines.push(m));
+    assert.equal(run(lateDecember), "first");
+    assert.deepEqual(store.names(), ["Anna"]);
+    assert.equal(run(lateDecember + 60_000), "not-due");
+    assert.equal(run(newYearInSweden), "reset");
+    assert.deepEqual([store.names(), store.progress("Anna"), copies], [[], null, ["2026-12-31-fore-rensning"]]);
+    assert.match(lines.join("\n"), /1 namn/);
+    assert.equal(run(newYearInSweden + 3600_000), "not-due");
+    store.close();
+  });
+
+  test("nothing is removed when the copy fails; the next check tries again", () => {
+    const store = new Store(":memory:");
+    store.addName("Anna");
+    const lines: string[] = [];
+    assert.equal(resetIfDue(store, 3, lateDecember, () => {}, () => {}), "first");
+    const failing = () => {
+      throw new Error("disk full");
+    };
+    assert.equal(resetIfDue(store, 3, newYearInSweden, failing, (m, level) => lines.push(`${level}: ${m}`)), "backup-failed");
+    assert.deepEqual(store.names(), ["Anna"]);
+    assert.match(lines.join("\n"), /^error: .*disk full/);
+    assert.equal(resetIfDue(store, 3, newYearInSweden, () => {}, () => {}), "reset");
+    assert.deepEqual(store.names(), []);
+    store.close();
+  });
+
+  test("the period is stored in the database and survives a restart", () => {
+    const path = join(dir, "rensning.db");
+    let store = new Store(path);
+    resetIfDue(store, 3, lateDecember, () => {}, () => {});
+    store.addName("Anna");
+    store.close();
+    store = new Store(path);
+    assert.equal(resetIfDue(store, 3, newYearInSweden, () => {}, () => {}), "reset");
+    assert.deepEqual(store.names(), []);
+    store.close();
+  });
+
+  test("/api/config gives the day of the next reset and how often", async () => {
+    clock = Date.UTC(2026, 10, 25, 12);
+    const s = start(":memory:", 300, { lage: "publik", resetEveryMonths: 3 });
+    const url = await listen(s);
+    assert.deepEqual(await (await fetch(`${url}/api/config`)).json(), { lage: "publik", maxNamn: 50, nastaRensning: "2027-01-01", rensaVarje: 3 });
+    s.close();
   });
 });
 

@@ -11,7 +11,7 @@ const namn = `Publik${Date.now().toString(36)}`;
 test("a name with a code: shown once, remembered on the device, required elsewhere", async ({ page, browser }) => {
   await page.goto("/");
   await expect(page.getByText("Namnen syns för alla")).toBeVisible();
-  await expect(page.getByText("Framsteg kan rensas vid månadsbyte")).toBeVisible();
+  await expect(page.getByText("Allt rensas varje kvartal")).toBeVisible();
 
   expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
 

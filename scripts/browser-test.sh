@@ -25,7 +25,7 @@ chmod 0777 "$DATA" "$DATA_PUBLIK"
 $RUNTIME run -d --name $NAME --read-only --tmpfs /tmp --cap-drop ALL --user 1000:1000 -v "$DATA:/data" -p "127.0.0.1:$port:8080" "$IMAGE" >/dev/null
 # The same image as the public instance (KURS_LAGE=publik: a code per name, no personal greeting).
 $RUNTIME run -d --name $NAME_PUBLIK --read-only --tmpfs /tmp --cap-drop ALL --user 1000:1000 -v "$DATA_PUBLIK:/data" \
-    -e KURS_LAGE=publik -e MAX_NAMES=2000 -p "127.0.0.1:$port_publik:8080" "$IMAGE" >/dev/null
+    -e KURS_LAGE=publik -e MAX_NAMES=2000 -e RESET_EVERY_MONTHS=3 -p "127.0.0.1:$port_publik:8080" "$IMAGE" >/dev/null
 for p in $port $port_publik; do
     for _ in $(seq 1 50); do
         curl -fs "http://127.0.0.1:$p/api/halsa" >/dev/null 2>&1 && break
