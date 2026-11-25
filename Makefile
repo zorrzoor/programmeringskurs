@@ -48,7 +48,7 @@ lint: typecheck test ## Type check, tests and the repo checks
 
 # The shared EE (zorrzoor/ee) has kubectl and kubeconform. Its package is public (pulled without a login), so a clone
 # can run `make validate` without the ee repo, which is private. Override with EE_IMAGE=localhost/ee:latest for a local build.
-EE_IMAGE ?= ghcr.io/zorrzoor/ee:1.6
+EE_IMAGE ?= ghcr.io/zorrzoor/ee:2.0
 
 .PHONY: validate
 validate: ## Validate deploy/ (kustomize + kubeconform) in the shared EE
