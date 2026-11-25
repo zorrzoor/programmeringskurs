@@ -4,6 +4,14 @@
   "description": "Weekly (Mondays, from the shared preset), grouped; security fixes at any time; every PR runs the full CI (tests, browser tests, image smoke test) and is merged by hand.",
   "customManagers": [
     {
+      "description": "The shared EE in the Makefile (make validate), as a moving X.Y tag: Renovate proposes the next minor or major",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Makefile$/"],
+      "matchStrings": ["EE_IMAGE \\?= (?<depName>ghcr\\.io/zorrzoor/ee):(?<currentValue>[0-9]+\\.[0-9]+)\\n"],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "docker"
+    },
+    {
       "description": "The Playwright image in the Makefile (browser tests), with its digest. Must have the same version as @playwright/test, so it is in the npm group (#193)",
       "customType": "regex",
       "managerFilePatterns": ["/^Makefile$/"],
