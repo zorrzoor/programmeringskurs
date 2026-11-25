@@ -1,3 +1,5 @@
+import { ALLOWED_RESET_MONTHS } from "./rensning.ts";
+
 // Settings that differ between instances of the same image (read from the environment at start).
 // "privat" is the instance behind Cloudflare Access; "publik" has no access control in front of it.
 
@@ -24,6 +26,8 @@ export interface Config {
   backupDir: string;
   /** How many daily copies to keep (at least 1, #200: 0 or an invalid value used to remove them all). */
   backupKeep: number;
+  /** Remove all names and progress every this many months (#165, server/rensning.ts); 0 = never. */
+  resetEveryMonths: number;
 }
 
 export const DEFAULT_MAX_NAMES = 50;
@@ -53,6 +57,14 @@ function port(raw: string | undefined): number {
   return value;
 }
 
+function resetMonths(raw: string | undefined): number {
+  const value = nonNegativeInt(raw, "RESET_EVERY_MONTHS");
+  if (value !== 0 && !(ALLOWED_RESET_MONTHS as readonly number[]).includes(value)) {
+    throw new Error(`RESET_EVERY_MONTHS must be 0 or one of ${ALLOWED_RESET_MONTHS.join(", ")}, got "${raw}"`);
+  }
+  return value;
+}
+
 /** Throws on an invalid value: better to refuse to start than to run with a setting nobody meant. */
 export function readConfig(env: Record<string, string | undefined>): Config {
   const lage = env.KURS_LAGE ?? "privat";
@@ -70,5 +82,6 @@ export function readConfig(env: Record<string, string | undefined>): Config {
     port: port(env.PORT),
     backupDir: env.BACKUP_DIR ?? "",
     backupKeep: positiveInt(env.BACKUP_KEEP, DEFAULT_BACKUP_KEEP, "BACKUP_KEEP"),
+    resetEveryMonths: resetMonths(env.RESET_EVERY_MONTHS),
   };
 }

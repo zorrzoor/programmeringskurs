@@ -41,6 +41,10 @@ export class Store {
         updated_at INTEGER NOT NULL,
         PRIMARY KEY (person_id, exercise_id)
       );
+      CREATE TABLE IF NOT EXISTS meta (
+        key TEXT PRIMARY KEY,
+        value TEXT NOT NULL
+      );
     `);
     // The public instance protects a name with a code (only its hash is stored). Added to databases made before it existed.
     const columns = this.db.prepare("PRAGMA table_info(people)").all().map((r) => String(r.name));
@@ -113,6 +117,23 @@ export class Store {
       )
       .run(cutoff);
     return Number(result.changes);
+  }
+
+  /** A stored setting of the server itself, such as the period of the last reset (#165); null when unset. */
+  getMeta(key: string): string | null {
+    const row = this.db.prepare("SELECT value FROM meta WHERE key = ?").get(key);
+    return row ? String(row.value) : null;
+  }
+
+  setMeta(key: string, value: string): void {
+    this.db.prepare("INSERT INTO meta (key, value) VALUES (?, ?) ON CONFLICT (key) DO UPDATE SET value = excluded.value").run(key, value);
+  }
+
+  /** Removes every name and all progress (#165), and gives the space back. Returns how many names were removed. */
+  removeAll(): number {
+    const removed = Number(this.db.prepare("DELETE FROM people").run().changes);
+    this.db.exec("VACUUM");
+    return removed;
   }
 
   /** Removes the name and all its progress. False when there was no such name. */

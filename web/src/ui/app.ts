@@ -2,6 +2,7 @@
 // A page change moves focus to the title, for screen readers and keyboards.
 import { config } from "../config.ts";
 import { hittaLektion } from "../kurs.ts";
+import { rensningsVarning } from "../rensning.ts";
 import { tolka } from "../router.ts";
 import type { ProgressSync, SaveStatus } from "../sync.ts";
 import type { Kontext } from "./block.ts";
@@ -42,9 +43,11 @@ export function startApp(
   const klar = (id: string) => Boolean(sync.exercise(id)?.klar);
   const status = h("span", { class: "status", role: "status" }, STATUS_TEXT.sparat);
   const sida = h("main", { class: "sida", id: "innehall" });
+  const rensning = config().lage === "publik" ? rensningsVarning(config().nastaRensning, new Date()) : null; // #165
   rot.replaceChildren(
     h("a", { class: "hoppa", href: "#innehall" }, "Hoppa till innehållet"),
     h("header", { class: "topp" }, h("a", { class: "logga", href: "#/" }, h("img", { class: "ikon", src: ikonUrl, alt: "", width: "32", height: "32" }), "Programmeringskurs"), h("nav", { class: "meny", "aria-label": "Hjälp" }, h("a", { href: "#/ordlista" }, "Ordlista"), h("a", { href: "#/fastnat" }, "Jag har fastnat"), ...(config().lage === "publik" ? [h("a", { href: "#/integritet" }, "Integritet")] : []), skapaVisningsval()), h("span", { class: "vem" }, `Du är ${namn} `, h("button", { type: "button", class: "link", onclick: onByt }, "Byt namn"), ...(onGlom ? [" · ", h("button", { type: "button", class: "link", onclick: onGlom }, "Glöm mig på den här enheten")] : [])), status),
+    ...(rensning ? [h("p", { class: "varning rensning", role: "note" }, h("strong", {}, rensning))] : []),
     sida,
   );
   const ctx: Kontext = {

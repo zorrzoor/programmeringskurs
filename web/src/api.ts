@@ -72,7 +72,7 @@ export class Api {
     return data as T;
   }
 
-  getConfig(): Promise<{ lage: "privat" | "publik"; maxNamn: number }> {
+  getConfig(): Promise<{ lage: "privat" | "publik"; maxNamn: number; nastaRensning?: string | null; rensaVarje?: number | null }> {
     return this.call("GET", "/api/config");
   }
 

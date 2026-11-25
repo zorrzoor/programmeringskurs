@@ -6,16 +6,20 @@ import type { Api } from "./api.ts";
 export interface ClientConfig {
   lage: "privat" | "publik";
   maxNamn: number;
+  /** The day of the next reset, YYYY-MM-DD (#165); null when nothing is reset. */
+  nastaRensning: string | null;
+  /** Months between resets (3 = each quarter); null when nothing is reset. */
+  rensaVarje: number | null;
 }
 
-let current: ClientConfig = { lage: "privat", maxNamn: 50 };
+let current: ClientConfig = { lage: "privat", maxNamn: 50, nastaRensning: null, rensaVarje: null };
 
 export const config = (): ClientConfig => current;
 
 /** True when the server's mode was read. */
 export async function loadConfig(api: Api): Promise<boolean> {
   try {
-    current = await api.getConfig();
+    current = { nastaRensning: null, rensaVarje: null, ...(await api.getConfig()) };
     return true;
   } catch {
     return false;
@@ -24,5 +28,5 @@ export async function loadConfig(api: Api): Promise<boolean> {
 
 /** For tests. */
 export function setConfig(next: Partial<ClientConfig>): void {
-  current = { lage: "privat", maxNamn: 50, ...next };
+  current = { lage: "privat", maxNamn: 50, nastaRensning: null, rensaVarje: null, ...next };
 }

@@ -25,7 +25,7 @@ describe("instance mode", () => {
 
   test("loadConfig reads the server's mode, and says when it could not (#190)", async () => {
     const ok = await loadConfig(new Api(() => Promise.resolve(new Response(JSON.stringify({ lage: "publik", maxNamn: 2000 }), { headers: { "content-type": "application/json" } }))));
-    expect([ok, config()]).toEqual([true, { lage: "publik", maxNamn: 2000 }]);
+    expect([ok, config()]).toEqual([true, { lage: "publik", maxNamn: 2000, nastaRensning: null, rensaVarje: null }]);
     expect(await loadConfig(new Api(() => Promise.reject(new Error("offline"))))).toBe(false);
     expect(await loadConfig(new Api(() => Promise.resolve(new Response("", { status: 503 }))))).toBe(false);
   });

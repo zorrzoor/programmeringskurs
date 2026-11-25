@@ -43,7 +43,15 @@ describe("public name picker", () => {
   test("warns that names are visible and that progress can be cleared", async () => {
     await start();
     expect(root.textContent).toContain("Namnen syns för alla");
-    expect(root.textContent).toContain("Framsteg kan rensas vid månadsbyte");
+    expect(root.textContent).toContain("Framsteg kan rensas");
+  });
+
+  test("tells when everything is reset, and warns in the last week (#165)", async () => {
+    setConfig({ lage: "publik", maxNamn: 2000, nastaRensning: "2099-01-01", rensaVarje: 3 });
+    await start();
+    expect(root.textContent).toContain("Allt rensas varje kvartal");
+    expect(root.textContent).toContain("Nästa gång: 1 januari 2099");
+    expect(root.textContent).not.toContain("tas bort i natt");
   });
 
   test("asks for a username, not a real name", async () => {

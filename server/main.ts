@@ -7,6 +7,7 @@ import { createServer as createHttpsServer, Server as HttpsServer } from "node:h
 import { createHandler } from "./app.ts";
 import { readConfig } from "./config.ts";
 import { Store } from "./db.ts";
+import { resetIfDue } from "./rensning.ts";
 
 const log = (meddelande: string, level = "info") => console.log(JSON.stringify({ level, meddelande }));
 // Every setting is read and checked first (#200): an invalid value stops the server instead of running with it.
@@ -42,6 +43,29 @@ if (config.unusedNameHours > 0) {
   };
   clean();
   setInterval(clean, 3600 * 1000).unref();
+}
+
+// Everything is removed every RESET_EVERY_MONTHS months (#165, the public instance: each quarter). Checked every hour, so it
+// happens within an hour after midnight on the day. A copy is made first, next to the daily ones (and rotated with them).
+if (config.resetEveryMonths > 0) {
+  const reset = () => {
+    try {
+      resetIfDue(
+        store,
+        config.resetEveryMonths,
+        Date.now(),
+        (stamp) => {
+          if (!backupDir) throw new Error("BACKUP_DIR is not set");
+          store.backup(backupDir, stamp, config.backupKeep);
+        },
+        log,
+      );
+    } catch (err) {
+      log(`rensningen misslyckades: ${String(err)}`, "error");
+    }
+  };
+  reset();
+  setInterval(reset, 3600 * 1000).unref();
 }
 
 const certFile = process.env.TLS_CERT_FILE;
